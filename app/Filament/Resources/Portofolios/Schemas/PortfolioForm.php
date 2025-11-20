@@ -8,7 +8,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
-class PortofolioForm
+class PortfolioForm
 {
     public static function configure(Schema $schema): Schema
     {

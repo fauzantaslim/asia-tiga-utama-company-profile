@@ -19,7 +19,10 @@ class HeroesTable
                     ->searchable(),
                 TextColumn::make('button_text')
                     ->searchable(),
-                SpatieMediaLibraryImageColumn::make('background_image'),
+                SpatieMediaLibraryImageColumn::make('background_image')
+                    ->collection('background_image')
+                    ->circular()
+                    ->limit(3),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

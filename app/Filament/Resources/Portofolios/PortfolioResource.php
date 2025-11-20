@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources\Portofolios;
 
-use App\Filament\Resources\Portofolios\Pages\CreatePortofolio;
-use App\Filament\Resources\Portofolios\Pages\EditPortofolio;
-use App\Filament\Resources\Portofolios\Pages\ListPortofolios;
-use App\Filament\Resources\Portofolios\Schemas\PortofolioForm;
+use App\Filament\Resources\Portofolios\Pages\CreatePortfolio;
+use App\Filament\Resources\Portofolios\Pages\EditPortfolio;
+use App\Filament\Resources\Portofolios\Pages\ListPortfolios;
+use App\Filament\Resources\Portofolios\Schemas\PortfolioForm;
 use App\Filament\Resources\Portofolios\Tables\PortofoliosTable;
-use App\Models\Portofolio;
+use App\Models\Portfolio;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class PortofolioResource extends Resource
+class PortfolioResource extends Resource
 {
-    protected static ?string $model = Portofolio::class;
+    protected static ?string $model = Portfolio::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
@@ -24,7 +24,7 @@ class PortofolioResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return PortofolioForm::configure($schema);
+        return PortfolioForm::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -42,9 +42,9 @@ class PortofolioResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListPortofolios::route('/'),
-            'create' => CreatePortofolio::route('/create'),
-            'edit' => EditPortofolio::route('/{record}/edit'),
+            'index' => ListPortfolios::route('/'),
+            'create' => CreatePortfolio::route('/create'),
+            'edit' => EditPortfolio::route('/{record}/edit'),
         ];
     }
 }

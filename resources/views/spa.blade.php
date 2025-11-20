@@ -1,234 +1,609 @@
 @extends('layouts.app')
 
 @section('title', isset($companyInfo->meta_title) ? $companyInfo->meta_title : 'Company Profile')
-@section('description', isset($companyInfo->meta_description) ? $companyInfo->meta_description : 'Company Profile resmi
+@section('description',
+    isset($companyInfo->meta_description)
+    ? $companyInfo->meta_description
+    : 'Company Profile resmi
     kami')
-@section('keywords', isset($companyInfo->meta_keywords) ? $companyInfo->meta_keywords : 'company profile, jasa,
+@section('keywords',
+    isset($companyInfo->meta_keywords)
+    ? $companyInfo->meta_keywords
+    : 'company profile, jasa,
     layanan')
 
 @section('content')
-    <!-- Hero Section -->
-    <section id="hero" class="py-20 bg-gray-100">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold mb-4">{{ isset($hero->title) ? $hero->title : 'Welcome to Our Company' }}</h1>
-            <p class="text-xl mb-8">
-                {{ isset($hero->subtitle) ? $hero->subtitle : 'We provide excellent services for your business needs' }}</p>
-            <a href="#contact"
-                class="bg-blue-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-700 transition duration-300">{{ isset($hero->button_text) ? $hero->button_text : 'Get Started' }}</a>
+    <!-- Hero Section with Parallax & Gradient -->
+    <section id="hero" class="relative py-32 overflow-hidden bg-[#BF1A1A]" x-data="{ visible: true }">
+        <!-- Swiper Background -->
+        <div class="hero-background-swiper absolute inset-0 z-0">
+            <div class="swiper-wrapper">
+                <!-- Check if we have hero records -->
+                @if (isset($hero) && $hero->isNotEmpty())
+                    <!-- Loop through each hero record -->
+                    @foreach ($hero as $heroItem)
+                        <!-- Check if this hero item has background images -->
+                        @if ($heroItem->getMedia('background_image')->count() > 0)
+                            <!-- Loop through each background image of this hero item -->
+                            @foreach ($heroItem->getMedia('background_image') as $image)
+                                <div class="swiper-slide">
+                                    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                                        style="background-image: url('{{ $image->getUrl() }}');">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endif
+
+                <!-- Default backgrounds if no hero images exist -->
+                @php
+                    $hasHeroImages = false;
+                    if (isset($hero) && $hero->isNotEmpty()) {
+                        foreach ($hero as $heroItem) {
+                            if ($heroItem->getMedia('background_image')->count() > 0) {
+                                $hasHeroImages = true;
+                                break;
+                            }
+                        }
+                    }
+                @endphp
+                @if (!$hasHeroImages)
+                    <div class="swiper-slide">
+                        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                            style="background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80');">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                            style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80');">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+            <!-- Add Swiper Navigation -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- Add Swiper Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Animated Background Circles -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div data-aos="fade-down" data-aos-duration="1000">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->title) ? $hero->first()->title : 'Welcome to Our Company' }}
+                </h1>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
+                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->subtitle) ? $hero->first()->subtitle : 'We provide excellent services for your business needs' }}
+                </p>
+            </div>
+
+            <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
+                <a href="#contact"
+                    class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->button_text) ? $hero->first()->button_text : 'Get Started' }}
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce" data-aos="fade-up"
+            data-aos-delay="800">
+            <i class="fas fa-chevron-down text-white text-3xl opacity-70"></i>
         </div>
     </section>
 
-    <!-- About Us and Vision Mission Section -->
-    <section id="about" class="py-20">
+    <!-- About Us and Vision Mission Section with Golden Ratio Layout -->
+    <section id="about" class="py-24 bg-white">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-3xl font-bold mb-6">About Us</h2>
-                    <p class="text-gray-700 mb-6">
+            <!-- About Section -->
+            <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Who We Are</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
+                        About Us
+                    </h2>
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
                         {{ isset($about->description) ? $about->description : 'We are a professional company dedicated to providing quality services to our clients. With years of experience in the industry, we have built a strong reputation for excellence and customer satisfaction.' }}
                     </p>
+
+                    <!-- Stats Counter with Alpine.js -->
+                    <div class="grid grid-cols-3 gap-6 mt-8" x-data="{
+                        stats: [
+                            { value: 0, target: 100, label: 'Projects', suffix: '+' },
+                            { value: 0, target: 50, label: 'Clients', suffix: '+' },
+                            { value: 0, target: 15, label: 'Years', suffix: '+' }
+                        ],
+                        animated: false,
+                        animateCounter(stat) {
+                            const duration = 2000; // 2 seconds
+                            const startTime = Date.now();
+                            const startValue = 0;
+
+                            const animate = () => {
+                                const currentTime = Date.now();
+                                const elapsed = currentTime - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+
+                                // Easing function for smooth animation
+                                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                                stat.value = Math.floor(startValue + (stat.target - startValue) * easeOutQuart);
+
+                                if (progress < 1) {
+                                    requestAnimationFrame(animate);
+                                } else {
+                                    stat.value = stat.target;
+                                }
+                            };
+
+                            requestAnimationFrame(animate);
+                        },
+                        init() {
+                            // Trigger animation when element is visible
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting && !this.animated) {
+                                        this.animated = true;
+                                        this.stats.forEach(stat => {
+                                            this.animateCounter(stat);
+                                        });
+                                    }
+                                });
+                            }, { threshold: 0.5 });
+
+                            observer.observe(this.$el);
+                        }
+                    }">
+                        <template x-for="(stat, index) in stats" :key="index">
+                            <div class="text-center p-4 bg-[#FFE08F] rounded-xl" data-aos="zoom-in"
+                                :data-aos-delay="(index + 1) * 100">
+                                <div class="text-3xl font-bold text-[#BF1A1A]">
+                                    <span x-text="Math.floor(stat.value)"></span><span x-text="stat.suffix"></span>
+                                </div>
+                                <div class="text-sm text-[#060771] mt-1" x-text="stat.label"></div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
-                <div>
-                    <img src="{{ isset($about->image) ? asset('storage/' . $about->image) : 'https://via.placeholder.com/500x300' }}"
-                        alt="About Us" class="rounded-lg shadow-lg w-full">
+
+                <div data-aos="fade-left" data-aos-duration="1000" class="relative">
+                    <!-- Image with decorative elements -->
+                    <div class="relative">
+                        <div
+                            class="absolute -top-6 -left-6 w-full h-full bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl -z-10">
+                        </div>
+                        <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
+                            alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
+                            style="aspect-ratio: 1.618/1;">
+                    </div>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-12 mt-16">
-                <div class="bg-blue-50 p-8 rounded-lg">
-                    <h3 class="text-2xl font-bold mb-4 text-blue-800">Our Vision</h3>
-                    <p class="text-gray-700">
-                        {{ isset($about->vision) ? $about->vision : 'To be the leading company in our industry, recognized for innovation, quality, and customer satisfaction.' }}
-                    </p>
+            <!-- Vision & Mission Cards -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div data-aos="flip-left" data-aos-delay="100" data-aos-duration="1000"
+                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-eye text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-white">Our Vision</h3>
+                        <p class="text-white/90 text-lg leading-relaxed">
+                            {{ isset($about->vision) ? $about->vision : 'To be the leading company in our industry, recognized for innovation, quality, and customer satisfaction.' }}
+                        </p>
+                    </div>
                 </div>
-                <div class="bg-green-50 p-8 rounded-lg">
-                    <h3 class="text-2xl font-bold mb-4 text-green-800">Our Mission</h3>
-                    <p class="text-gray-700">
-                        {{ isset($about->mission) ? $about->mission : 'To deliver exceptional services that exceed our clients expectations while maintaining the highest standards of integrity and professionalism.' }}
-                    </p>
+
+                <div data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000"
+                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-bullseye text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-white">Our Mission</h3>
+                        <p class="text-white/90 text-lg leading-relaxed">
+                            {{ isset($about->mission) ? $about->mission : 'To deliver exceptional services that exceed our clients expectations while maintaining the highest standards of integrity and professionalism.' }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20 bg-gray-100">
+    <!-- Services Section with Hover Effects -->
+    <section id="services" class="py-24 bg-[#FFE08F]">
+
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Our Services</h2>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">What We Offer</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                    Our Services
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Comprehensive solutions tailored to your business needs
+                </p>
+            </div>
+
             <div class="grid md:grid-cols-3 gap-8">
-                @forelse($services as $service)
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                        <div class="text-4xl mb-4 text-blue-600">
-                            @if (isset($service->icon))
-                                {!! $service->icon !!}
-                            @else
-                                <i class="fas fa-cogs"></i>
-                            @endif
+                @forelse($services as $index => $service)
+                    <div data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                        x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false"
+                        class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 relative overflow-hidden"
+                        style="transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+
+                        <!-- Gradient overlay on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl"
+                            style="opacity: 0; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);"
+                            :style="hovered ? 'opacity: 1' : 'opacity: 0'">
                         </div>
-                        <h3 class="text-xl font-bold mb-3">{{ $service->title }}</h3>
-                        <p class="text-gray-600">{{ $service->description }}</p>
+
+                        <div class="relative z-10">
+                            <div class="text-5xl mb-6 text-[#BF1A1A]"
+                                style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                :style="hovered ? 'color: white; transform: scale(1.1) rotate(5deg)' : 'color: #BF1A1A'">
+                                @if (isset($service->icon))
+                                    {!! $service->icon !!}
+                                @else
+                                    <i class="fas fa-cogs"></i>
+                                @endif
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 text-[#060771]"
+                                style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
+                            <p class="leading-relaxed" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
+                                {{ $service->description }}</p>
+
+                            <!-- Read More Arrow -->
+
+                        </div>
                     </div>
                 @empty
-                    <div class="col-span-3 text-center">
-                        <p>No services available at the moment.</p>
+                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
+                        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No services available at the moment.</p>
                     </div>
                 @endforelse
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-20">
+    <!-- Portfolio Section with Image Modal -->
+    <section id="portfolio" class="py-24 bg-white" x-data="{ selectedImage: null }">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Our Portfolio</h2>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Our Work</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                    Our Portfolio
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Showcasing our finest projects and achievements</p>
+            </div>
+
             <div class="grid md:grid-cols-3 gap-8">
-                @forelse($portfolios as $portfolio)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="{{ asset('storage/' . $portfolio->image) }}" alt="{{ $portfolio->title }}"
-                            class="w-full h-64 object-cover">
+                @forelse($portfolios as $index => $portfolio)
+                    <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
+                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
+                            <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
+                                alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
+                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                @click="selectedImage = '{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}'">
+
+                            <!-- Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center pb-4"
+                                style="opacity: 0; transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                x-data="{ show: false }" @mouseenter="show = true" @mouseleave="show = false"
+                                :style="show ? 'opacity: 1' : 'opacity: 0'">
+                                <button class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold"
+                                    style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="show ? 'transform: translateY(0)' : 'transform: translateY(16px)'">
+                                    <i class="fas fa-search-plus mr-2"></i>View Details
+                                </button>
+                            </div>
+                        </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">{{ $portfolio->title }}</h3>
-                            <p class="text-gray-600">{{ Str::limit($portfolio->description, 100) }}</p>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800"
+                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                                {{ $portfolio->title }}</h3>
+                            <p class="text-gray-600 leading-relaxed">{{ Str::limit($portfolio->description, 100) }}</p>
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-3 text-center">
-                        <p>No portfolio items available at the moment.</p>
+                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
+                        <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No portfolio items available at the moment.</p>
                     </div>
                 @endforelse
             </div>
         </div>
+
+        <!-- Image Modal -->
+        <div x-show="selectedImage" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" @click="selectedImage = null"
+            class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            style="display: none;">
+            <div class="max-w-4xl w-full" @click.stop>
+                <img :src="selectedImage" class="w-full rounded-2xl shadow-2xl">
+            </div>
+        </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="gallery" class="py-20 bg-gray-100">
+    <!-- Gallery Section with Masonry Layout -->
+    <section id="gallery" class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Gallery</h2>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Visual Stories</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 bg-[#060771] bg-clip-text text-transparent">
+                    Gallery
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Capturing moments that define our journey</p>
+            </div>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                @forelse($galleryImages as $image)
-                    <div class="overflow-hidden rounded-lg shadow-md">
-                        <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $image->caption ?? 'Gallery Image' }}"
-                            class="w-full h-64 object-cover hover:scale-105 transition duration-300">
+                @forelse($galleryImages as $index => $image)
+                    <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" data-aos-duration="800"
+                        class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
+                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
+                        @mouseenter="imageHover = true" @mouseleave="imageHover = false"
+                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}'">
+                        <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
+                            alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                            style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                            :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+
+                        <!-- Overlay with Icon -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
+                            style="transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                            :style="imageHover ? 'opacity: 1' : 'opacity: 0'">
+                            <i class="fas fa-search-plus text-white text-3xl"
+                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                :style="imageHover ? 'transform: scale(1) rotate(0deg)' : 'transform: scale(0) rotate(-180deg)'"></i>
+                        </div>
+
+                        @if ($image->caption)
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
+                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
+                                <p class="text-white text-sm font-medium">{{ $image->caption }}</p>
+                            </div>
+                        @endif
                     </div>
                 @empty
-                    <div class="col-span-4 text-center">
-                        <p>No gallery images available at the moment.</p>
+                    <div class="col-span-4 text-center py-12" data-aos="fade-up">
+                        <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No gallery images available at the moment.</p>
                     </div>
                 @endforelse
             </div>
         </div>
+
+        <!-- Lightbox Modal -->
+        <div x-show="lightbox" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="lightbox = false"
+            class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            style="display: none;">
+            <button @click="lightbox = false"
+                class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="max-w-5xl w-full" @click.stop>
+                <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
+            </div>
+        </div>
     </section>
 
-    <!-- Blog Section -->
-    <section id="blog" class="py-20">
+    <!-- Blog Section with Card Design -->
+    <section id="blog" class="py-24 bg-white">
+
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Latest Blog Posts</h2>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Insights & Updates</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                    Latest Blog Posts
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Stay updated with our latest news and insights</p>
+            </div>
+
             <div class="grid md:grid-cols-3 gap-8">
-                @forelse($blogPosts as $post)
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
-                            class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">{{ $post->title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ Str::limit(strip_tags($post->content), 100) }}</p>
-                            <a href="#" class="text-blue-600 hover:underline">Read More</a>
+                @forelse($blogPosts as $index => $post)
+                    <article data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
+                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
+                            <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
+                                alt="{{ $post->title }}" class="w-full h-full object-cover"
+                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+
+                            <!-- Date Badge -->
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
+                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                <span class="text-sm font-bold text-blue-600">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    {{ $post->created_at->format('M d, Y') }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800 line-clamp-2"
+                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                                {{ $post->title }}
+                            </h3>
+                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                                {{ Str::limit(strip_tags($post->content), 120) }}
+                            </p>
+
+                            <a href="{{ route('blog.detail', $post->slug) }}"
+                                class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
+                                style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                Read More
+                                <i class="fas fa-arrow-right"
+                                    style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
+                            </a>
+                        </div>
+                    </article>
                 @empty
-                    <div class="col-span-3 text-center">
-                        <p>No blog posts available at the moment.</p>
+                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
+                        <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No blog posts available at the moment.</p>
                     </div>
                 @endforelse
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ route('blog.index') }}"
+                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                    <span>View All Blog Posts</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Contact and Maps Section -->
-    <section id="contact" class="py-20 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Contact Us</h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-2xl font-bold mb-6">Get in Touch</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <i class="fas fa-map-marker-alt text-blue-600 mt-1 mr-4"></i>
-                            <div>
-                                <h4 class="font-bold">Address</h4>
-                                <p>{{ isset($companyInfo->address) ? $companyInfo->address : '123 Business Street, City, Country' }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-phone text-blue-600 mt-1 mr-4"></i>
-                            <div>
-                                <h4 class="font-bold">Phone</h4>
-                                <p>{{ isset($companyInfo->phone) ? $companyInfo->phone : '+1 234 567 890' }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-envelope text-blue-600 mt-1 mr-4"></i>
-                            <div>
-                                <h4 class="font-bold">Email</h4>
-                                <p>{{ isset($companyInfo->email) ? $companyInfo->email : 'info@company.com' }}</p>
-                            </div>
-                        </div>
-                    </div>
+    <section id="contact" class="py-24 bg-[#FFE08F]">
 
-                    <div class="mt-8">
-                        <h4 class="font-bold mb-4">Follow Us</h4>
-                        <div class="flex space-x-4">
-                            @if (isset($companyInfo->instagram))
-                                <a href="{{ $companyInfo->instagram }}" class="text-blue-600 hover:text-blue-800"><i
-                                        class="fab fa-instagram fa-2x"></i></a>
-                            @endif
-                            @if (isset($companyInfo->facebook))
-                                <a href="{{ $companyInfo->facebook }}" class="text-blue-600 hover:text-blue-800"><i
-                                        class="fab fa-facebook fa-2x"></i></a>
-                            @endif
-                            @if (isset($companyInfo->youtube))
-                                <a href="{{ $companyInfo->youtube }}" class="text-blue-600 hover:text-blue-800"><i
-                                        class="fab fa-youtube fa-2x"></i></a>
-                            @endif
-                        </div>
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Let's Connect</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                    Contact Us
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">We'd love to hear from you. Get in touch with us today!
+                </p>
+            </div>
+
+            <!-- Contact Information Cards -->
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+                <!-- Address Card -->
+                <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"
+                    class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl group"
+                    style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                    <div class="w-16 h-16 bg-[#060771] rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                        style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <i class="fas fa-map-marker-alt text-white text-2xl"></i>
                     </div>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Our Address</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        {{ isset($companyInfo->address) ? $companyInfo->address : '123 Business Street, City, Country' }}
+                    </p>
                 </div>
 
-                <div>
-                    <h3 class="text-2xl font-bold mb-6">Send us a Message</h3>
-                    <form class="space-y-4">
-                        <div>
-                            <input type="text" placeholder="Your Name"
-                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        </div>
-                        <div>
-                            <input type="email" placeholder="Your Email"
-                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        </div>
-                        <div>
-                            <input type="text" placeholder="Subject"
-                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        </div>
-                        <div>
-                            <textarea placeholder="Your Message" rows="5"
-                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
-                        </div>
-                        <button type="submit"
-                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">Send
-                            Message</button>
-                    </form>
+                <!-- Phone Card -->
+                <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000"
+                    class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl group"
+                    style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                    <div class="w-16 h-16 bg-[#25D366] rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                        style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <i class="fas fa-phone text-white text-2xl"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Phone Number</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        {{ isset($companyInfo->phone) ? $companyInfo->phone : '+1 234 567 890' }}
+                    </p>
+                </div>
+
+                <!-- Email Card -->
+                <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000"
+                    class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl group"
+                    style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                    <div class="w-16 h-16 bg-[#060771] rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                        style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <i class="fas fa-envelope text-white text-2xl"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Email Address</h4>
+                    <p class="text-gray-600 leading-relaxed break-all">
+                        {{ isset($companyInfo->email) ? $companyInfo->email : 'info@company.com' }}
+                    </p>
+
                 </div>
             </div>
 
-            <div class="mt-16">
-                <h3 class="text-2xl font-bold text-center mb-6">Our Location</h3>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Social Media Section -->
+            <div class="text-center mb-20" data-aos="fade-up" data-aos-duration="1000">
+                <h3 class="text-2xl font-bold mb-6 text-[#060771]">Follow Us on Social Media</h3>
+                <div class="flex justify-center gap-6 flex-wrap">
+                    @if (isset($companyInfo->instagram))
+                        <a href="{{ $companyInfo->instagram }}" target="_blank" data-aos="zoom-in" data-aos-delay="100"
+                            class="group flex flex-col items-center">
+                            <div
+                                class="w-16 h-16 bg-[#FF6C0C] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-pink-500/50 mb-2">
+                                <i class="fab fa-instagram text-2xl"></i>
+                            </div>
+                            <span
+                                class="text-sm text-gray-600 group-hover:text-pink-600 transition-colors">Instagram</span>
+                        </a>
+                    @endif
+                    @if (isset($companyInfo->facebook))
+                        <a href="{{ $companyInfo->facebook }}" target="_blank" data-aos="zoom-in" data-aos-delay="200"
+                            class="group flex flex-col items-center">
+                            <div
+                                class="w-16 h-16 bg-[#060771] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 mb-2">
+                                <i class="fab fa-facebook text-2xl"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 group-hover:text-blue-600 transition-colors">Facebook</span>
+                        </a>
+                    @endif
+                    @if (isset($companyInfo->youtube))
+                        <a href="{{ $companyInfo->youtube }}" target="_blank" data-aos="zoom-in" data-aos-delay="300"
+                            class="group flex flex-col items-center">
+                            <div
+                                class="w-16 h-16 bg-[#BF1A1A] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-red-500/50 mb-2">
+                                <i class="fab fa-youtube text-2xl"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 group-hover:text-red-600 transition-colors">YouTube</span>
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Google Maps -->
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#060771]">Find Us Here</h3>
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
                     @if (isset($companyInfo->google_map_embed_link))
-                        {!! $companyInfo->google_map_embed_link !!}
+                        <div class="w-full relative" style="aspect-ratio: 2.4/1;">
+                            <div class="absolute inset-0">
+                                {!! str_replace(
+                                    ['<iframe', 'iframe>'],
+                                    ['<iframe class="w-full h-full border-0"', 'iframe>'],
+                                    $companyInfo->google_map_embed_link,
+                                ) !!}
+                            </div>
+                        </div>
                     @else
-                        <div
-                            class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96 flex items-center justify-center">
-                            <span class="text-gray-500">Google Map Embed</span>
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed border-gray-300 rounded-3xl w-full flex items-center justify-center"
+                            style="aspect-ratio: 2.4/1;">
+                            <div class="text-center">
+                                <i class="fas fa-map-marked-alt text-6xl text-gray-400 mb-4"></i>
+                                <span class="text-gray-500 text-lg font-semibold">Google Map Embed</span>
+                            </div>
                         </div>
                     @endif
                 </div>

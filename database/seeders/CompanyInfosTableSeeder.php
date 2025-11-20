@@ -16,7 +16,7 @@ class CompanyInfosTableSeeder extends Seeder
             'email' => 'info@asiatigautama.com',
             'phone' => '+62 21 1234 5678',
             'address' => 'Jl. Jenderal Sudirman No. 123, Jakarta, Indonesia',
-            'google_map_embed_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.277413418123!2d106.82993031476892!3d-6.229759995479412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3a6c0c0c0c1%3A0x1234567890abcdef!2sJakarta!5e0!3m2!1sen!2sid!4v1234567890123!5m2!1sen!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+            'google_map_embed_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3586.699412551947!2d106.84092539999999!3d-6.5931234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c7003160f711%3A0x242c9eeea78cfbe4!2sBENGKEL%20GULUNG%20DINAMO%20ASIA%20TIGA%20UTAMA%20-%20SINAR%20SELATAN!5e1!3m2!1sid!2sid!4v1763565408627!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
             'instagram' => 'https://instagram.com/asiatigautama',
             'facebook' => 'https://facebook.com/asiatigautama',
             'youtube' => 'https://youtube.com/asiatigautama',

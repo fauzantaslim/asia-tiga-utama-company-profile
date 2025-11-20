@@ -25,6 +25,7 @@ class HeroForm
                 SpatieMediaLibraryFileUpload::make('background_image')
                     ->collection('background_image')
                     ->image()
+                    ->multiple()
                     ->required(),
             ]);
     }
