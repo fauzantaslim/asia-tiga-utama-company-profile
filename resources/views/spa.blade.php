@@ -14,7 +14,7 @@
 
 @section('content')
     <!-- Hero Section with Parallax & Gradient -->
-    <section id="hero" class="relative py-32 overflow-hidden bg-[#BF1A1A]" x-data="{ visible: true }">
+    <section id="hero" class="relative h-screen overflow-hidden bg-[#BF1A1A]" x-data="{ visible: true }">
         <!-- Swiper Background -->
         <div class="hero-background-swiper absolute inset-0 z-0">
             <div class="swiper-wrapper">
@@ -29,9 +29,7 @@
                                 <div class="swiper-slide">
                                     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
                                         style="background-image: url('{{ $image->getUrl() }}');">
-                                        <div
-                                            class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
-                                        </div>
+
                                     </div>
                                 </div>
                             @endforeach
@@ -70,21 +68,14 @@
                     </div>
                 @endif
             </div>
-            <!-- Add Swiper Navigation -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
             <!-- Add Swiper Pagination -->
             <div class="swiper-pagination"></div>
         </div>
 
-        <!-- Animated Background Circles -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl animate-pulse"
-                style="animation-delay: 1s;"></div>
-        </div>
 
-        <div class="container mx-auto px-4 text-center relative z-10">
+
+
+        <div class="container mx-auto px-4 text-center relative z-10 h-full flex flex-col justify-center">
             <div data-aos="fade-down" data-aos-duration="1000">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
                     {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->title) ? $hero->first()->title : 'Welcome to Our Company' }}
