@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /filament/
+Disallow: /vendor/
+
+Sitemap: http://localhost:8000/sitemap.xml

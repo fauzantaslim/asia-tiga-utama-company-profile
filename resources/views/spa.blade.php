@@ -1,15 +1,9 @@
 @extends('layouts.app')
 
 @section('title', isset($companyInfo->meta_title) ? $companyInfo->meta_title : 'Company Profile')
-@section('description',
-    isset($companyInfo->meta_description)
-    ? $companyInfo->meta_description
-    : 'Company Profile resmi
-    kami')
-@section('keywords',
-    isset($companyInfo->meta_keywords)
-    ? $companyInfo->meta_keywords
-    : 'company profile, jasa,
+@section('description', isset($companyInfo->meta_description) ? $companyInfo->meta_description : 'Profil Perusahaan
+    resmi kami')
+@section('keywords', isset($companyInfo->meta_keywords) ? $companyInfo->meta_keywords : 'profil perusahaan, jasa,
     layanan')
 
 @section('content')
@@ -110,13 +104,18 @@
             <!-- About Section -->
             <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
                 <div data-aos="fade-right" data-aos-duration="1000">
-                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Who We Are</span>
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Siapa Kami</span>
                     <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
-                        About Us
+                        Tentang Kami
                     </h2>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
-                        {{ isset($about->description) ? $about->description : 'We are a professional company dedicated to providing quality services to our clients. With years of experience in the industry, we have built a strong reputation for excellence and customer satisfaction.' }}
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6 line-clamp-3">
+                        {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
                     </p>
+                    <a href="{{ route('about') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2 mb-6">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
 
                     <!-- Stats Counter with Alpine.js -->
                     <div class="grid grid-cols-3 gap-6 mt-8" x-data="{
@@ -199,9 +198,9 @@
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-3xl font-bold mb-4 text-white">Our Vision</h3>
+                        <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
                         <p class="text-white/90 text-lg leading-relaxed">
-                            {{ isset($about->vision) ? $about->vision : 'To be the leading company in our industry, recognized for innovation, quality, and customer satisfaction.' }}
+                            {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
                         </p>
                     </div>
                 </div>
@@ -213,9 +212,9 @@
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-3xl font-bold mb-4 text-white">Our Mission</h3>
+                        <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
                         <p class="text-white/90 text-lg leading-relaxed">
-                            {{ isset($about->mission) ? $about->mission : 'To deliver exceptional services that exceed our clients expectations while maintaining the highest standards of integrity and professionalism.' }}
+                            {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
                         </p>
                     </div>
                 </div>
@@ -228,11 +227,12 @@
 
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">What We Offer</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami Tawarkan</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Our Services
+                    Layanan Kami
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Comprehensive solutions tailored to your business needs
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Solusi komprehensif yang disesuaikan dengan kebutuhan
+                    bisnis Anda
                 </p>
             </div>
 
@@ -273,9 +273,17 @@
                 @empty
                     <div class="col-span-3 text-center py-12" data-aos="fade-up">
                         <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No services available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada layanan yang tersedia saat ini.</p>
                     </div>
                 @endforelse
+            </div>
+            <!-- View All Services Button -->
+            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ route('services') }}"
+                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                    <span>Lihat Semua Layanan</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -284,11 +292,12 @@
     <section id="portfolio" class="py-24 bg-white" x-data="{ selectedImage: null }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Our Work</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Our Portfolio
+                    Portofolio Kami
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Showcasing our finest projects and achievements</p>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menampilkan proyek-proyek terbaik dan pencapaian kami
+                </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -310,12 +319,12 @@
                                 <button class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold"
                                     style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                     :style="show ? 'transform: translateY(0)' : 'transform: translateY(16px)'">
-                                    <i class="fas fa-search-plus mr-2"></i>View Details
+                                    <i class="fas fa-search-plus mr-2"></i>Lihat Detail
                                 </button>
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-gray-800"
+                            <h3 class="text-xl font-bold mb-2 text-[#060771]"
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $portfolio->title }}</h3>
                             <p class="text-gray-600 leading-relaxed">{{ Str::limit($portfolio->description, 100) }}</p>
@@ -324,9 +333,17 @@
                 @empty
                     <div class="col-span-3 text-center py-12" data-aos="fade-up">
                         <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No portfolio items available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada item portofolio yang tersedia saat ini.</p>
                     </div>
                 @endforelse
+            </div>
+            <!-- View All Portfolio Button -->
+            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ route('portfolio') }}"
+                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                    <span>Lihat Semua Portofolio</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
 
@@ -347,11 +364,12 @@
     <section id="gallery" class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Visual Stories</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Cerita Visual</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 bg-[#060771] bg-clip-text text-transparent">
-                    Gallery
+                    Galeri
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Capturing moments that define our journey</p>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menangkap momen-momen yang mendefinisikan perjalanan
+                    kami</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -386,9 +404,17 @@
                 @empty
                     <div class="col-span-4 text-center py-12" data-aos="fade-up">
                         <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No gallery images available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada gambar galeri yang tersedia saat ini.</p>
                     </div>
                 @endforelse
+            </div>
+            <!-- View All Gallery Button -->
+            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ route('gallery') }}"
+                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                    <span>Lihat Semua Galeri</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
 
@@ -413,11 +439,12 @@
 
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Insights & Updates</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Wawasan & Update</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Latest Blog Posts
+                    Postingan Blog Terbaru
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Stay updated with our latest news and insights</p>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan berita dan wawasan terbaru kami
+                </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -433,7 +460,7 @@
                             <!-- Date Badge -->
                             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
                                 style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                <span class="text-sm font-bold text-blue-600">
+                                <span class="text-sm font-bold text-[#060771]">
                                     <i class="far fa-calendar-alt mr-1"></i>
                                     {{ $post->created_at->format('M d, Y') }}
                                 </span>
@@ -441,7 +468,7 @@
                         </div>
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-gray-800 line-clamp-2"
+                            <h3 class="text-xl font-bold mb-3 text-[#060771] line-clamp-2"
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $post->title }}
                             </h3>
@@ -452,7 +479,7 @@
                             <a href="{{ route('blog.detail', $post->slug) }}"
                                 class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
                                 style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                Read More
+                                Baca Selengkapnya
                                 <i class="fas fa-arrow-right"
                                     style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
                             </a>
@@ -461,7 +488,7 @@
                 @empty
                     <div class="col-span-3 text-center py-12" data-aos="fade-up">
                         <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No blog posts available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada postingan blog yang tersedia saat ini.</p>
                     </div>
                 @endforelse
             </div>
@@ -470,7 +497,7 @@
             <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
                 <a href="{{ route('blog.index') }}"
                     class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                    <span>View All Blog Posts</span>
+                    <span>Lihat Semua Postingan Blog</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
@@ -482,11 +509,11 @@
 
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Let's Connect</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Mari Terhubung</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Contact Us
+                    Hubungi Kami
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">We'd love to hear from you. Get in touch with us today!
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Kami ingin mendengar dari Anda. Hubungi kami hari ini!
                 </p>
             </div>
 
@@ -500,7 +527,7 @@
                         style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
                         <i class="fas fa-map-marker-alt text-white text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Our Address</h4>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Alamat Kami</h4>
                     <p class="text-gray-600 leading-relaxed">
                         {{ isset($companyInfo->address) ? $companyInfo->address : '123 Business Street, City, Country' }}
                     </p>
@@ -514,7 +541,7 @@
                         style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
                         <i class="fas fa-phone text-white text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Phone Number</h4>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Nomor Telepon</h4>
                     <p class="text-gray-600 leading-relaxed">
                         {{ isset($companyInfo->phone) ? $companyInfo->phone : '+1 234 567 890' }}
                     </p>
@@ -528,7 +555,7 @@
                         style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
                         <i class="fas fa-envelope text-white text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Email Address</h4>
+                    <h4 class="font-bold text-xl mb-3 text-[#060771]">Alamat Email</h4>
                     <p class="text-gray-600 leading-relaxed break-all">
                         {{ isset($companyInfo->email) ? $companyInfo->email : 'info@company.com' }}
                     </p>
@@ -538,24 +565,24 @@
 
             <!-- Social Media Section -->
             <div class="text-center mb-20" data-aos="fade-up" data-aos-duration="1000">
-                <h3 class="text-2xl font-bold mb-6 text-[#060771]">Follow Us on Social Media</h3>
+                <h3 class="text-2xl font-bold mb-6 text-[#060771]">Ikuti Kami di Media Sosial</h3>
                 <div class="flex justify-center gap-6 flex-wrap">
                     @if (isset($companyInfo->instagram))
                         <a href="{{ $companyInfo->instagram }}" target="_blank" data-aos="zoom-in" data-aos-delay="100"
                             class="group flex flex-col items-center">
                             <div
-                                class="w-16 h-16 bg-[#FF6C0C] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-pink-500/50 mb-2">
+                                class="w-16 h-16 bg-[#FF6C0C] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-[#FF6C0C] mb-2">
                                 <i class="fab fa-instagram text-2xl"></i>
                             </div>
                             <span
-                                class="text-sm text-gray-600 group-hover:text-pink-600 transition-colors">Instagram</span>
+                                class="text-sm text-gray-600 group-hover:text-[#FF6C0C] transition-colors">Instagram</span>
                         </a>
                     @endif
                     @if (isset($companyInfo->facebook))
                         <a href="{{ $companyInfo->facebook }}" target="_blank" data-aos="zoom-in" data-aos-delay="200"
                             class="group flex flex-col items-center">
                             <div
-                                class="w-16 h-16 bg-[#060771] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 mb-2">
+                                class="w-16 h-16 bg-[#060771] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-[#060771] mb-2">
                                 <i class="fab fa-facebook text-2xl"></i>
                             </div>
                             <span class="text-sm text-gray-600 group-hover:text-blue-600 transition-colors">Facebook</span>
@@ -565,10 +592,10 @@
                         <a href="{{ $companyInfo->youtube }}" target="_blank" data-aos="zoom-in" data-aos-delay="300"
                             class="group flex flex-col items-center">
                             <div
-                                class="w-16 h-16 bg-[#BF1A1A] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-red-500/50 mb-2">
+                                class="w-16 h-16 bg-[#BF1A1A] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-[#BF1A1A] mb-2">
                                 <i class="fab fa-youtube text-2xl"></i>
                             </div>
-                            <span class="text-sm text-gray-600 group-hover:text-red-600 transition-colors">YouTube</span>
+                            <span class="text-sm text-gray-600 group-hover:text-[#BF1A1A] transition-colors">YouTube</span>
                         </a>
                     @endif
                 </div>
@@ -576,7 +603,7 @@
 
             <!-- Google Maps -->
             <div data-aos="fade-up" data-aos-duration="1000">
-                <h3 class="text-3xl font-bold text-center mb-8 text-[#060771]">Find Us Here</h3>
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#060771]">Temukan Kami Di Sini</h3>
                 <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
                     @if (isset($companyInfo->google_map_embed_link))
                         <div class="w-full relative" style="aspect-ratio: 2.4/1;">

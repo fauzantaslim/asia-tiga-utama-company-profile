@@ -21,9 +21,9 @@ class CompanyInfosTableSeeder extends Seeder
             'facebook' => 'https://facebook.com/asiatigautama',
             'youtube' => 'https://youtube.com/asiatigautama',
             'website_name' => 'Asia Tiga Utama',
-            'meta_title' => 'Asia Tiga Utama - Professional Business Services',
-            'meta_description' => 'Asia Tiga Utama provides professional business services including consulting, development, and support to help your business grow.',
-            'meta_keywords' => 'business, consulting, development, support, asia tiga utama',
+            'meta_title' => 'Spesialis Service Dinamo, Rewinding & Perbaikan Mesin Industri | CV.Asia Tiga Utama',
+            'meta_description' => 'Ahli perbaikan & rewinding Electro Motor AC/DC, Generator, Trafo, Submersible Pump, & Chiller. Layanan service dinamo industri cepat, presisi & bergaransi.',
+            'meta_keywords' => 'jasa service dinamo, rewinding electro motor, service generator, perbaikan trafo, service submersible pump, service chiller, bengkel dinamo industri, gulung dinamo, Asia Tiga Utama',
         ]);
 
         // You can add media later via Filament admin panel

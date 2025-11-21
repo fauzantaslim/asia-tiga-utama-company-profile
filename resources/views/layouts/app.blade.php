@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Company Profile')</title>
-    <meta name="description" content="@yield('description', 'Company Profile resmi kami')">
-    <meta name="keywords" content="@yield('keywords', 'company profile, jasa, layanan')">
+    <title>@yield('title', 'Profil Perusahaan')</title>
+    <meta name="description" content="@yield('description', 'Profil resmi perusahaan kami')">
+    <meta name="keywords" content="@yield('keywords', 'profil perusahaan, jasa, layanan')">
 
     @yield('meta')
-    {!! SEO::opengraph()->generate() !!}
-    {!! SEO::twitter()->generate() !!}
-    {!! SEO::jsonLd()->generate() !!}
+    {!! SEO::generate() !!}
+    <meta property="og:image" content="@yield('og-image', 'https://via.placeholder.com/1200x630.png')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
@@ -163,7 +162,7 @@
 <body class="font-sans text-gray-800 bg-[#FFE08F]">
 
     {{-- GLASSMORPHISM NAVBAR --}}
-    <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter">
+    <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex items-center justify-between h-24">
 
@@ -173,7 +172,7 @@
                         <div
                             class="logo-icon w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
                             <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}"
-                                alt="{{ $companyInfo->website_name ?? 'Company Logo' }}"
+                                alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
                                 class="w-full h-full object-contain">
                         </div>
                     @else
@@ -184,23 +183,31 @@
                     @endif
                     <div class="sm:block">
                         <h1 class="text-xl font-bold text-[#BF1A1A]">
-                            {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'YourCompany' }}
+                            CV.
+                            {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan Anda' }}
                         </h1>
                         <p class="text-xs text-gray-500">
-                            {{ isset($companyInfo) ? 'Solusi profesional untuk kebutuhan bisnis Anda' : 'Professional Solutions' }}
+                            {{ isset($companyInfo) ? 'Spesialis Dinamo, Rewinding, & Perbaikan Mesin Industri' : 'Solusi Profesional' }}
                         </p>
                     </div>
                 </a>
 
                 {{-- CENTER: Navigation Menu --}}
                 <nav class="hidden lg:flex items-center gap-8">
-                    <a href="#hero" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Home</a>
-                    <a href="#about" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">About</a>
-                    <a href="#services" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Services</a>
-                    <a href="#portfolio" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Portfolio</a>
-                    <a href="#gallery" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Gallery</a>
-                    <a href="#blog" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Blog</a>
-                    <a href="#contact" class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Contact</a>
+                    <a href="{{ route('home') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Beranda</a>
+                    <a href="{{ route('about') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Tentang</a>
+                    <a href="{{ route('services') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Layanan</a>
+                    <a href="{{ route('portfolio') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Portofolio</a>
+                    <a href="{{ route('gallery') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Galeri</a>
+                    <a href="{{ route('blog.index') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Blog</a>
+                    <a href="{{ route('contact') }}"
+                        class="nav-link text-gray-700 hover:text-[#BF1A1A] font-medium">Kontak</a>
                 </nav>
 
                 {{-- RIGHT: WhatsApp Button --}}
@@ -214,13 +221,14 @@
                 </div>
 
                 {{-- Mobile Menu Button --}}
-                <button id="menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 focus:outline-none transition">
-                    <svg id="menu-icon" class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor"
+                <button @click="mobileMenuOpen = !mobileMenuOpen"
+                    class="lg:hidden p-2 rounded-lg hover:bg-gray-100 focus:outline-none transition">
+                    <svg x-show="!mobileMenuOpen" class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-                    <svg id="close-icon" class="w-6 h-6 text-gray-700 hidden" fill="none" stroke="currentColor"
+                    <svg x-show="mobileMenuOpen" class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
@@ -229,15 +237,22 @@
             </div>
 
             {{-- Mobile Menu Dropdown --}}
-            <div id="mobile-menu" class="lg:hidden hidden pb-4">
+            <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="lg:hidden pb-4">
                 <div class="mobile-menu-glass mt-2 p-4 space-y-1">
-                    <a href="#hero" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Home</a>
-                    <a href="#about" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">About</a>
-                    <a href="#services" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Services</a>
-                    <a href="#portfolio" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Portfolio</a>
-                    <a href="#gallery" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Gallery</a>
-                    <a href="#blog" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Blog</a>
-                    <a href="#contact" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition">Contact</a>
+                    <a href="{{ route('home') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Beranda</a>
+                    <a href="{{ route('about') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Tentang</a>
+                    <a href="{{ route('services') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Layanan</a>
+                    <a href="{{ route('portfolio') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Portofolio</a>
+                    <a href="{{ route('gallery') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Galeri</a>
+                    <a href="{{ route('blog.index') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Blog</a>
+                    <a href="{{ route('contact') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                        @click="mobileMenuOpen = false">Kontak</a>
 
                     {{-- WhatsApp Button for Mobile --}}
                     <a href="{{ isset($companyInfo) && $companyInfo->phone ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $companyInfo->phone) : 'https://wa.me/6281234567890' }}"
@@ -259,26 +274,85 @@
     {{-- FOOTER --}}
     <footer class="bg-[#060771] text-gray-300 py-10 mt-20">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-6">
+            <div class="grid md:grid-cols-4 gap-6">
                 <div>
-                    <h4 class="font-semibold text-white">Company</h4>
-                    <p class="text-sm mt-3">
-                        Solusi profesional untuk kebutuhan bisnis Anda.
+                    <div class="flex items-center gap-3 mb-4">
+                        @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
+                                <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}"
+                                    alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
+                                    class="w-full h-full object-contain">
+                            </div>
+                        @else
+                            <div class="w-12 h-12 bg-[#BF1A1A] rounded-xl flex items-center justify-center">
+                                <i class="fas fa-rocket text-white text-xl"></i>
+                            </div>
+                        @endif
+                        <h4 class="font-semibold text-white text-xl">
+                            {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}
+                        </h4>
+                    </div>
+                    <p class="text-sm mt-3 text-justify">
+                        Sebagai mitra ahli dalam general repairing mesin industri, kami menyediakan solusi teknis
+                        menyeluruh mulai dari gulung ulang (rewinding) Electro Motor AC/DC dan Generator, hingga
+                        perbaikan sistem mekanikal pada Transformator, Submersible Pump, serta Compressor Chiller.
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="font-semibold text-white">Navigation</h4>
+                    <h4 class="font-semibold text-white">Kontak</h4>
                     <ul class="text-sm mt-3 space-y-2">
-                        <li><a href="#hero" class="hover:text-white">Home</a></li>
-                        <li><a href="#about" class="hover:text-white">About</a></li>
-                        <li><a href="#services" class="hover:text-white">Services</a></li>
-                        <li><a href="#contact" class="hover:text-white">Contact</a></li>
+                        @if (isset($companyInfo))
+                            @if ($companyInfo->address)
+                                <li class="flex items-start">
+                                    <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                                    <span>{{ $companyInfo->address }}</span>
+                                </li>
+                            @endif
+                            @if ($companyInfo->phone)
+                                <li class="flex items-center">
+                                    <i class="fas fa-phone mr-2"></i>
+                                    <span>{{ $companyInfo->phone }}</span>
+                                </li>
+                            @endif
+                            @if ($companyInfo->email)
+                                <li class="flex items-center">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <span>{{ $companyInfo->email }}</span>
+                                </li>
+                            @endif
+                        @else
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                                <span>123 Business Street, City, Country</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-phone mr-2"></i>
+                                <span>+1 234 567 890</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                <span>info@company.com</span>
+                            </li>
+                        @endif
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-semibold text-white">Follow Us</h4>
+                    <h4 class="font-semibold text-white">Navigasi</h4>
+                    <ul class="text-sm mt-3 space-y-2">
+                        <li><a href="{{ route('home') }}" class="hover:text-white">Beranda</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-white">Tentang</a></li>
+                        <li><a href="{{ route('services') }}" class="hover:text-white">Layanan</a></li>
+                        <li><a href="{{ route('portfolio') }}" class="hover:text-white">Portofolio</a></li>
+                        <li><a href="{{ route('gallery') }}" class="hover:text-white">Galeri</a></li>
+                        <li><a href="{{ route('blog.index') }}" class="hover:text-white">Blog</a></li>
+                        <li><a href="{{ route('contact') }}" class="hover:text-white">Kontak</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-white">Ikuti Kami</h4>
                     <div class="flex gap-4 mt-3">
                         @if (isset($companyInfo))
                             @if ($companyInfo->instagram)
@@ -304,8 +378,9 @@
 
             <div class="text-center text-sm mt-10 border-t border-gray-700 pt-6">
                 © {{ date('Y') }}
-                {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Company' }}. All
-                rights reserved.
+                {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}.
+                Hak
+                Cipta Dilindungi.
             </div>
         </div>
     </footer>
@@ -313,50 +388,5 @@
     @stack('scripts')
 
     <script>
-        // Toggle mobile menu with animation
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        const closeIcon = document.getElementById('close-icon');
-
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking nav links
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-            });
-        });
-
         // Add active state to nav links based on scroll
         const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-[#BF1A1A]');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-[#BF1A1A]');
-                }
-            });
-        });
-    </script>
-</body>
-
-</html>

@@ -12,24 +12,39 @@ class BlogPostsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        // Artikel 1: Edukasi Masalah (Problem Solving)
+        // Target Keyword: Penyebab dinamo terbakar, Overheating electro motor
         BlogPost::create([
-            'title' => 'The Future of Digital Transformation',
-            'slug' => 'the-future-of-digital-transformation',
-            'content' => '<p>Digital transformation is reshaping industries across the globe. In this article, we explore the key trends and technologies that are driving this change and how businesses can adapt to stay competitive.</p><p>From artificial intelligence to cloud computing, companies are leveraging new technologies to improve efficiency, enhance customer experiences, and create innovative products and services.</p>',
+            'title'   => '5 Penyebab Utama Dinamo Electro Motor Cepat Panas dan Terbakar',
+            'slug'    => 'penyebab-utama-dinamo-electro-motor-panas-terbakar',
+            'content' => '
+            <p>Kerusakan pada electro motor seringkali menjadi mimpi buruk bagi operasional pabrik. Namun, tahukah Anda bahwa sebagian besar kasus "dinamo jebol" sebenarnya bisa dicegah? Dalam investigasi teknis ini, kami mengulas penyebab paling umum kegagalan motor induksi.</p>
+            <p>Mulai dari masalah <em>Single Phasing</em>, ventilasi yang buruk, hingga <em>Overloading</em> yang memaksakan kinerja mesin. Kami juga membahas mengapa kualitas kawat tembaga dan isolasi (varnish) saat proses <em>rewinding</em> sangat menentukan umur pakai dinamo Anda ke depannya.</p>
+        ',
             'is_published' => true,
         ]);
 
+        // Artikel 2: Analisis Keputusan (Cost-Benefit Analysis)
+        // Target Keyword: Jasa rewinding vs beli baru, efisiensi biaya industri
         BlogPost::create([
-            'title' => 'Best Practices for Remote Team Management',
-            'slug' => 'best-practices-for-remote-team-management',
-            'content' => '<p>Managing remote teams presents unique challenges and opportunities. In this guide, we share proven strategies for maintaining productivity, fostering collaboration, and building a strong company culture in a distributed work environment.</p><p>From communication tools to performance metrics, we cover the essential elements of successful remote team management.</p>',
+            'title'   => 'Rewinding vs Beli Baru: Solusi Mana yang Lebih Menguntungkan Industri?',
+            'slug'    => 'rewinding-vs-beli-baru-solusi-menguntungkan-industri',
+            'content' => '
+            <p>Saat Generator atau Submersible Pump mengalami kerusakan fatal, manajer teknik sering dihadapkan pada dilema: Melakukan <em>rewinding</em> (gulung ulang) atau investasi membeli unit baru? Jawabannya tidak selalu sederhana.</p>
+            <p>Artikel ini membedah hitungan ekonomis dan teknisnya. Faktanya, proses <em>rewinding</em> yang dilakukan oleh spesialis profesional dapat mengembalikan efisiensi mesin hingga 98% dari kondisi pabrikan dengan biaya yang jauh lebih rendah. Simak analisis lengkap mengenai kapan Anda harus memperbaiki dan kapan saatnya mengganti unit.</p>
+        ',
             'is_published' => true,
         ]);
 
+        // Artikel 3: Tips Perawatan (Maintenance Guide)
+        // Target Keyword: Perawatan generator, maintenance trafo, preventive maintenance
         BlogPost::create([
-            'title' => 'Cybersecurity in the Modern Workplace',
-            'slug' => 'cybersecurity-in-the-modern-workplace',
-            'content' => '<p>As cyber threats continue to evolve, organizations must prioritize cybersecurity to protect their data and reputation. This article examines the latest security challenges and provides actionable recommendations for strengthening your defenses.</p><p>From employee training to advanced threat detection, we explore the multi-layered approach required for comprehensive cybersecurity.</p>',
+            'title'   => 'Tips Vital Perawatan Generator dan Transformator untuk Mencegah Downtime',
+            'slug'    => 'tips-perawatan-generator-dan-transformator-mencegah-downtime',
+            'content' => '
+            <p>Generator (Genset) dan Transformator adalah jantung kelistrikan pabrik. Kegagalan pada komponen ini berarti terhentinya seluruh lini produksi. Jangan menunggu hingga meledak atau mati total.</p>
+            <p>Kami merangkum prosedur <em>Preventive Maintenance</em> terbaik, mulai dari pengecekan vibrasi, analisis oli pada trafo, hingga pengukuran resistansi isolasi secara berkala. Pelajari bagaimana jadwal servis rutin dapat menyelamatkan perusahaan Anda dari kerugian miliaran rupiah akibat <em>unscheduled downtime</em>.</p>
+        ',
             'is_published' => true,
         ]);
 

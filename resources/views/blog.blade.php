@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Blog - Company Profile')
-@section('description', 'Stay updated with our latest news and insights')
-@section('keywords', 'blog, news, company updates, insights')
+@section('title', 'Blog - Profil Perusahaan')
+@section('description', 'Tetap terupdate dengan berita dan wawasan terbaru kami')
+@section('keywords', 'blog, berita, update perusahaan, wawasan')
 
 @section('content')
     <!-- Blog Header Section -->
@@ -16,13 +16,13 @@
         <div class="container mx-auto px-4 text-center relative z-10">
             <div data-aos="fade-down" data-aos-duration="1000">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
-                    Our Blog
+                    Blog Kami
                 </h1>
             </div>
 
             <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
                 <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
-                    Stay updated with our latest news, insights, and industry trends
+                    Tetap terupdate dengan berita terbaru, wawasan, dan tren industri kami
                 </p>
             </div>
         </div>
@@ -32,11 +32,11 @@
     <section class="py-24 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Latest Updates</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Update Terbaru</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Blog Posts
+                    Postingan Blog
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Discover our thoughts, news, and industry insights</p>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Temukan pemikiran, berita, dan wawasan industri kami</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -52,7 +52,7 @@
                             <!-- Date Badge -->
                             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
                                 style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                <span class="text-sm font-bold text-blue-600">
+                                <span class="text-sm font-bold text-[#060771]">
                                     <i class="far fa-calendar-alt mr-1"></i>
                                     {{ $post->created_at->format('M d, Y') }}
                                 </span>
@@ -71,7 +71,7 @@
                             <a href="{{ route('blog.detail', $post->slug) }}"
                                 class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
                                 style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                Read More
+                                Baca Selengkapnya
                                 <i class="fas fa-arrow-right"
                                     style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
                             </a>
@@ -81,7 +81,7 @@
                     <div class="col-span-3 text-center py-12 bg-[#FFE08F]">
 
                         <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No blog posts available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada postingan blog yang tersedia saat ini.</p>
                     </div>
                 @endforelse
             </div>

@@ -3,6 +3,8 @@
 @section('title', $post->meta_title ?? $post->title)
 @section('description', $post->meta_description ?? Str::limit(strip_tags($post->content), 160))
 @section('keywords', $post->meta_keywords ?? 'blog, article, news')
+@section('og-image', $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() :
+    'https://via.placeholder.com/1200x630.png')
 
 @section('content')
     <!-- Blog Detail Header -->
@@ -39,7 +41,7 @@
             <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
                 <a href="{{ route('blog.index') }}"
                     class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-all duration-300">
-                    <i class="fas fa-arrow-left mr-2"></i> Back to Blog
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali ke Blog
                 </a>
             </div>
         </div>
@@ -63,7 +65,7 @@
                 <!-- Social Share -->
                 <div class="mt-12 pt-8 border-t border-gray-200" data-aos="fade-up" data-aos-delay="400"
                     data-aos-duration="1000">
-                    <h3 class="text-xl font-bold mb-4 text-[#060771]">Share this article</h3>
+                    <h3 class="text-xl font-bold mb-4 text-[#060771]">Bagikan artikel ini</h3>
                     <div class="flex space-x-4">
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
                             target="_blank"
@@ -80,7 +82,7 @@
                             class="w-12 h-12 bg-[#060771] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
                             <i class="fab fa-linkedin-in text-xl"></i>
                         </a>
-                        <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current()) }}"
+                        <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current() . ' - ' . Str::limit(strip_tags($post->content), 100)) }}"
                             target="_blank"
                             class="w-12 h-12 bg-[#25D366] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
                             <i class="fab fa-whatsapp text-xl"></i>
@@ -101,11 +103,11 @@
     <section class="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Related Articles</span>
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Artikel Terkait</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    You Might Also Like
+                    Anda Mungkin Juga Menyukai
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Explore more articles from our collection</p>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Jelajahi lebih banyak artikel dari koleksi kami</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -121,7 +123,7 @@
                             <!-- Date Badge -->
                             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
                                 style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                <span class="text-sm font-bold text-blue-600">
+                                <span class="text-sm font-bold text-[#060771]">
                                     <i class="far fa-calendar-alt mr-1"></i>
                                     {{ $relatedPost->created_at->format('M d, Y') }}
                                 </span>
@@ -140,7 +142,7 @@
                             <a href="{{ route('blog.detail', $relatedPost->slug) }}"
                                 class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
                                 style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                Read More
+                                Baca Selengkapnya
                                 <i class="fas fa-arrow-right"
                                     style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
                             </a>
@@ -150,7 +152,7 @@
                     <div class="col-span-3 text-center py-12 bg-[#FFE08F]">
 
                         <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">No related posts available at the moment.</p>
+                        <p class="text-gray-500 text-lg">Tidak ada postingan terkait yang tersedia saat ini.</p>
                     </div>
                 @endforelse
             </div>

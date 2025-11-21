@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyProfileController;
 
 Route::get('/', [CompanyProfileController::class, 'index'])->name('home');
+Route::get('/about', [CompanyProfileController::class, 'about'])->name('about');
+Route::get('/services', [CompanyProfileController::class, 'services'])->name('services');
+Route::get('/portfolio', [CompanyProfileController::class, 'portfolio'])->name('portfolio');
+Route::get('/gallery', [CompanyProfileController::class, 'gallery'])->name('gallery');
+Route::get('/contact', [CompanyProfileController::class, 'contact'])->name('contact');
 Route::get('/blog', [CompanyProfileController::class, 'blog'])->name('blog.index');
 Route::get('/blog/{slug}', [CompanyProfileController::class, 'blogDetail'])->name('blog.detail');
 
@@ -13,6 +18,21 @@ Route::get('/sitemap.xml', function () {
         ->add(\Spatie\Sitemap\Tags\Url::create(route('home'))
             ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
             ->setPriority(1.0))
+        ->add(\Spatie\Sitemap\Tags\Url::create(route('about'))
+            ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.9))
+        ->add(\Spatie\Sitemap\Tags\Url::create(route('services'))
+            ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.9))
+        ->add(\Spatie\Sitemap\Tags\Url::create(route('portfolio'))
+            ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.9))
+        ->add(\Spatie\Sitemap\Tags\Url::create(route('gallery'))
+            ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.9))
+        ->add(\Spatie\Sitemap\Tags\Url::create(route('contact'))
+            ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.9))
         ->add(\Spatie\Sitemap\Tags\Url::create(route('blog.index'))
             ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_DAILY)
             ->setPriority(0.8));
@@ -26,5 +46,5 @@ Route::get('/sitemap.xml', function () {
         );
     }
 
-    return response($sitemap->toXml(), 200)->header('Content-Type', 'application/xml');
+    return $sitemap->toResponse(request());
 });

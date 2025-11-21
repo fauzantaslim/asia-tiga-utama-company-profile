@@ -12,21 +12,31 @@ class PortfoliosTableSeeder extends Seeder
      */
     public function run(): void
     {
+        // PROJECT 1: Menunjukkan kemampuan menangani mesin Pembangkit Daya (High Value)
         Portfolio::create([
-            'title' => 'E-Commerce Platform',
-            'description' => 'A comprehensive e-commerce solution for retail businesses with inventory management and payment processing.',
+            'title'       => 'Overhaul Total Generator Stamford 500 kVA - Pabrik Tekstil',
+            'description' => 'Pengerjaan general overhaul meliputi Rewinding Stator & Rotor dengan kawat tembaga Supreme/Essex. Proses mencakup Varnish dengan metode VPI (Vacuum Pressure Impregnation) untuk ketahanan panas maksimal, serta penggantian bearing dan balancing rotor untuk menghilangkan vibrasi.',
             'is_published' => true,
         ]);
 
+        // PROJECT 2: Menunjukkan spesialisasi pada Electro Motor DC (Lebih rumit dari AC)
         Portfolio::create([
-            'title' => 'Mobile Banking App',
-            'description' => 'Secure mobile banking application with biometric authentication and real-time transaction monitoring.',
+            'title'       => 'Rewinding & Mechanical Repair Electro Motor DC 150 KW',
+            'description' => 'Perbaikan motor penggerak utama (Main Drive) mesin Rolling Mill. Layanan mencakup bubut Commutator, penggantian Carbon Brush holder, rewinding Field & Armature Coil, serta presisi alignment shaft. Unit berhasil dikembalikan ke efisiensi operasional 100%.',
             'is_published' => true,
         ]);
 
+        // PROJECT 3: Menunjukkan kemampuan menangani Pompa & Sistem Fluida
         Portfolio::create([
-            'title' => 'Enterprise Resource Planning',
-            'description' => 'Integrated ERP system for manufacturing companies to manage production, inventory, and supply chain.',
+            'title'       => 'Restorasi Submersible Pump Deep Well (Pompa Satelit) 30 HP',
+            'description' => 'Penanganan pompa yang terbakar akibat "loss phase". Melakukan gulung ulang (rewinding) dengan isolasi tahan air (waterproof insulation), penggantian Mechanical Seal set baru, dan pengecekan kebocoran housing untuk memastikan unit kedap air sepenuhnya saat diturunkan kembali.',
+            'is_published' => true,
+        ]);
+
+        // PROJECT 4 (Tambahan): Menunjukkan kemampuan pendingin industri (Chiller)
+        Portfolio::create([
+            'title'       => 'Service Kompresor Chiller Screw - Industri F&B',
+            'description' => 'Perbaikan mekanikal pada unit Compressor Screw yang macet (jammed). Meliputi penggantian bushing, repair housing screw, dan rewinding motor hermetic. Sistem pendingin kembali normal untuk menunjang produksi makanan.',
             'is_published' => true,
         ]);
 

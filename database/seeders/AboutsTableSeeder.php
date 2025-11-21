@@ -13,9 +13,14 @@ class AboutsTableSeeder extends Seeder
     public function run(): void
     {
         $about = About::create([
-            'description' => 'Asia Tiga Utama is a professional company dedicated to providing quality services to our clients. With years of experience in the industry, we have built a strong reputation for excellence and customer satisfaction.',
-            'vision' => 'To be the leading company in our industry, recognized for innovation, quality, and customer satisfaction.',
-            'mission' => 'To deliver exceptional services that exceed our clients expectations while maintaining the highest standards of integrity and professionalism.',
+            // DESCRIPTION: Menggabungkan profil perusahaan dengan daftar keahlian utama (SEO Keywords)
+            'description' => 'Asia Tiga Utama adalah mitra tepercaya dalam solusi perawatan dan perbaikan mesin industri (Industrial Repair Specialist). Kami memadukan keahlian teknis mendalam dengan standar pengerjaan tinggi untuk menangani Rewinding Electro Motor AC/DC, perbaikan Generator & Transformator, serta maintenance mekanikal pada Submersible Pump dan Compressor Chiller. Fokus kami adalah mengembalikan performa aset vital Anda ke kondisi prima demi menjaga kelancaran operasional produksi.',
+
+            // VISION: Menunjukkan ambisi menjadi pemimpin pasar (Authority)
+            'vision' => 'Menjadi perusahaan jasa service dan maintenance elektromekanikal terdepan yang menjadi rujukan utama industri nasional dalam hal kualitas pengerjaan, ketepatan waktu, dan inovasi solusi teknis.',
+
+            // MISSION: Fokus pada manfaat yang didapat klien (Client-Centric)
+            'mission' => "1. Memberikan layanan perbaikan yang presisi dan tahan lama untuk meminimalkan downtime produksi klien.\n2. Menyediakan solusi teknis menyeluruh (one-stop solution) mulai dari rewinding hingga general repairing.\n3. Menjaga standar profesionalisme dan responsivitas tinggi dalam setiap penanganan masalah mesin industri.",
         ]);
 
         // You can add media later via Filament admin panel
