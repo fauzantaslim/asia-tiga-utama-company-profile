@@ -108,7 +108,7 @@
                     <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
                         Tentang Kami
                     </h2>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-6 line-clamp-3">
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6 line-clamp-3 text-justify">
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
                     </p>
                     <a href="{{ route('about') }}"
@@ -199,7 +199,7 @@
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify">
                             {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
                         </p>
                     </div>
@@ -213,7 +213,7 @@
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify">
                             {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
                         </p>
                     </div>
@@ -231,7 +231,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
                     Layanan Kami
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Solusi komprehensif yang disesuaikan dengan kebutuhan
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto text-justify">Solusi komprehensif yang disesuaikan dengan kebutuhan
                     bisnis Anda
                 </p>
             </div>
@@ -262,7 +262,7 @@
                             <h3 class="text-2xl font-bold mb-4 text-[#060771]"
                                 style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                            <p class="leading-relaxed" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                            <p class="leading-relaxed text-justify" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
                                 {{ $service->description }}</p>
 
@@ -327,7 +327,7 @@
                             <h3 class="text-xl font-bold mb-2 text-[#060771]"
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed">{{ Str::limit($portfolio->description, 100) }}</p>
+                            <p class="text-gray-600 leading-relaxed text-justify">{{ Str::limit($portfolio->description, 100) }}</p>
                         </div>
                     </div>
                 @empty
@@ -472,7 +472,7 @@
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $post->title }}
                             </h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3 text-justify">
                                 {{ Str::limit(strip_tags($post->content), 120) }}
                             </p>
 
@@ -528,7 +528,7 @@
                         <i class="fas fa-map-marker-alt text-white text-2xl"></i>
                     </div>
                     <h4 class="font-bold text-xl mb-3 text-[#060771]">Alamat Kami</h4>
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed ">
                         {{ isset($companyInfo->address) ? $companyInfo->address : '123 Business Street, City, Country' }}
                     </p>
                 </div>

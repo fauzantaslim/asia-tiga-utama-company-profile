@@ -66,7 +66,7 @@
                             <h3 class="text-xl font-bold mb-2 text-gray-800"
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed">{{ Str::limit($portfolio->description, 100) }}</p>
+                            <p class="text-gray-600 leading-relaxed text-justify">{{ Str::limit($portfolio->description, 100) }}</p>
                         </div>
                     </div>
                 @empty

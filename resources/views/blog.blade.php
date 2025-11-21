@@ -64,7 +64,7 @@
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $post->title }}
                             </h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3 text-justify">
                                 {{ Str::limit(strip_tags($post->content), 120) }}
                             </p>
 

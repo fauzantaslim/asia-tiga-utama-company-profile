@@ -37,7 +37,7 @@
                     <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
                         Cerita Kami
                     </h2>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    <p class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
                     </p>
                 </div>
@@ -65,7 +65,7 @@
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify">
                             {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
                         </p>
                     </div>
@@ -79,7 +79,7 @@
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify">
                             {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
                         </p>
                     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\CompanyInfo;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,8 +24,16 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        // Get the company info with logo
+        $companyInfo = CompanyInfo::first();
+        $faviconUrl = asset('images/favicon.png'); // Default fallback
 
+        // If company info exists and has a logo, use it as favicon
+        if ($companyInfo && $companyInfo->getFirstMedia('logo_website')) {
+            $faviconUrl = $companyInfo->getFirstMedia('logo_website')->getUrl();
+        }
+
+        return $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -38,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
+            ->favicon($faviconUrl)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

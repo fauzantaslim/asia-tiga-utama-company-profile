@@ -66,7 +66,7 @@
                             <h3 class="text-2xl font-bold mb-4 text-[#060771]"
                                 style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                            <p class="leading-relaxed" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                            <p class="leading-relaxed text-justify" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
                                 {{ $service->description }}</p>
                         </div>

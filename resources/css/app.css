@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,6 +6,22 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+/* NProgress custom styles */
+#nprogress .bar {
+    background: #bf1a1a; /* Primary red color from your design */
+    height: 3px;
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 10px #bf1a1a, 0 0 5px #bf1a1a;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #bf1a1a;
+    border-left-color: #bf1a1a;
 }

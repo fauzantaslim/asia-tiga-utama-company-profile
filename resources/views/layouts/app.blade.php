@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-turbo="true">
 
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,13 @@
     <title>@yield('title', 'Profil Perusahaan')</title>
     <meta name="description" content="@yield('description', 'Profil resmi perusahaan kami')">
     <meta name="keywords" content="@yield('keywords', 'profil perusahaan, jasa, layanan')">
+
+    {{-- Favicon --}}
+    @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
+        <link rel="icon" type="image/x-icon" href="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}">
+    @else
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    @endif
 
     @yield('meta')
     {!! SEO::generate() !!}
