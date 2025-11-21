@@ -52,15 +52,18 @@
         <div class="container mx-auto px-4">
             <div class="max-w-8xl mx-auto">
                 <div class="mb-12 rounded-3xl overflow-hidden shadow-2xl" data-aos="fade-up" data-aos-duration="1000">
-                    <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                        alt="{{ $post->title }}" class="w-full h-auto object-cover" style="aspect-ratio: 2/1;">
+                    <picture>
+                        <source
+                            srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                            type="image/webp">
+                        <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                            alt="{{ $post->title }}" class="w-full h-auto object-cover" style="aspect-ratio: 2/1;">
+                    </picture>
                 </div>
 
                 <div class="prose prose-lg max-w-none">
-
                     {!! $post->content !!}
                 </div>
-
 
                 <!-- Social Share -->
                 <div class="mt-12 pt-8 border-t border-gray-200" data-aos="fade-up" data-aos-delay="400"
@@ -93,8 +96,6 @@
                         </a>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </section>
@@ -116,9 +117,14 @@
                         class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
                         <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <img src="{{ $relatedPost->getFirstMedia('image') ? $relatedPost->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                                alt="{{ $relatedPost->title }}" class="w-full h-full object-cover"
-                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            <picture>
+                                <source
+                                    srcset="{{ $relatedPost->getFirstMedia('image') ? $relatedPost->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                    type="image/webp">
+                                <img src="{{ $relatedPost->getFirstMedia('image') ? $relatedPost->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    alt="{{ $relatedPost->title }}" class="w-full h-full object-cover"
+                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            </picture>
 
                             <!-- Date Badge -->
                             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
@@ -150,7 +156,6 @@
                     </article>
                 @empty
                     <div class="col-span-3 text-center py-12 bg-[#FFE08F]">
-
                         <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
                         <p class="text-gray-500 text-lg">Tidak ada postingan terkait yang tersedia saat ini.</p>
                     </div>

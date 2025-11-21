@@ -38,6 +38,15 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Solusi profesional yang dirancang untuk membantu bisnis
                     Anda berkembang</p>
+
+                <!-- See all services link -->
+                <div class="mt-6">
+                    <a href="{{ route('services') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Layanan
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -66,9 +75,13 @@
                             <h3 class="text-2xl font-bold mb-4 text-[#060771]"
                                 style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                            <p class="leading-relaxed text-justify" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                            <p class="leading-relaxed text-justify line-clamp-3"
+                                style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
                                 {{ $service->description }}</p>
+
+                            <!-- Read more link -->
+
                         </div>
                     </div>
                 @empty

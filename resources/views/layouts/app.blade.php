@@ -10,7 +10,8 @@
 
     {{-- Favicon --}}
     @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
-        <link rel="icon" type="image/x-icon" href="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}">
+        <link rel="icon" type="image/x-icon"
+            href="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('webp') }}">
     @else
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
     @endif
@@ -163,6 +164,21 @@
         .swiper-pagination {
             bottom: 30px;
         }
+
+        /* Line clamp utility classes */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 
@@ -178,9 +194,13 @@
                     @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
                         <div
                             class="logo-icon w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                            <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}"
-                                alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
-                                class="w-full h-full object-contain">
+                            <picture>
+                                <source srcset="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('webp') }}"
+                                    type="image/webp">
+                                <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('thumb') }}"
+                                    alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
+                                    class="w-full h-full object-contain">
+                            </picture>
                         </div>
                     @else
                         <div
@@ -286,9 +306,13 @@
                     <div class="flex items-center gap-3 mb-4">
                         @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
-                                <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl() }}"
-                                    alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
-                                    class="w-full h-full object-contain">
+                                <picture>
+                                    <source srcset="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('webp') }}"
+                                        type="image/webp">
+                                    <img src="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('thumb') }}"
+                                        alt="{{ $companyInfo->website_name ?? 'Logo Perusahaan' }}"
+                                        class="w-full h-full object-contain">
+                                </picture>
                             </div>
                         @else
                             <div class="w-12 h-12 bg-[#BF1A1A] rounded-xl flex items-center justify-center">
@@ -299,7 +323,7 @@
                             {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}
                         </h4>
                     </div>
-                    <p class="text-sm mt-3 text-justify">
+                    <p class="text-sm mt-3 text-justify line-clamp-3">
                         Sebagai mitra ahli dalam general repairing mesin industri, kami menyediakan solusi teknis
                         menyeluruh mulai dari gulung ulang (rewinding) Electro Motor AC/DC dan Generator, hingga
                         perbaikan sistem mekanikal pada Transformator, Submersible Pump, serta Compressor Chiller.
@@ -397,3 +421,7 @@
     <script>
         // Add active state to nav links based on scroll
         const sections = document.querySelectorAll('section[id]');
+    </script>
+</body>
+
+</html>

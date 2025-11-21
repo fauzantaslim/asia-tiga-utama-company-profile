@@ -37,9 +37,15 @@
                     <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
                         Cerita Kami
                     </h2>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
+                    <div class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
-                    </p>
+                    </div>
+                    <!-- Read more link -->
+                    <a href="{{ route('about') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
 
                 <div data-aos="fade-left" data-aos-duration="1000" class="relative">
@@ -48,9 +54,14 @@
                         <div
                             class="absolute -top-6 -left-6 w-full h-full bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl -z-10">
                         </div>
-                        <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                            alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
-                            style="aspect-ratio: 1.618/1;">
+                        <picture>
+                            <source
+                                srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                type="image/webp">
+                            <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
+                                style="aspect-ratio: 1.618/1;">
+                        </picture>
                     </div>
                 </div>
             </div>

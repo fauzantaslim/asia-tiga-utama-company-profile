@@ -1,9 +1,15 @@
 @extends('layouts.app')
 
 @section('title', isset($companyInfo->meta_title) ? $companyInfo->meta_title : 'Company Profile')
-@section('description', isset($companyInfo->meta_description) ? $companyInfo->meta_description : 'Profil Perusahaan
+@section('description',
+    isset($companyInfo->meta_description)
+    ? $companyInfo->meta_description
+    : 'Profil Perusahaan
     resmi kami')
-@section('keywords', isset($companyInfo->meta_keywords) ? $companyInfo->meta_keywords : 'profil perusahaan, jasa,
+@section('keywords',
+    isset($companyInfo->meta_keywords)
+    ? $companyInfo->meta_keywords
+    : 'profil perusahaan, jasa,
     layanan')
 
 @section('content')
@@ -23,7 +29,6 @@
                                 <div class="swiper-slide">
                                     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
                                         style="background-image: url('{{ $image->getUrl() }}');">
-
                                     </div>
                                 </div>
                             @endforeach
@@ -66,9 +71,6 @@
             <div class="swiper-pagination"></div>
         </div>
 
-
-
-
         <div class="container mx-auto px-4 text-center relative z-10 h-full flex flex-col justify-center">
             <div data-aos="fade-down" data-aos-duration="1000">
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
@@ -108,9 +110,9 @@
                     <h2 class="text-4xl md:text-5xl font-bold mb-6 mt-3 text-[#060771]">
                         Tentang Kami
                     </h2>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-6 line-clamp-3 text-justify">
+                    <div class="text-gray-700 text-lg leading-relaxed mb-6 line-clamp-3 text-justify">
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
-                    </p>
+                    </div>
                     <a href="{{ route('about') }}"
                         class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2 mb-6">
                         Baca Selengkapnya
@@ -129,23 +131,23 @@
                             const duration = 2000; // 2 seconds
                             const startTime = Date.now();
                             const startValue = 0;
-
+                    
                             const animate = () => {
                                 const currentTime = Date.now();
                                 const elapsed = currentTime - startTime;
                                 const progress = Math.min(elapsed / duration, 1);
-
+                    
                                 // Easing function for smooth animation
                                 const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                                 stat.value = Math.floor(startValue + (stat.target - startValue) * easeOutQuart);
-
+                    
                                 if (progress < 1) {
                                     requestAnimationFrame(animate);
                                 } else {
                                     stat.value = stat.target;
                                 }
                             };
-
+                    
                             requestAnimationFrame(animate);
                         },
                         init() {
@@ -160,7 +162,7 @@
                                     }
                                 });
                             }, { threshold: 0.5 });
-
+                    
                             observer.observe(this.$el);
                         }
                     }">
@@ -182,9 +184,14 @@
                         <div
                             class="absolute -top-6 -left-6 w-full h-full bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl -z-10">
                         </div>
-                        <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                            alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
-                            style="aspect-ratio: 1.618/1;">
+                        <picture>
+                            <source
+                                srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                type="image/webp">
+                            <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
+                                style="aspect-ratio: 1.618/1;">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -224,16 +231,25 @@
 
     <!-- Services Section with Hover Effects -->
     <section id="services" class="py-24 bg-[#FFE08F]">
-
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami Tawarkan</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
                     Layanan Kami
                 </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto text-justify">Solusi komprehensif yang disesuaikan dengan kebutuhan
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto text-justify">Solusi komprehensif yang disesuaikan dengan
+                    kebutuhan
                     bisnis Anda
                 </p>
+
+                <!-- See all services link -->
+                <div class="mt-6">
+                    <a href="{{ route('services') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Layanan
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -262,11 +278,11 @@
                             <h3 class="text-2xl font-bold mb-4 text-[#060771]"
                                 style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                            <p class="leading-relaxed text-justify" style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                            <p class="leading-relaxed text-justify line-clamp-3"
+                                style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
                                 :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
                                 {{ $service->description }}</p>
 
-                            <!-- Read More Arrow -->
 
                         </div>
                     </div>
@@ -277,19 +293,11 @@
                     </div>
                 @endforelse
             </div>
-            <!-- View All Services Button -->
-            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
-                <a href="{{ route('services') }}"
-                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                    <span>Lihat Semua Layanan</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
     </section>
 
     <!-- Portfolio Section with Image Modal -->
-    <section id="portfolio" class="py-24 bg-white" x-data="{ selectedImage: null }">
+    <section id="portfolio" class="py-24 bg-white" x-data="{ selectedPortfolio: null }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
@@ -298,36 +306,39 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menampilkan proyek-proyek terbaik dan pencapaian kami
                 </p>
+
+                <!-- See all portfolio link -->
+                <div class="mt-6">
+                    <a href="{{ route('portfolio') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Portofolio
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 @forelse($portfolios as $index => $portfolio)
                     <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
                         class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
-                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                        @click="selectedPortfolio = {{ json_encode($portfolio) }}">
                         <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                                alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
-                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                @click="selectedImage = '{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}'">
-
-                            <!-- Overlay -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center pb-4"
-                                style="opacity: 0; transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                x-data="{ show: false }" @mouseenter="show = true" @mouseleave="show = false"
-                                :style="show ? 'opacity: 1' : 'opacity: 0'">
-                                <button class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold"
-                                    style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                    :style="show ? 'transform: translateY(0)' : 'transform: translateY(16px)'">
-                                    <i class="fas fa-search-plus mr-2"></i>Lihat Detail
-                                </button>
-                            </div>
+                            <picture>
+                                <source
+                                    srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                    type="image/webp">
+                                <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
+                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            </picture>
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-[#060771]"
                                 style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 {{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed text-justify">{{ Str::limit($portfolio->description, 100) }}</p>
+                            <p class="text-gray-600 leading-relaxed text-justify line-clamp-3">
+                                {{ Str::limit($portfolio->description, 100) }}</p>
                         </div>
                     </div>
                 @empty
@@ -337,25 +348,37 @@
                     </div>
                 @endforelse
             </div>
-            <!-- View All Portfolio Button -->
-            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
-                <a href="{{ route('portfolio') }}"
-                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                    <span>Lihat Semua Portofolio</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
 
-        <!-- Image Modal -->
-        <div x-show="selectedImage" x-transition:enter="transition ease-out duration-300"
+        <!-- Portfolio Detail Modal -->
+        <div x-show="selectedPortfolio" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0" @click="selectedImage = null"
+            x-transition:leave-end="opacity-0" @click="selectedPortfolio = null"
             class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             style="display: none;">
-            <div class="max-w-4xl w-full" @click.stop>
-                <img :src="selectedImage" class="w-full rounded-2xl shadow-2xl">
+            <div class="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden" @click.stop>
+                <div class="relative">
+                    <button @click="selectedPortfolio = null"
+                        class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm text-gray-800 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white transition-all z-10">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div class="w-full h-96">
+                        <picture>
+                            <source
+                                :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image')
+                                    .getUrl('webp') : 'https://via.placeholder.com/800x600.webp'"
+                                type="image/webp">
+                            <img :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image').getUrl(
+                                'preview') : 'https://via.placeholder.com/800x600'"
+                                class="w-full h-full object-cover">
+                        </picture>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-3xl font-bold mb-4 text-[#060771]" x-text="selectedPortfolio?.title"></h3>
+                    <div class="prose max-w-none" x-html="selectedPortfolio?.description"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -370,6 +393,15 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menangkap momen-momen yang mendefinisikan perjalanan
                     kami</p>
+
+                <!-- See all gallery link -->
+                <div class="mt-6">
+                    <a href="{{ route('gallery') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Galeri
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -378,11 +410,16 @@
                         class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
                         @mouseenter="imageHover = true" @mouseleave="imageHover = false"
-                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}'">
-                        <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                            alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
-                            style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                            :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
+                        <picture>
+                            <source
+                                srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                type="image/webp">
+                            <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+                        </picture>
 
                         <!-- Overlay with Icon -->
                         <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
@@ -408,14 +445,6 @@
                     </div>
                 @endforelse
             </div>
-            <!-- View All Gallery Button -->
-            <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="200">
-                <a href="{{ route('gallery') }}"
-                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                    <span>Lihat Semua Galeri</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
 
         <!-- Lightbox Modal -->
@@ -429,14 +458,16 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="max-w-5xl w-full" @click.stop>
-                <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
+                <picture>
+                    <source :src="currentImage.replace('/preview', '/webp')" type="image/webp">
+                    <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
+                </picture>
             </div>
         </div>
     </section>
 
     <!-- Blog Section with Card Design -->
     <section id="blog" class="py-24 bg-white">
-
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Wawasan & Update</span>
@@ -445,6 +476,15 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan berita dan wawasan terbaru kami
                 </p>
+
+                <!-- See all blog posts link -->
+                <div class="mt-6">
+                    <a href="{{ route('blog.index') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Postingan Blog
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -453,9 +493,14 @@
                         class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
                         <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                                alt="{{ $post->title }}" class="w-full h-full object-cover"
-                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            <picture>
+                                <source
+                                    srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                    type="image/webp">
+                                <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    alt="{{ $post->title }}" class="w-full h-full object-cover"
+                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            </picture>
 
                             <!-- Date Badge -->
                             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
@@ -492,21 +537,11 @@
                     </div>
                 @endforelse
             </div>
-
-            <!-- View All Button -->
-            <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
-                <a href="{{ route('blog.index') }}"
-                    class="inline-flex items-center bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#060771] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-                    <span>Lihat Semua Postingan Blog</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-            </div>
         </div>
     </section>
 
     <!-- Contact and Maps Section -->
     <section id="contact" class="py-24 bg-[#FFE08F]">
-
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Mari Terhubung</span>
@@ -559,7 +594,6 @@
                     <p class="text-gray-600 leading-relaxed break-all">
                         {{ isset($companyInfo->email) ? $companyInfo->email : 'info@company.com' }}
                     </p>
-
                 </div>
             </div>
 

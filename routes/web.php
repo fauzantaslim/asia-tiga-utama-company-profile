@@ -37,13 +37,16 @@ Route::get('/sitemap.xml', function () {
             ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_DAILY)
             ->setPriority(0.8));
 
-    foreach (\App\Models\BlogPost::where('is_published', true)->get() as $post) {
-        $sitemap->add(
-            \Spatie\Sitemap\Tags\Url::create(route('blog.detail', $post->slug))
-                ->setLastModificationDate($post->updated_at ?? $post->created_at)
-                ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7)
-        );
+    // Only query blog posts when the sitemap is actually requested
+    if (\Illuminate\Support\Facades\Schema::hasTable('blog_posts')) {
+        foreach (\App\Models\BlogPost::where('is_published', true)->get() as $post) {
+            $sitemap->add(
+                \Spatie\Sitemap\Tags\Url::create(route('blog.detail', $post->slug))
+                    ->setLastModificationDate($post->updated_at ?? $post->created_at)
+                    ->setChangeFrequency(\Spatie\Sitemap\Tags\Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.7)
+            );
+        }
     }
 
     return $sitemap->toResponse(request());

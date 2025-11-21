@@ -25,6 +25,11 @@ class HeroForm
                 SpatieMediaLibraryFileUpload::make('background_image')
                     ->collection('background_image')
                     ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth(1920)
+                    ->imageResizeTargetHeight(1080)
+                    ->maxSize(2048) // 2MB limit
                     ->multiple()
                     ->required(),
             ]);

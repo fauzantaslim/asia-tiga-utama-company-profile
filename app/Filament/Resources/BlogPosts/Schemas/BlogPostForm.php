@@ -28,6 +28,11 @@ class BlogPostForm
                 SpatieMediaLibraryFileUpload::make('image')
                     ->collection('image')
                     ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth(1200)
+                    ->imageResizeTargetHeight(675)
+                    ->maxSize(2048) // 2MB limit
                     ->required(),
                 RichEditor::make('content')
                     ->required()

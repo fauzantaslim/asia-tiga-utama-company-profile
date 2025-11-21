@@ -40,7 +40,12 @@ class CompanyInfoForm
                     ->maxLength(255),
                 SpatieMediaLibraryFileUpload::make('logo_website')
                     ->collection('logo_website')
-                    ->image(),
+                    ->image()
+                    ->imageEditor()
+                    ->imageCropAspectRatio('1:1')
+                    ->imageResizeTargetWidth(500)
+                    ->imageResizeTargetHeight(500)
+                    ->maxSize(2048) // 2MB limit,
             ]);
     }
 }

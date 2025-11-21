@@ -19,18 +19,22 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Facades\Schema;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Get the company info with logo
-        $companyInfo = CompanyInfo::first();
         $faviconUrl = asset('images/favicon.png'); // Default fallback
 
-        // If company info exists and has a logo, use it as favicon
-        if ($companyInfo && $companyInfo->getFirstMedia('logo_website')) {
-            $faviconUrl = $companyInfo->getFirstMedia('logo_website')->getUrl();
+        // Only try to get company info if the table exists
+        if (Schema::hasTable('company_infos')) {
+            $companyInfo = CompanyInfo::first();
+
+            // If company info exists and has a logo, use it as favicon
+            if ($companyInfo && $companyInfo->getFirstMedia('logo_website')) {
+                $faviconUrl = $companyInfo->getFirstMedia('logo_website')->getUrl('webp');
+            }
         }
 
         return $panel

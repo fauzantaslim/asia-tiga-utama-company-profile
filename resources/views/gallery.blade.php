@@ -37,6 +37,15 @@
                     Galeri
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Jelajahi koleksi momen-momen berkesan kami</p>
+
+                <!-- See all gallery link -->
+                <div class="mt-6">
+                    <a href="{{ route('gallery') }}"
+                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
+                        Lihat Semua Galeri
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -45,11 +54,16 @@
                         class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
                         @mouseenter="imageHover = true" @mouseleave="imageHover = false"
-                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}'">
-                        <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : 'https://via.placeholder.com/500x300' }}"
-                            alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
-                            style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                            :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
+                        <picture>
+                            <source
+                                srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                type="image/webp">
+                            <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+                        </picture>
 
                         <!-- Overlay with Icon -->
                         <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
@@ -88,7 +102,10 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="max-w-5xl w-full" @click.stop>
-                <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
+                <picture>
+                    <source :src="currentImage.replace('/preview', '/webp')" type="image/webp">
+                    <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
+                </picture>
             </div>
         </div>
     </section>
