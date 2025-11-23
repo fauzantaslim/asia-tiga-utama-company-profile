@@ -41,7 +41,16 @@
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
                     </div>
 
-
+                    <!-- Download Company Profile Button -->
+                    <div class="mt-8">
+                        <a href="{{ asset('storage/company-profile.pdf') }}"
+                            class="inline-flex items-center px-6 py-3 bg-[#060771] text-white font-semibold rounded-lg shadow-lg hover:bg-[#040550] transition-all duration-300 transform hover:-translate-y-1"
+                            download>
+                            <i class="fas fa-file-pdf mr-2"></i>
+                            Unduh Profil Perusahaan
+                            <i class="fas fa-download ml-2"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <div data-aos="fade-left" data-aos-duration="1000" class="relative">
@@ -65,7 +74,7 @@
             <!-- Vision & Mission Cards -->
             <div class="grid md:grid-cols-2 gap-8 mt-20">
                 <div data-aos="flip-left" data-aos-delay="100" data-aos-duration="1000"
-                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:bg-[#040550] transition-all duration-300 transform hover:-translate-y-1">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
                     <div class="relative z-10">
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
@@ -79,7 +88,7 @@
                 </div>
 
                 <div data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000"
-                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    class="group relative overflow-hidden bg-[#060771] p-10 rounded-3xl shadow-xl hover:bg-[#040550] transition-all duration-300 transform hover:-translate-y-1">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
                     <div class="relative z-10">
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">

@@ -1,19 +1,15 @@
 import "./bootstrap";
-
 import Alpine from "alpinejs";
 import Swiper from "swiper";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
-
 // Import Turbo and NProgress
 import * as Turbo from "@hotwired/turbo";
 import NProgress from "nprogress";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
 // Import NProgress styles
 import "nprogress/nprogress.css";
 
@@ -27,37 +23,34 @@ NProgress.configure({
     minimum: 0.2,
 });
 
+// START ALPINE BEFORE TURBO EVENTS
+Alpine.start();
+
 // Turbo event listeners for NProgress
 document.addEventListener("turbo:visit", () => {
     NProgress.start();
 });
 
-document.addEventListener("turbo:load", () => {
-    NProgress.done();
-    AOS.refresh(); // Refresh AOS animations on page load
-});
-
-document.addEventListener("turbo:submit-start", () => {
-    NProgress.start();
-});
-
-document.addEventListener("turbo:submit-end", () => {
-    NProgress.done();
-});
-
-document.addEventListener("turbo:before-cache", () => {
-    // Clean up any Alpine components before caching
-    if (typeof Alpine !== "undefined") {
-        // Optional: Add any Alpine cleanup logic here if needed
+// Close mobile menu before navigation
+document.addEventListener("turbo:before-visit", () => {
+    // Force close any open Alpine menus
+    const header = document.querySelector("header[x-data]");
+    if (header && header.__x) {
+        header.__x.$data.mobileMenuOpen = false;
     }
 });
 
-// Initialize Swiper for hero background
-document.addEventListener("DOMContentLoaded", function () {
-    // Check if we're on a page with hero section
+document.addEventListener("turbo:load", () => {
+    NProgress.done();
+
+    // Refresh AOS animations on page load
+    if (typeof AOS !== "undefined") {
+        AOS.refresh();
+    }
+
+    // Initialize Swiper for hero background
     const heroSection = document.getElementById("hero");
     if (heroSection) {
-        // Initialize hero background swiper if it exists
         const heroSwiper = new Swiper(".hero-background-swiper", {
             modules: [Autoplay, EffectFade, Navigation, Pagination],
             effect: "fade",
@@ -83,6 +76,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+document.addEventListener("turbo:submit-start", () => {
+    NProgress.start();
+});
+
+document.addEventListener("turbo:submit-end", () => {
+    NProgress.done();
+});
+
+document.addEventListener("turbo:before-cache", () => {
+    // Destroy all Swiper instances before caching
+    const swipers = document.querySelectorAll(".swiper");
+    swipers.forEach((swiper) => {
+        if (swiper.swiper) {
+            swiper.swiper.destroy(true, true);
+        }
+    });
+});
+
 // Initialize AOS (Animate On Scroll)
 window.addEventListener("load", () => {
     if (typeof AOS !== "undefined") {
@@ -92,5 +103,3 @@ window.addEventListener("load", () => {
         });
     }
 });
-
-Alpine.start();

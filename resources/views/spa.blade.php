@@ -227,129 +227,157 @@
                 </div>
             </div>
         </div>
+
+
     </section>
 
-    <!-- Services Section with Hover Effects -->
-    <section id="services" class="py-24 bg-[#FFE08F]">
+    <!-- Services Section with Horizontal Scroll -->
+    <section id="services" class="py-24 bg-[#FFE08F]" x-data="{ scrollPosition: 0 }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami Tawarkan</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Layanan Kami
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto text-justify">Solusi komprehensif yang disesuaikan dengan
-                    kebutuhan
-                    bisnis Anda
-                </p>
-
-                <!-- See all services link -->
-                <div class="mt-6">
-                    <a href="{{ route('services') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Layanan
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                <div>
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami
+                        Tawarkan</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                        Layanan Kami
+                    </h2>
+                    <p class="text-gray-600 text-lg max-w-2xl text-justify mx-auto">Solusi komprehensif yang disesuaikan
+                        dengan
+                        kebutuhan
+                        bisnis Anda
+                    </p>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                @forelse($services as $index => $service)
-                    <div data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
-                        x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false"
-                        class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 relative overflow-hidden"
-                        style="transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div class="relative">
+                <!-- Scroll buttons -->
+                <button @click="$refs.servicesContainer.scrollBy({ left: -300, behavior: 'smooth' })"
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
-                        <!-- Gradient overlay on hover -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl"
-                            style="opacity: 0; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);"
-                            :style="hovered ? 'opacity: 1' : 'opacity: 0'">
-                        </div>
+                <button @click="$refs.servicesContainer.scrollBy({ left: 300, behavior: 'smooth' })"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
 
-                        <div class="relative z-10">
-                            <div class="text-5xl mb-6 text-[#BF1A1A]"
-                                style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                :style="hovered ? 'color: white; transform: scale(1.1) rotate(5deg)' : 'color: #BF1A1A'">
-                                @if (isset($service->icon))
-                                    {!! $service->icon !!}
-                                @else
-                                    <i class="fas fa-cogs"></i>
-                                @endif
+                <!-- Services container with horizontal scroll -->
+                <div x-ref="servicesContainer" class="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
+                    style="scroll-behavior: smooth;">
+                    @forelse($services as $index => $service)
+                        <div data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                            x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false"
+                            class="flex-shrink-0 w-80 group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 relative overflow-hidden"
+                            style="transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+
+                            <!-- Gradient overlay on hover -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl"
+                                style="opacity: 0; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="hovered ? 'opacity: 1' : 'opacity: 0'">
                             </div>
-                            <h3 class="text-2xl font-bold mb-4 text-[#060771]"
-                                style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                            <p class="leading-relaxed text-justify line-clamp-3"
-                                style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'"
-                                title="{{ $service->description }}">
-                                {{ $service->description }}</p>
 
-
+                            <div class="relative z-10">
+                                <div class="text-5xl mb-6 text-[#BF1A1A]"
+                                    style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="hovered ? 'color: white; transform: scale(1.1) rotate(5deg)' : 'color: #BF1A1A'">
+                                    @if (isset($service->icon))
+                                        {!! $service->icon !!}
+                                    @else
+                                        <i class="fas fa-cogs"></i>
+                                    @endif
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4 text-[#060771]"
+                                    style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                    :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
+                                <p class="leading-relaxed text-justify line-clamp-3"
+                                    style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                    :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'"
+                                    title="{{ $service->description }}">
+                                    {{ $service->description }}</p>
+                            </div>
                         </div>
-                    </div>
-                @empty
-                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
-                        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Tidak ada layanan yang tersedia saat ini.</p>
-                    </div>
-                @endforelse
+                    @empty
+                        <div class="text-center py-12" data-aos="fade-up">
+                            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500 text-lg">Tidak ada layanan yang tersedia saat ini.</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
+        </div>
+
+        <!-- See all services link -->
+        <div class="text-center mt-8" data-aos="fade-up">
+            <a href="{{ route('services') }}"
+                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                Lihat Semua
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
     </section>
 
-    <!-- Portfolio Section with Image Modal -->
+    <!-- Portfolio Section with Horizontal Scroll -->
     <section id="portfolio" class="py-24 bg-white" x-data="{ selectedPortfolio: null }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Portofolio Kami
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menampilkan proyek-proyek terbaik dan pencapaian kami
-                </p>
-
-                <!-- See all portfolio link -->
-                <div class="mt-6">
-                    <a href="{{ route('portfolio') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Portofolio
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                <div>
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                        Portofolio Kami
+                    </h2>
+                    <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menampilkan proyek-proyek terbaik dan pencapaian
+                        kami
+                    </p>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                @forelse($portfolios as $index => $portfolio)
-                    <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
-                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
-                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                        @click="selectedPortfolio = {{ json_encode($portfolio) }}">
-                        <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <picture>
-                                <source
-                                    srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                    type="image/webp">
-                                <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                    alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
-                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                            </picture>
+            <div class="relative">
+                <!-- Scroll buttons -->
+                <button @click="$refs.portfolioContainer.scrollBy({ left: -300, behavior: 'smooth' })"
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <button @click="$refs.portfolioContainer.scrollBy({ left: 300, behavior: 'smooth' })"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- Portfolio container with horizontal scroll -->
+                <div x-ref="portfolioContainer" class="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
+                    style="scroll-behavior: smooth;">
+                    @forelse($portfolios as $index => $portfolio)
+                        <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                            class="flex-shrink-0 w-80 group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
+                            style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                            @click="selectedPortfolio = {{ json_encode($portfolio) }}">
+                            <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
+                                <picture>
+                                    <source
+                                        srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                        type="image/webp">
+                                    <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                        alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
+                                        style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                </picture>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-[#060771]"
+                                    style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
+                                    title="{{ $portfolio->title }}">
+                                    {{ $portfolio->title }}</h3>
+                                <p class="text-gray-600 leading-relaxed text-justify line-clamp-3"
+                                    title="{{ $portfolio->description }}">
+                                    {{ Str::limit($portfolio->description, 100) }}</p>
+                            </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-[#060771]"
-                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
-                                title="{{ $portfolio->title }}">
-                                {{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed text-justify line-clamp-3"
-                                title="{{ $portfolio->description }}">
-                                {{ Str::limit($portfolio->description, 100) }}</p>
+                    @empty
+                        <div class="text-center py-12" data-aos="fade-up">
+                            <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500 text-lg">Tidak ada item portofolio yang tersedia saat ini.</p>
                         </div>
-                    </div>
-                @empty
-                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
-                        <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Tidak ada item portofolio yang tersedia saat ini.</p>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
         </div>
 
@@ -384,71 +412,98 @@
                 </div>
             </div>
         </div>
+        <!-- See all portfolio link -->
+        <div class="text-center mt-8" data-aos="fade-up">
+            <a href="{{ route('portfolio') }}"
+                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                Lihat Semua
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
     </section>
 
-    <!-- Gallery Section with Masonry Layout -->
+    <!-- Gallery Section with Horizontal Scroll -->
     <section id="gallery" class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Cerita Visual</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 bg-[#060771] bg-clip-text text-transparent">
-                    Galeri
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menangkap momen-momen yang mendefinisikan perjalanan
-                    kami</p>
-
-                <!-- See all gallery link -->
-                <div class="mt-6">
-                    <a href="{{ route('gallery') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Galeri
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                <div>
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Cerita Visual</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                        Galeri
+                    </h2>
+                    <p class="text-gray-600 text-lg max-w-2xl mx-auto">Menangkap momen-momen yang mendefinisikan perjalanan
+                        kami</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                @forelse($galleryImages as $index => $image)
-                    <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" data-aos-duration="800"
-                        class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
-                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
-                        @mouseenter="imageHover = true" @mouseleave="imageHover = false"
-                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
-                        <picture>
-                            <source
-                                srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                type="image/webp">
-                            <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
-                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
-                        </picture>
+            <div class="relative">
+                <!-- Scroll buttons -->
+                <button @click="$refs.galleryContainer.scrollBy({ left: -300, behavior: 'smooth' })"
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
-                        <!-- Overlay with Icon -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
-                            style="transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                            :style="imageHover ? 'opacity: 1' : 'opacity: 0'">
-                            <i class="fas fa-search-plus text-white text-3xl"
-                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                :style="imageHover ? 'transform: scale(1) rotate(0deg)' : 'transform: scale(0) rotate(-180deg)'"></i>
-                        </div>
+                <button @click="$refs.galleryContainer.scrollBy({ left: 300, behavior: 'smooth' })"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
 
-                        @if ($image->caption)
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
-                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
-                                <p class="text-white text-sm font-medium" title="{{ $image->caption }}">
-                                    {{ $image->caption }}</p>
+                <!-- Gallery container with horizontal scroll -->
+                <div x-ref="galleryContainer" class="flex overflow-x-auto gap-4 pb-4 scrollbar-hide"
+                    style="scroll-behavior: smooth;">
+                    @forelse($galleryImages as $index => $image)
+                        <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" data-aos-duration="800"
+                            class="flex-shrink-0 w-80 group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
+                            style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
+                            @mouseenter="imageHover = true" @mouseleave="imageHover = false"
+                            @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
+                            <picture>
+                                <source
+                                    srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                    type="image/webp">
+                                <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' :
+                                        'transform: scale(1) rotate(0deg)'">
+                            </picture>
+
+                            <!-- Overlay with Icon -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
+                                style="transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
+                                :style="imageHover ? 'opacity: 1' : 'opacity: 0'">
+                                <i class="fas fa-search-plus text-white text-3xl"
+                                    style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="imageHover ? 'transform: scale(1) rotate(0deg)' :
+                                        'transform: scale(0) rotate(-180deg)'"></i>
                             </div>
-                        @endif
-                    </div>
-                @empty
-                    <div class="col-span-4 text-center py-12" data-aos="fade-up">
-                        <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Tidak ada gambar galeri yang tersedia saat ini.</p>
-                    </div>
-                @endforelse
+
+                            @if ($image->caption)
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
+                                    style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
+                                    <p class="text-white text-sm font-medium" title="{{ $image->caption }}">
+                                        {{ $image->caption }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="text-center py-12" data-aos="fade-up">
+                            <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500 text-lg">Tidak ada gambar galeri yang tersedia saat ini.</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
+        </div>
+
+        <!-- See all gallery link -->
+        <div class="text-center mt-8" data-aos="fade-up">
+            <a href="{{ route('gallery') }}"
+                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                Lihat Semua
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
 
         <!-- Lightbox Modal -->
@@ -470,77 +525,96 @@
         </div>
     </section>
 
-    <!-- Blog Section with Card Design -->
+    <!-- Blog Section with Horizontal Scroll -->
     <section id="blog" class="py-24 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Wawasan & Update</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Postingan Blog Terbaru
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan berita dan wawasan terbaru kami
-                </p>
-
-                <!-- See all blog posts link -->
-                <div class="mt-6">
-                    <a href="{{ route('blog.index') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Postingan Blog
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                <div>
+                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Wawasan & Update</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
+                        Postingan Blog Terbaru
+                    </h2>
+                    <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan berita dan wawasan terbaru
+                        kami
+                    </p>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                @forelse($blogPosts as $index => $post)
-                    <article data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
-                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
-                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <picture>
-                                <source
-                                    srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                    type="image/webp">
-                                <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                    alt="{{ $post->title }}" class="w-full h-full object-cover"
-                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                            </picture>
+            <div class="relative">
+                <!-- Scroll buttons -->
+                <button @click="$refs.blogContainer.scrollBy({ left: -300, behavior: 'smooth' })"
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
-                            <!-- Date Badge -->
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
-                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                <span class="text-sm font-bold text-[#060771]">
-                                    <i class="far fa-calendar-alt mr-1"></i>
-                                    {{ $post->created_at->format('M d, Y') }}
-                                </span>
+                <button @click="$refs.blogContainer.scrollBy({ left: 300, behavior: 'smooth' })"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- Blog container with horizontal scroll -->
+                <div x-ref="blogContainer" class="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
+                    style="scroll-behavior: smooth;">
+                    @forelse($blogPosts as $index => $post)
+                        <article data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
+                            class="flex-shrink-0 w-80 group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
+                            style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
+                                <picture>
+                                    <source
+                                        srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                        type="image/webp">
+                                    <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                        alt="{{ $post->title }}" class="w-full h-full object-cover"
+                                        style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                </picture>
+
+                                <!-- Date Badge -->
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
+                                    style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                    <span class="text-sm font-bold text-[#060771]">
+                                        <i class="far fa-calendar-alt mr-1"></i>
+                                        {{ $post->created_at->format('M d, Y') }}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-[#060771] line-clamp-2"
-                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);" title="{{ $post->title }}">
-                                {{ $post->title }}
-                            </h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3 text-justify">
-                                {{ Str::limit(strip_tags($post->content), 120) }}
-                            </p>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-3 text-[#060771] line-clamp-2"
+                                    style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
+                                    title="{{ $post->title }}">
+                                    {{ $post->title }}
+                                </h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3 text-justify">
+                                    {{ Str::limit(strip_tags($post->content), 120) }}
+                                </p>
 
-                            <a href="{{ route('blog.detail', $post->slug) }}"
-                                class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
-                                style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                Baca Selengkapnya
-                                <i class="fas fa-arrow-right"
-                                    style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
-                            </a>
+                                <a href="{{ route('blog.detail', $post->slug) }}"
+                                    class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
+                                    style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                    Baca Selengkapnya
+                                    <i class="fas fa-arrow-right"
+                                        style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
+                                </a>
+                            </div>
+                        </article>
+                    @empty
+                        <div class="text-center py-12" data-aos="fade-up">
+                            <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500 text-lg">Tidak ada postingan blog yang tersedia saat ini.</p>
                         </div>
-                    </article>
-                @empty
-                    <div class="col-span-3 text-center py-12" data-aos="fade-up">
-                        <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Tidak ada postingan blog yang tersedia saat ini.</p>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
+        </div>
+
+        <!-- See all blog posts link -->
+        <div class="text-center mt-8" data-aos="fade-up">
+            <a href="{{ route('blog.index') }}"
+                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                Lihat Semua
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
     </section>
 

@@ -70,6 +70,14 @@
                     </div>
                 @endforelse
             </div>
+            <!-- Pagination -->
+            @if ($portfolios->hasPages())
+                <div class="mt-12 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        {{ $portfolios->links('vendor.pagination.tailwind-custom') }}
+                    </div>
+                </div>
+            @endif
         </div>
 
         <!-- Portfolio Detail Modal -->

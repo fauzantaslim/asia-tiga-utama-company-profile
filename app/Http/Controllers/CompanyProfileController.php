@@ -22,10 +22,10 @@ class CompanyProfileController extends Controller
     {
         $hero = Hero::orderBy('created_at', 'desc')->get();
         $about = About::first();
-        $services = Service::orderBy('order')->limit(3)->get();
-        $portfolios = Portfolio::where('is_published', true)->limit(3)->get();
-        $galleryImages = GalleryImage::limit(4)->get();
-        $blogPosts = BlogPost::where('is_published', true)->limit(3)->get(); // Limit to 3 posts for homepage
+        $services = Service::orderBy('order')->limit(8)->get();
+        $portfolios = Portfolio::where('is_published', true)->limit(8)->get();
+        $galleryImages = GalleryImage::limit(8)->get();
+        $blogPosts = BlogPost::where('is_published', true)->limit(8)->get(); // Limit to 8 posts for homepage
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags

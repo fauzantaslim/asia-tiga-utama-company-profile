@@ -38,14 +38,7 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Jelajahi koleksi momen-momen berkesan kami</p>
 
-                <!-- See all gallery link -->
-                <div class="mt-6">
-                    <a href="{{ route('gallery') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Galeri
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -89,6 +82,14 @@
                     </div>
                 @endforelse
             </div>
+            <!-- Pagination -->
+            @if ($galleryImages->hasPages())
+                <div class="mt-12 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        {{ $galleryImages->links('vendor.pagination.tailwind-custom') }}
+                    </div>
+                </div>
+            @endif
         </div>
 
         <!-- Lightbox Modal -->

@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>@yield('title', 'Profil Perusahaan')</title>
     <meta name="description" content="@yield('description', 'Profil resmi perusahaan kami')">
     <meta name="keywords" content="@yield('keywords', 'profil perusahaan, jasa, layanan')">
@@ -34,6 +35,7 @@
     <style>
         html {
             scroll-behavior: smooth;
+
         }
 
         /* Glassmorphism Effect */
@@ -182,21 +184,33 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
+        /* Hide scrollbar for horizontal scroll containers */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
     </style>
 </head>
 
 <body class="font-sans text-gray-800 bg-[#FFE08F]">
 
     {{-- GLASSMORPHISM NAVBAR --}}
-    <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }">
+    <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }" x-init="$watch('mobileMenuOpen', value => console.log('Menu:', value))">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex items-center justify-between h-24">
 
                 {{-- LEFT: Logo & Brand Name --}}
-                <a href="/" class="logo-wrapper flex items-center gap-3 group">
+                <a href="/" class="logo-wrapper flex items-center gap-3 group"
+                    @click.prevent="mobileMenuOpen = false; window.location.href = '/'">
                     @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
-                        <div
-                            class="logo-icon w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
                             <picture>
                                 <source srcset="{{ $companyInfo->getFirstMedia('logo_website')->getUrl('webp') }}"
                                     type="image/webp">
@@ -206,8 +220,7 @@
                             </picture>
                         </div>
                     @else
-                        <div
-                            class="logo-icon w-10 h-10 bg-[#BF1A1A] rounded-xl flex items-center justify-center shadow-lg">
+                        <div class="w-10 h-10 bg-[#BF1A1A] rounded-xl flex items-center justify-center shadow-lg">
                             <i class="fas fa-rocket text-white text-xl"></i>
                         </div>
                     @endif
@@ -267,10 +280,17 @@
             </div>
 
             {{-- Mobile Menu Dropdown --}}
-            <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="lg:hidden pb-4">
+            <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform -translate-y-2" @click.away="mobileMenuOpen = false"
+                class="lg:hidden pb-4">
                 <div class="mobile-menu-glass mt-2 p-4 space-y-1">
                     <a href="{{ route('home') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
-                        @click="mobileMenuOpen = false">Beranda</a>
+                        @click.prevent="mobileMenuOpen = false; setTimeout(() => window.location.href = '{{ route('home') }}', 100)">
+                        Beranda</a>
                     <a href="{{ route('about') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
                         @click="mobileMenuOpen = false">Tentang</a>
                     <a href="{{ route('services') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
@@ -279,7 +299,8 @@
                         @click="mobileMenuOpen = false">Portofolio</a>
                     <a href="{{ route('gallery') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
                         @click="mobileMenuOpen = false">Galeri</a>
-                    <a href="{{ route('blog.index') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
+                    <a href="{{ route('blog.index') }}"
+                        class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
                         @click="mobileMenuOpen = false">Blog</a>
                     <a href="{{ route('contact') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
                         @click="mobileMenuOpen = false">Kontak</a>
@@ -302,10 +323,10 @@
     </main>
 
     {{-- FOOTER --}}
-    <footer class="bg-[#060771] text-gray-300 py-10 ">
+    <footer class="bg-[#060771] text-gray-300 py-10 " data-aos="fade-up">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-6">
-                <div>
+                <div data-aos="fade-right" data-aos-delay="100">
                     <div class="flex items-center gap-3 mb-4">
                         @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
@@ -326,45 +347,45 @@
                             {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}
                         </h4>
                     </div>
-                    <p class="text-sm mt-3 text-justify ">
+                    <p class="text-sm mt-3 text-justify " data-aos="fade-up" data-aos-delay="200">
                         Sebagai mitra ahli dalam general repairing mesin industri, kami menyediakan solusi teknis
                         menyeluruh mulai dari gulung ulang (rewinding) Electro Motor AC/DC dan Generator, hingga
                         perbaikan sistem mekanikal pada Transformator, Submersible Pump, serta Compressor Chiller.
                     </p>
                 </div>
 
-                <div>
+                <div data-aos="fade-up" data-aos-delay="200">
                     <h4 class="font-semibold text-white">Kontak</h4>
                     <ul class="text-sm mt-3 space-y-2">
                         @if (isset($companyInfo))
                             @if ($companyInfo->address)
-                                <li class="flex items-start">
+                                <li class="flex items-start" data-aos="fade-up" data-aos-delay="300">
                                     <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
                                     <span>{{ $companyInfo->address }}</span>
                                 </li>
                             @endif
                             @if ($companyInfo->phone)
-                                <li class="flex items-center">
+                                <li class="flex items-center" data-aos="fade-up" data-aos-delay="400">
                                     <i class="fas fa-phone mr-2"></i>
                                     <span>{{ $companyInfo->phone }}</span>
                                 </li>
                             @endif
                             @if ($companyInfo->email)
-                                <li class="flex items-center">
+                                <li class="flex items-center" data-aos="fade-up" data-aos-delay="500">
                                     <i class="fas fa-envelope mr-2"></i>
                                     <span>{{ $companyInfo->email }}</span>
                                 </li>
                             @endif
                         @else
-                            <li class="flex items-start">
+                            <li class="flex items-start" data-aos="fade-up" data-aos-delay="300">
                                 <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
                                 <span>123 Business Street, City, Country</span>
                             </li>
-                            <li class="flex items-center">
+                            <li class="flex items-center" data-aos="fade-up" data-aos-delay="400">
                                 <i class="fas fa-phone mr-2"></i>
                                 <span>+1 234 567 890</span>
                             </li>
-                            <li class="flex items-center">
+                            <li class="flex items-center" data-aos="fade-up" data-aos-delay="500">
                                 <i class="fas fa-envelope mr-2"></i>
                                 <span>info@company.com</span>
                             </li>
@@ -372,45 +393,56 @@
                     </ul>
                 </div>
 
-                <div>
+                <div data-aos="fade-up" data-aos-delay="300">
                     <h4 class="font-semibold text-white">Navigasi</h4>
                     <ul class="text-sm mt-3 space-y-2">
-                        <li><a href="{{ route('home') }}" class="hover:text-white">Beranda</a></li>
-                        <li><a href="{{ route('about') }}" class="hover:text-white">Tentang</a></li>
-                        <li><a href="{{ route('services') }}" class="hover:text-white">Layanan</a></li>
-                        <li><a href="{{ route('portfolio') }}" class="hover:text-white">Portofolio</a></li>
-                        <li><a href="{{ route('gallery') }}" class="hover:text-white">Galeri</a></li>
-                        <li><a href="{{ route('blog.index') }}" class="hover:text-white">Blog</a></li>
-                        <li><a href="{{ route('contact') }}" class="hover:text-white">Kontak</a></li>
+                        <li data-aos="fade-up" data-aos-delay="400"><a href="{{ route('home') }}"
+                                class="hover:text-white">Beranda</a></li>
+                        <li data-aos="fade-up" data-aos-delay="500"><a href="{{ route('about') }}"
+                                class="hover:text-white">Tentang</a></li>
+                        <li data-aos="fade-up" data-aos-delay="600"><a href="{{ route('services') }}"
+                                class="hover:text-white">Layanan</a></li>
+                        <li data-aos="fade-up" data-aos-delay="700"><a href="{{ route('portfolio') }}"
+                                class="hover:text-white">Portofolio</a></li>
+                        <li data-aos="fade-up" data-aos-delay="800"><a href="{{ route('gallery') }}"
+                                class="hover:text-white">Galeri</a></li>
+                        <li data-aos="fade-up" data-aos-delay="900"><a href="{{ route('blog.index') }}"
+                                class="hover:text-white">Blog</a></li>
+                        <li data-aos="fade-up" data-aos-delay="1000"><a href="{{ route('contact') }}"
+                                class="hover:text-white">Kontak</a></li>
                     </ul>
                 </div>
 
-                <div>
+                <div data-aos="fade-left" data-aos-delay="400">
                     <h4 class="font-semibold text-white">Ikuti Kami</h4>
                     <div class="flex gap-4 mt-3">
                         @if (isset($companyInfo))
                             @if ($companyInfo->instagram)
-                                <a href="{{ $companyInfo->instagram }}" target="_blank"
-                                    class="hover:text-white">Instagram</a>
+                                <a href="{{ $companyInfo->instagram }}" target="_blank" class="hover:text-white"
+                                    data-aos="zoom-in" data-aos-delay="500">Instagram</a>
                             @endif
                             @if ($companyInfo->facebook)
-                                <a href="{{ $companyInfo->facebook }}" target="_blank"
-                                    class="hover:text-white">Facebook</a>
+                                <a href="{{ $companyInfo->facebook }}" target="_blank" class="hover:text-white"
+                                    data-aos="zoom-in" data-aos-delay="600">Facebook</a>
                             @endif
                             @if ($companyInfo->youtube)
-                                <a href="{{ $companyInfo->youtube }}" target="_blank"
-                                    class="hover:text-white">YouTube</a>
+                                <a href="{{ $companyInfo->youtube }}" target="_blank" class="hover:text-white"
+                                    data-aos="zoom-in" data-aos-delay="700">YouTube</a>
                             @endif
                         @else
-                            <a href="#" class="hover:text-white">Instagram</a>
-                            <a href="#" class="hover:text-white">Youtube</a>
-                            <a href="#" class="hover:text-white">Facebook</a>
+                            <a href="#" class="hover:text-white" data-aos="zoom-in"
+                                data-aos-delay="500">Instagram</a>
+                            <a href="#" class="hover:text-white" data-aos="zoom-in"
+                                data-aos-delay="600">Youtube</a>
+                            <a href="#" class="hover:text-white" data-aos="zoom-in"
+                                data-aos-delay="700">Facebook</a>
                         @endif
                     </div>
                 </div>
             </div>
 
-            <div class="text-center text-sm mt-10 border-t border-gray-700 pt-6">
+            <div class="text-center text-sm mt-10 border-t border-gray-700 pt-6" data-aos="fade-up"
+                data-aos-delay="500">
                 © {{ date('Y') }}
                 {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}.
                 Hak
@@ -424,6 +456,15 @@
     <script>
         // Add active state to nav links based on scroll
         const sections = document.querySelectorAll('section[id]');
+
+        // Initialize AOS animations
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                easing: 'ease-in-out'
+            });
+        });
     </script>
 </body>
 

@@ -39,14 +39,7 @@
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Solusi profesional yang dirancang untuk membantu bisnis
                     Anda berkembang</p>
 
-                <!-- See all services link -->
-                <div class="mt-6">
-                    <a href="{{ route('services') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Layanan
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -91,6 +84,14 @@
                     </div>
                 @endforelse
             </div>
+            <!-- Pagination -->
+            @if ($services->hasPages())
+                <div class="mt-12 flex justify-center">
+                    <div class="flex items-center space-x-2">
+                        {{ $services->links('vendor.pagination.tailwind-custom') }}
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 
