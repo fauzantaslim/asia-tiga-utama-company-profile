@@ -7,6 +7,7 @@
     <title>@yield('title', 'Profil Perusahaan')</title>
     <meta name="description" content="@yield('description', 'Profil resmi perusahaan kami')">
     <meta name="keywords" content="@yield('keywords', 'profil perusahaan, jasa, layanan')">
+    <link rel="canonical" href="{{ url()->current() }}" />
 
     {{-- Favicon --}}
     @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
@@ -27,6 +28,8 @@
     @stack('styles')
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    {{-- Organization Structured Data --}}
 
     <style>
         html {
@@ -214,7 +217,7 @@
                             {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan Anda' }}
                         </h1>
                         <p class="text-xs text-gray-500">
-                            {{ isset($companyInfo) ? 'Spesialis Dinamo, Rewinding, & Perbaikan Mesin Industri' : 'Solusi Profesional' }}
+                            {{ isset($companyInfo) ? 'Spesialis Perbaikan Dinamo Industri' : 'Solusi Profesional' }}
                         </p>
                     </div>
                 </a>
@@ -299,7 +302,7 @@
     </main>
 
     {{-- FOOTER --}}
-    <footer class="bg-[#060771] text-gray-300 py-10 mt-20">
+    <footer class="bg-[#060771] text-gray-300 py-10 ">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-6">
                 <div>
@@ -323,7 +326,7 @@
                             {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}
                         </h4>
                     </div>
-                    <p class="text-sm mt-3 text-justify line-clamp-3">
+                    <p class="text-sm mt-3 text-justify ">
                         Sebagai mitra ahli dalam general repairing mesin industri, kami menyediakan solusi teknis
                         menyeluruh mulai dari gulung ulang (rewinding) Electro Motor AC/DC dan Generator, hingga
                         perbaikan sistem mekanikal pada Transformator, Submersible Pump, serta Compressor Chiller.

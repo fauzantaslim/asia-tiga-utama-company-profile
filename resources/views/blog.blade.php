@@ -38,14 +38,7 @@
                 </h2>
                 <p class="text-gray-600 text-lg max-w-2xl mx-auto">Temukan pemikiran, berita, dan wawasan industri kami</p>
 
-                <!-- See all blog posts link -->
-                <div class="mt-6">
-                    <a href="{{ route('blog.index') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Lihat Semua Postingan Blog
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
@@ -103,10 +96,12 @@
             @if ($blogPosts->hasPages())
                 <div class="mt-12 flex justify-center">
                     <div class="flex items-center space-x-2">
-                        {{ $blogPosts->links() }}
+                        {{ $blogPosts->links('vendor.pagination.tailwind-custom') }}
                     </div>
                 </div>
             @endif
         </div>
     </section>
+
+
 @endsection

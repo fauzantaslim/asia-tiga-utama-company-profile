@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $post->meta_title ?? $post->title)
-@section('description', $post->meta_description ?? Str::limit(strip_tags($post->content), 160))
+@section('description', $post->meta_description ?? Str::limit(strip_tags($post->content), 155))
 @section('keywords', $post->meta_keywords ?? 'blog, article, news')
 @section('og-image', $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() :
     'https://via.placeholder.com/1200x630.png')
@@ -28,10 +28,7 @@
                     <i class="far fa-calendar-alt mr-2"></i>
                     <span>{{ $post->created_at->format('F d, Y') }}</span>
                 </div>
-                <div class="flex items-center text-white/90">
-                    <i class="far fa-clock mr-2"></i>
-                    <span>{{ $post->reading_time ?? '5 min read' }}</span>
-                </div>
+
                 <div class="flex items-center text-white/90">
                     <i class="far fa-user mr-2"></i>
                     <span>{{ $post->author ?? 'Admin' }}</span>
@@ -80,19 +77,11 @@
                             class="w-12 h-12 bg-[#FF6C0C] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
-                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($post->title) }}"
-                            target="_blank"
-                            class="w-12 h-12 bg-[#060771] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
-                            <i class="fab fa-linkedin-in text-xl"></i>
-                        </a>
+
                         <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current() . ' - ' . Str::limit(strip_tags($post->content), 100)) }}"
                             target="_blank"
                             class="w-12 h-12 bg-[#25D366] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
                             <i class="fab fa-whatsapp text-xl"></i>
-                        </a>
-                        <a href="mailto:?subject={{ urlencode($post->title) }}&body={{ urlencode(url()->current()) }}"
-                            class="w-12 h-12 bg-[#060771] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
-                            <i class="fas fa-envelope text-xl"></i>
                         </a>
                     </div>
                 </div>
@@ -163,4 +152,5 @@
             </div>
         </div>
     </section>
+
 @endsection

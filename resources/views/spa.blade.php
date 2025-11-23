@@ -25,7 +25,7 @@
                         <!-- Check if this hero item has background images -->
                         @if ($heroItem->getMedia('background_image')->count() > 0)
                             <!-- Loop through each background image of this hero item -->
-                            @foreach ($heroItem->getMedia('background_image') as $image)
+                            @foreach ($heroItem->getFirstMedia('background_image') as $image)
                                 <div class="swiper-slide">
                                     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
                                         style="background-image: url('{{ $image->getUrl() }}');">
@@ -131,23 +131,23 @@
                             const duration = 2000; // 2 seconds
                             const startTime = Date.now();
                             const startValue = 0;
-                    
+
                             const animate = () => {
                                 const currentTime = Date.now();
                                 const elapsed = currentTime - startTime;
                                 const progress = Math.min(elapsed / duration, 1);
-                    
+
                                 // Easing function for smooth animation
                                 const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                                 stat.value = Math.floor(startValue + (stat.target - startValue) * easeOutQuart);
-                    
+
                                 if (progress < 1) {
                                     requestAnimationFrame(animate);
                                 } else {
                                     stat.value = stat.target;
                                 }
                             };
-                    
+
                             requestAnimationFrame(animate);
                         },
                         init() {
@@ -162,7 +162,7 @@
                                     }
                                 });
                             }, { threshold: 0.5 });
-                    
+
                             observer.observe(this.$el);
                         }
                     }">
@@ -189,8 +189,8 @@
                                 srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
                                 type="image/webp">
                             <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
-                                style="aspect-ratio: 1.618/1;">
+                                alt="{{ isset($about->title) ? $about->title : 'About Our Company' }}"
+                                class="rounded-2xl shadow-2xl w-full object-cover" style="aspect-ratio: 1.618/1;">
                         </picture>
                     </div>
                 </div>
@@ -206,7 +206,7 @@
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify" title="{{ $about->vision }}">
                             {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
                         </p>
                     </div>
@@ -220,7 +220,7 @@
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify">
+                        <p class="text-white/90 text-lg leading-relaxed text-justify" title="{{ $about->mission }}">
                             {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
                         </p>
                     </div>
@@ -280,7 +280,8 @@
                                 :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
                             <p class="leading-relaxed text-justify line-clamp-3"
                                 style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'">
+                                :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'"
+                                title="{{ $service->description }}">
                                 {{ $service->description }}</p>
 
 
@@ -335,9 +336,11 @@
                         </div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-[#060771]"
-                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
+                                title="{{ $portfolio->title }}">
                                 {{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed text-justify line-clamp-3">
+                            <p class="text-gray-600 leading-relaxed text-justify line-clamp-3"
+                                title="{{ $portfolio->description }}">
                                 {{ Str::limit($portfolio->description, 100) }}</p>
                         </div>
                     </div>
@@ -434,7 +437,8 @@
                             <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
                                 style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                 :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
-                                <p class="text-white text-sm font-medium">{{ $image->caption }}</p>
+                                <p class="text-white text-sm font-medium" title="{{ $image->caption }}">
+                                    {{ $image->caption }}</p>
                             </div>
                         @endif
                     </div>
@@ -514,7 +518,7 @@
 
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-3 text-[#060771] line-clamp-2"
-                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);" title="{{ $post->title }}">
                                 {{ $post->title }}
                             </h3>
                             <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3 text-justify">
@@ -662,6 +666,9 @@
             </div>
         </div>
     </section>
+
+
+
 @endsection
 
 @section('scripts')

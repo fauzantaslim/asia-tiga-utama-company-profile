@@ -30,7 +30,7 @@
 
     <!-- Portfolio Content Section -->
     <section class="py-24 bg-white" x-data="{ selectedPortfolio: null }">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 ">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
@@ -104,4 +104,5 @@
             </div>
         </div>
     </section>
+
 @endsection

@@ -40,12 +40,8 @@
                     <div class="text-gray-700 text-lg leading-relaxed mb-6 text-justify">
                         {{ isset($about->description) ? $about->description : 'Kami adalah perusahaan profesional yang berdedikasi untuk menyediakan layanan berkualitas kepada klien kami. Dengan bertahun-tahun pengalaman di industri ini, kami telah membangun reputasi kuat dalam hal keunggulan dan kepuasan pelanggan.' }}
                     </div>
-                    <!-- Read more link -->
-                    <a href="{{ route('about') }}"
-                        class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2">
-                        Baca Selengkapnya
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+
+
                 </div>
 
                 <div data-aos="fade-left" data-aos-duration="1000" class="relative">
@@ -59,8 +55,8 @@
                                 srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
                                 type="image/webp">
                             <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                alt="About Us" class="rounded-2xl shadow-2xl w-full object-cover"
-                                style="aspect-ratio: 1.618/1;">
+                                alt="{{ isset($about->title) ? $about->title : 'About Our Company' }}"
+                                class="rounded-2xl shadow-2xl w-full object-cover" style="aspect-ratio: 1.618/1;">
                         </picture>
                     </div>
                 </div>
@@ -98,4 +94,5 @@
             </div>
         </div>
     </section>
+
 @endsection
