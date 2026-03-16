@@ -51,7 +51,7 @@ class CompanyInfoForm
                     ->collection('company_profile')
                     ->label('Company Profile (PDF)')
                     ->acceptedFileTypes(['application/pdf'])
-                    ->maxSize(10240), // 10MB limit
+                    ->maxSize(15360), // 10MB limit
             ]);
     }
 }

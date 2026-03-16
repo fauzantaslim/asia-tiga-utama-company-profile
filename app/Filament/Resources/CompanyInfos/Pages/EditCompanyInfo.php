@@ -80,7 +80,7 @@ class EditCompanyInfo extends Page implements HasForms
                 ->collection('company_profile')
                 ->label('Company Profile (PDF)')
                 ->acceptedFileTypes(['application/pdf'])
-                ->maxSize(10240),
+                ->maxSize(15360),
         ];
     }
 
