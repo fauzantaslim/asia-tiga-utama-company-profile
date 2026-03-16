@@ -12,21 +12,25 @@ class GalleryImagesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        GalleryImage::create([
-            'caption' => 'Team Meeting',
-        ]);
+        $captions = [
+            'Team Meeting',
+            'Office Space',
+            'Client Presentation',
+            'Workshop',
+        ];
 
-        GalleryImage::create([
-            'caption' => 'Office Space',
-        ]);
+        foreach ($captions as $caption) {
+            GalleryImage::create([
+                'caption' => $caption,
+            ]);
+        }
 
-        GalleryImage::create([
-            'caption' => 'Client Presentation',
-        ]);
-
-        GalleryImage::create([
-            'caption' => 'Workshop',
-        ]);
+        $faker = \Faker\Factory::create('id_ID');
+        for ($i = 0; $i < 16; $i++) {
+            GalleryImage::create([
+                'caption' => ucwords($faker->words(rand(2, 4), true)),
+            ]);
+        }
 
         // You can add media later via Filament admin panel
     }

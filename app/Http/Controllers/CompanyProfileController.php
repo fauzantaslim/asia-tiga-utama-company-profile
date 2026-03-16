@@ -125,7 +125,7 @@ class CompanyProfileController extends Controller
 
     public function portfolio()
     {
-        $portfolios = Portfolio::where('is_published', true)->paginate(6);
+        $portfolios = Portfolio::where('is_published', true)->paginate(request('per_page', 6));
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -157,7 +157,7 @@ class CompanyProfileController extends Controller
 
     public function gallery()
     {
-        $galleryImages = GalleryImage::paginate(6);
+        $galleryImages = GalleryImage::paginate(request('per_page', 8));
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -220,7 +220,10 @@ class CompanyProfileController extends Controller
 
     public function blog()
     {
-        $blogPosts = BlogPost::where('is_published', true)->paginate(6);
+        $latestPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get();
+        // Using inRandomOrder as fallback for popular posts since there's no view count column
+        $popularPosts = BlogPost::where('is_published', true)->inRandomOrder()->take(5)->get();
+        $blogPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->paginate(request('per_page', 6));
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -247,13 +250,13 @@ class CompanyProfileController extends Controller
         JsonLd::setType('Blog');
         JsonLd::setUrl(url()->current());
 
-        return view('blog', compact('blogPosts', 'companyInfo'));
+        return view('blog', compact('latestPosts', 'popularPosts', 'blogPosts', 'companyInfo'));
     }
 
     public function blogDetail($slug)
     {
         $post = BlogPost::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        $relatedPosts = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->limit(3)->get();
+        $relatedPosts = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->limit(5)->get();
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags

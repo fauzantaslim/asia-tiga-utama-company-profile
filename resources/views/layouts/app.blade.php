@@ -204,7 +204,8 @@
     {{-- GLASSMORPHISM NAVBAR --}}
     <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }" x-init="$watch('mobileMenuOpen', value => console.log('Menu:', value))">
         <div class="container mx-auto px-4 lg:px-8">
-            <div class="flex items-center justify-between h-24">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between h-24">
 
                 {{-- LEFT: Logo & Brand Name --}}
                 <a href="/" class="logo-wrapper flex items-center gap-3 group"
@@ -314,6 +315,7 @@
                     </a>
                 </div>
             </div>
+            </div>
         </div>
     </header>
 
@@ -325,7 +327,8 @@
     {{-- FOOTER --}}
     <footer class="bg-[#060771] text-gray-300 py-10 " data-aos="fade-up">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-4 gap-6">
                 <div data-aos="fade-right" data-aos-delay="100">
                     <div class="flex items-center gap-3 mb-4">
                         @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
@@ -447,6 +450,7 @@
                 {{ isset($companyInfo) && $companyInfo->website_name ? $companyInfo->website_name : 'Perusahaan' }}.
                 Hak
                 Cipta Dilindungi.
+            </div>
             </div>
         </div>
     </footer>

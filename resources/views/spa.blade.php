@@ -72,24 +72,26 @@
         </div>
 
         <div class="container mx-auto px-4 text-center relative z-10 h-full flex flex-col justify-center">
-            <div data-aos="fade-down" data-aos-duration="1000">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
-                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->title) ? $hero->first()->title : 'Welcome to Our Company' }}
-                </h1>
-            </div>
+            <div class="max-w-7xl mx-auto">
+                <div data-aos="fade-down" data-aos-duration="1000">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->title) ? $hero->first()->title : 'Welcome to Our Company' }}
+                    </h1>
+                </div>
 
-            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
-                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->subtitle) ? $hero->first()->subtitle : 'We provide excellent services for your business needs' }}
-                </p>
-            </div>
+                <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                    <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
+                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->subtitle) ? $hero->first()->subtitle : 'We provide excellent services for your business needs' }}
+                    </p>
+                </div>
 
-            <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
-                <a href="#contact"
-                    class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                    {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->button_text) ? $hero->first()->button_text : 'Get Started' }}
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
+                <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
+                    <a href="#contact"
+                        class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
+                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->button_text) ? $hero->first()->button_text : 'Get Started' }}
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -102,7 +104,8 @@
 
     <!-- About Us and Vision Mission Section with Golden Ratio Layout -->
     <section id="about" class="py-24 bg-white">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <!-- About Section -->
             <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
                 <div data-aos="fade-right" data-aos-duration="1000">
@@ -227,13 +230,15 @@
                 </div>
             </div>
         </div>
+        </div>
 
 
     </section>
 
     <!-- Services Section with Horizontal Scroll -->
     <section id="services" class="py-24 bg-[#FFE08F]" x-data="{ scrollPosition: 0 }">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <div>
                     <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami
@@ -305,6 +310,7 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- See all services link -->
         <div class="text-center mt-8" data-aos="fade-up">
@@ -318,7 +324,8 @@
 
     <!-- Portfolio Section with Horizontal Scroll -->
     <section id="portfolio" class="py-24 bg-white" x-data="{ selectedPortfolio: null }">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <div>
                     <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pekerjaan Kami</span>
@@ -380,6 +387,7 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- Portfolio Detail Modal -->
         <div x-show="selectedPortfolio" x-transition:enter="transition ease-out duration-300"
@@ -424,7 +432,8 @@
 
     <!-- Gallery Section with Horizontal Scroll -->
     <section id="gallery" class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <div>
                     <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Cerita Visual</span>
@@ -496,6 +505,7 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- See all gallery link -->
         <div class="text-center mt-8" data-aos="fade-up">
@@ -527,14 +537,15 @@
 
     <!-- Blog Section with Horizontal Scroll -->
     <section id="blog" class="py-24 bg-white">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <div>
                     <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Wawasan & Update</span>
                     <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
                         Postingan Blog Terbaru
                     </h2>
-                    <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan berita dan wawasan terbaru
+                    <p class="text-gray-600 text-lg max-w-2xl mx-auto">Tetap terupdate dengan blog dan wawasan terbaru
                         kami
                     </p>
                 </div>
@@ -607,6 +618,8 @@
                 </div>
             </div>
         </div>
+        </div>
+        </div>
 
         <!-- See all blog posts link -->
         <div class="text-center mt-8" data-aos="fade-up">
@@ -620,7 +633,8 @@
 
     <!-- Contact and Maps Section -->
     <section id="contact" class="py-24 bg-[#FFE08F]">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Mari Terhubung</span>
                 <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">

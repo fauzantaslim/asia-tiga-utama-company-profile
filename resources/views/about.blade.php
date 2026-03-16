@@ -6,31 +6,55 @@
 
 @section('content')
     <!-- About Header Section -->
-    <section class="relative py-24 overflow-hidden bg-[#BF1A1A]">
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl animate-pulse"
-                style="animation-delay: 1s;"></div>
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden group">
+        <!-- Background Image & Overlay -->
+        <div class="absolute inset-0 bg-[#0B2F23]">
+            <picture>
+                <source srcset="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                <img src="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                     alt="Background Tentang Kami" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity">
+            </picture>
+
+            <!-- Gradient to ensure readability -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-[#060771]/50 z-10"></div>
         </div>
 
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div data-aos="fade-down" data-aos-duration="1000">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
-                    Tentang Kami
-                </h1>
-            </div>
+        <div class="container mx-auto px-4 lg:px-8 relative z-20">
+            <div class="max-w-7xl mx-auto">
+                <nav aria-label="Breadcrumb" class="mb-6 flex" data-aos="fade-in" data-aos-duration="1000">
+                    <ol class="inline-flex items-center space-x-2 text-sm font-medium">
+                        <li>
+                            <a href="{{ route('home') }}" class="text-[#BF1A1A] font-bold transition-colors">Beranda</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-chevron-right text-xs mx-1 text-white text-[10px]"></i>
+                        </li>
+                        <li class="text-white font-bold opacity-90">
+                            Tentang Kami
+                        </li>
+                    </ol>
+                </nav>
 
-            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
-                    Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami
-                </p>
+                <div data-aos="fade-up" data-aos-duration="1000">
+                    <h1 class="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold mb-4 text-white leading-tight font-serif" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                        Tentang Kami
+                    </h1>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                    <p class="text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed">
+                        Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- About Content Section -->
     <section class="py-24 bg-white">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div data-aos="fade-right" data-aos-duration="1000">
                     <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Siapa Kami</span>
@@ -101,6 +125,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 

@@ -16,6 +16,10 @@ import "nprogress/nprogress.css";
 // If you want Alpine's instance to be available globally.
 window.Alpine = Alpine;
 
+// Make Swiper available globally
+window.Swiper = Swiper;
+window.SwiperModules = { Autoplay, EffectFade, Navigation, Pagination };
+
 // Configure NProgress
 NProgress.configure({
     showSpinner: false,

@@ -6,40 +6,76 @@
 @section('og-image', $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl() :
     'https://via.placeholder.com/1200x630.png')
 
+    @php
+        $image = $post->getFirstMedia('image');
+    @endphp
+
 @section('content')
     <!-- Blog Detail Header -->
-    <section class="relative py-24 overflow-hidden bg-[#BF1A1A]">
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl animate-pulse"
-                style="animation-delay: 1s;"></div>
+    <section class="relative pt-28 pb-20 overflow-hidden bg-[#060771]">
+        <div class="absolute inset-0 z-0 bg-[#060771]">
+            <picture>
+                <source srcset="{{ $image ? $image->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                <img src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}" alt="Background" class="w-full h-full object-cover opacity-30 mix-blend-luminosity">
+            </picture>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-transparent"></div>
         </div>
 
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div data-aos="fade-down" data-aos-duration="1000">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-                    {{ $post->title }}
-                </h1>
-            </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="max-w-4xl">
+                    <!-- Breadcrumbs -->
+                <nav aria-label="Breadcrumb" class="mb-6 flex" data-aos="fade-down" data-aos-duration="1000">
+                    <ol class="inline-flex items-center space-x-2 text-sm">
+                        <li>
+                            <a href="{{ url('/') }}" class="text-[#BF1A1A] font-bold">Beranda</a>
+                        </li>
+                        <li>
+                            <span class="text-white font-bold mx-1"><i class="fas fa-chevron-right text-[10px]"></i></span>
+                        </li>
+                        <li>
+                            <a href="{{ route('blog.index') }}" class="text-[#BF1A1A] font-bold">Blog</a>
+                        </li>
+                        <li>
+                            <span class="text-white font-bold mx-1"><i class="fas fa-chevron-right text-[10px]"></i></span>
+                        </li>
+                        <li aria-current="page">
+                            <span class="text-white font-semibold">{{ $post->title }}</span>
+                        </li>
+                    </ol>
+                </nav>
 
-            <div class="flex justify-center items-center space-x-6 mb-10" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <div class="flex items-center text-white/90">
-                    <i class="far fa-calendar-alt mr-2"></i>
-                    <span>{{ $post->created_at->format('F d, Y') }}</span>
+                <div data-aos="fade-down" data-aos-duration="1000" data-aos-delay="100">
+                    <h1 class="text-3xl md:text-5xl font-bold mb-8 text-white leading-tight">
+                        {{ $post->title }}
+                    </h1>
                 </div>
 
-                <div class="flex items-center text-white/90">
-                    <i class="far fa-user mr-2"></i>
-                    <span>{{ $post->author ?? 'Admin' }}</span>
-                </div>
-            </div>
+                <div class="flex flex-col space-y-4" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                    <div class="flex flex-col space-y-3">
+                        <div class="flex items-center text-white/90 text-sm">
+                            <i class="far fa-calendar mr-3 text-white/70"></i>
+                            <span>{{ \Carbon\Carbon::parse($post->created_at)->locale('id')->translatedFormat('l, d F Y') }}</span>
+                        </div>
+                        <div class="flex items-center text-white/90 text-sm">
+                            <i class="fas fa-pen-nib mr-3 text-white/70"></i>
+                            <span>Penulis: {{ $post->author ?? 'Admin Asia Tiga Utama' }}</span>
+                        </div>
+                    </div>
 
-            <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
-                <a href="{{ route('blog.index') }}"
-                    class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-all duration-300">
-                    <i class="fas fa-arrow-left mr-2"></i> Kembali ke Blog
-                </a>
+                    <div class="flex items-center space-x-6 pt-4">
+                        <!-- Views -->
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white bg-white/5">
+                                <i class="far fa-eye text-sm"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-white font-bold text-sm">{{ $post->views_count ?? '152' }} kali</span>
+                                <span class="text-white/70 text-xs">Berita ini dilihat</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -47,108 +83,92 @@
     <!-- Blog Content Section -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-8xl mx-auto">
-                <div class="mb-12 rounded-3xl overflow-hidden shadow-2xl" data-aos="fade-up" data-aos-duration="1000">
-                    <picture>
-                        <source
-                            srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                            type="image/webp">
-                        <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                            alt="{{ $post->title }}" class="w-full h-auto object-cover" style="aspect-ratio: 2/1;">
-                    </picture>
-                </div>
-
-                <div class="prose prose-lg max-w-none">
-                    {!! $post->content !!}
-                </div>
-
-                <!-- Social Share -->
-                <div class="mt-12 pt-8 border-t border-gray-200" data-aos="fade-up" data-aos-delay="400"
-                    data-aos-duration="1000">
-                    <h3 class="text-xl font-bold mb-4 text-[#060771]">Bagikan artikel ini</h3>
-                    <div class="flex space-x-4">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
-                            target="_blank"
-                            class="w-12 h-12 bg-[#060771] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
-                            <i class="fab fa-facebook-f text-xl"></i>
-                        </a>
-                        <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($post->title) }}"
-                            target="_blank"
-                            class="w-12 h-12 bg-[#FF6C0C] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-
-                        <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current() . ' - ' . Str::limit(strip_tags($post->content), 100)) }}"
-                            target="_blank"
-                            class="w-12 h-12 bg-[#25D366] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg">
-                            <i class="fab fa-whatsapp text-xl"></i>
-                        </a>
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12">
+                <!-- Main Content (Left Side) -->
+                <div class="w-full lg:w-8/12">
+                    <div class=" flex-shrink-0 overflow-hidden shadow-sm bg-gray-100 rounded-2xl p-1 border border-gray-100" data-aos="fade-up" data-aos-duration="1000">
+                        <picture>
+                            <source
+                                srcset="{{ $image ? $image->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                type="image/webp">
+                            <img src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-xl" style="aspect-ratio: 2/1;">
+                        </picture>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Related Posts Section -->
-    <section class="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Artikel Terkait</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                    Anda Mungkin Juga Menyukai
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Jelajahi lebih banyak artikel dari koleksi kami</p>
-            </div>
+                    <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed my-8" data-aos="fade-up" data-aos-duration="1000">
+                        {!! $post->content !!}
+                    </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                @forelse($relatedPosts as $index => $relatedPost)
-                    <article data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
-                        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
-                        style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
-                            <picture>
-                                <source
-                                    srcset="{{ $relatedPost->getFirstMedia('image') ? $relatedPost->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                    type="image/webp">
-                                <img src="{{ $relatedPost->getFirstMedia('image') ? $relatedPost->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                    alt="{{ $relatedPost->title }}" class="w-full h-full object-cover"
-                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                            </picture>
-
-                            <!-- Date Badge -->
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
-                                style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                <span class="text-sm font-bold text-[#060771]">
-                                    <i class="far fa-calendar-alt mr-1"></i>
-                                    {{ $relatedPost->created_at->format('M d, Y') }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-[#060771] line-clamp-2"
-                                style="transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
-                                {{ $relatedPost->title }}
-                            </h3>
-                            <p class="text-gray-600 mb-4 leading-relaxed line-clamp-3">
-                                {{ Str::limit(strip_tags($relatedPost->content), 120) }}
-                            </p>
-
-                            <a href="{{ route('blog.detail', $relatedPost->slug) }}"
-                                class="inline-flex items-center text-[#BF1A1A] font-semibold hover:text-[#FF6C0C] gap-2"
-                                style="transition: gap 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                                Baca Selengkapnya
-                                <i class="fas fa-arrow-right"
-                                    style="transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
+                    <!-- Social Share -->
+                    <div class="mt-12 pt-8 border-t border-gray-200" data-aos="fade-up" data-aos-delay="200"
+                        data-aos-duration="1000">
+                        <h3 class="text-xl font-bold mb-4 text-[#060771]">Bagikan artikel ini</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+                                target="_blank"
+                                class="w-12 h-12 bg-[#060771] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-md">
+                                <i class="fab fa-facebook-f text-xl"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($post->title) }}"
+                                target="_blank"
+                                class="w-12 h-12 bg-[#00acee] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-md">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current() . ' - ' . Str::limit(strip_tags($post->content), 100)) }}"
+                                target="_blank"
+                                class="w-12 h-12 bg-[#25D366] rounded-xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-md">
+                                <i class="fab fa-whatsapp text-xl"></i>
                             </a>
                         </div>
-                    </article>
-                @empty
-                    <div class="col-span-3 text-center py-12 bg-[#FFE08F]">
-                        <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500 text-lg">Tidak ada postingan terkait yang tersedia saat ini.</p>
                     </div>
-                @endforelse
+                </div>
+
+                <!-- Sidebar (Right Side) -->
+                <div class="w-full lg:w-4/12">
+                    <div class="sticky top-28" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                        <div class="mb-4 border-b border-gray-200 pb-2 relative">
+                            <h3 class="text-xl font-bold text-[#060771] uppercase inline-block m-0">
+                                Blog Terkait
+                            </h3>
+                            <div class="absolute -bottom-[1px] left-0 w-20 h-1 bg-[#BF1A1A]"></div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            @forelse($relatedPosts->take(5) as $relatedPost)
+                            @php
+                                $relatedImage = $relatedPost->getFirstMedia('image');
+                            @endphp
+                            <a href="{{ route('blog.detail', $relatedPost->slug) }}" class="group flex space-x-4 items-start py-5 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                                <div class="w-24 h-24 flex-shrink-0 overflow-hidden shadow-sm bg-gray-100 rounded-2xl p-1 border border-gray-100">
+                                    <picture>
+                                        <source srcset="{{ $relatedImage ? $relatedImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                                        <img src="{{ $relatedImage ? $relatedImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                            alt="{{ $relatedPost->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-xl">
+                                    </picture>
+                                </div>
+                                <div class="flex-1 min-w-0 pt-1">
+                                    <h4 class="text-[15px] font-bold text-[#060771] group-hover:text-[#BF1A1A] transition-colors leading-snug mb-2 line-clamp-3">
+                                        {{ $relatedPost->title }}
+                                    </h4>
+                                    <div class="flex items-center text-gray-500 text-[13px] gap-1">
+                                        <span>{{ $relatedPost->category->name ?? 'Pemerintahan' }}</span>
+                                        <span class="px-1">|</span>
+                                        <span>{{ \Carbon\Carbon::parse($relatedPost->created_at)->diffForHumans() }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                            @empty
+                            <div class="text-center py-8 bg-gray-50 rounded-xl rounded-2xl border border-dashed border-gray-200">
+                                <i class="fas fa-newspaper text-3xl text-gray-300 mb-2"></i>
+                                <p class="text-gray-500 text-sm">Belum ada berita terkait.</p>
+                            </div>
+                            @endforelse
+                        </div>
+
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </section>
