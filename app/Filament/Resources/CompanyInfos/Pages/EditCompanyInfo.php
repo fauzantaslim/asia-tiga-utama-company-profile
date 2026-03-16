@@ -75,6 +75,12 @@ class EditCompanyInfo extends Page implements HasForms
             SpatieMediaLibraryFileUpload::make('logo_website')
                 ->collection('logo_website')
                 ->image(),
+
+            SpatieMediaLibraryFileUpload::make('company_profile')
+                ->collection('company_profile')
+                ->label('Company Profile (PDF)')
+                ->acceptedFileTypes(['application/pdf'])
+                ->maxSize(10240),
         ];
     }
 

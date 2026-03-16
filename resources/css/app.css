@@ -11,6 +11,8 @@
         "Noto Color Emoji";
 }
 
+@plugin "@tailwindcss/typography";
+
 /* NProgress custom styles */
 #nprogress .bar {
     background: #bf1a1a; /* Primary red color from your design */

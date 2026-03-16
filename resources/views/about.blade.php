@@ -66,15 +66,24 @@
                     </div>
 
                     <!-- Download Company Profile Button -->
-                    <div class="mt-8">
-                        <a href="{{ asset('storage/company-profile.pdf') }}"
+                    @if(isset($companyInfo) && $companyInfo->hasMedia('company_profile'))
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="{{ $companyInfo->getFirstMediaUrl('company_profile') }}"
                             class="inline-flex items-center px-6 py-3 bg-[#060771] text-white font-semibold rounded-lg shadow-lg hover:bg-[#040550] transition-all duration-300 transform hover:-translate-y-1"
-                            download>
+                            download="Company_Profile_Asia_Tiga_Utama.pdf"
+                            target="_blank">
                             <i class="fas fa-file-pdf mr-2"></i>
                             Unduh Profil Perusahaan
                             <i class="fas fa-download ml-2"></i>
                         </a>
+                        <button type="button" 
+                                onclick="document.getElementById('flipbook-section').scrollIntoView({behavior: 'smooth'})"
+                                class="inline-flex items-center px-6 py-3 bg-white text-[#060771] border-2 border-[#060771] font-semibold rounded-lg shadow-lg hover:bg-gray-50 transition-all duration-300 transform hover:-translate-y-1">
+                            <i class="fas fa-book-open mr-2"></i>
+                            Baca Online
+                        </button>
                     </div>
+                    @endif
                 </div>
 
                 <div data-aos="fade-left" data-aos-duration="1000" class="relative">
@@ -105,9 +114,9 @@
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify">
-                            {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
-                        </p>
+                        <div class="text-white/90 text-lg leading-relaxed text-justify prose prose-invert max-w-none">
+                            {!! isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' !!}
+                        </div>
                     </div>
                 </div>
 
@@ -119,14 +128,60 @@
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify">
-                            {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
-                        </p>
+                        <div class="text-white/90 text-lg leading-relaxed text-justify prose prose-invert max-w-none">
+                            {!! isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' !!}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         </div>
     </section>
+
+    @if(isset($companyInfo) && $companyInfo->hasMedia('company_profile'))
+    <!-- Flipbook Section -->
+    <section id="flipbook-section" class="py-24 bg-gray-50 border-t border-gray-100">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12" data-aos="fade-up">
+                <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Pratinjau Dokumen</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-3 text-[#060771]">
+                    Profil Perusahaan
+                </h2>
+                <p class="text-gray-600 mt-4">Baca dokumen profil perusahaan kami secara interaktif langsung dari browser Anda.</p>
+            </div>
+            
+            <div class="flex justify-center flex-col items-center max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                <!-- Loading Indicator -->
+                <div id="flipbook-loading" class="text-center py-16 bg-white w-full rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center justify-center">
+                    <i class="fas fa-circle-notch fa-spin fa-3x text-[#060771] mb-6"></i>
+                    <p class="text-lg text-gray-700 font-medium">Mempersiapkan dokumen interaktif...</p>
+                    <p class="text-sm text-gray-500 mt-2">Halaman sedang dimuat</p>
+                </div>
+
+                <!-- Flipbook Container -->
+                <div class="w-full relative flex justify-center mt-8">
+                    <div id="flipbook-container" class="hidden w-full max-w-[1000px] flex justify-center" data-pdf-url="{{ $companyInfo->getFirstMediaUrl('company_profile') }}">
+                        <!-- Flipbook will be injected here -->
+                    </div>
+                </div>
+                
+                <!-- Controls -->
+                <div id="flipbook-controls" class="mt-12 items-center justify-center space-x-6 hidden bg-white px-8 py-4 rounded-full shadow-lg border border-gray-100">
+                    <button id="btn-prev" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-[#060771] rounded-full hover:bg-[#060771] hover:text-white transition-colors focus:outline-none">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="text-gray-800 font-bold min-w-[120px] text-center">
+                        <span id="page-current" class="text-[#060771]">1</span> <span class="text-gray-400 font-normal mx-1">/</span> <span id="page-total">-</span>
+                    </span>
+                    <button id="btn-next" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-[#060771] rounded-full hover:bg-[#060771] hover:text-white transition-colors focus:outline-none">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <!-- Small reminder to click on sides -->
+                    <span class="text-xs text-gray-500 hidden md:block ml-4 italic">atau klik/geser ujung halaman</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
 
 @endsection

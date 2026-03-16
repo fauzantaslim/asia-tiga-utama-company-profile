@@ -78,6 +78,19 @@ document.addEventListener("turbo:load", () => {
             },
         });
     }
+
+    // Initialize Flipbook if container exists
+    const flipbookContainer = document.getElementById("flipbook-container");
+    const pdfUrl = flipbookContainer?.dataset.pdfUrl;
+
+    if (flipbookContainer && pdfUrl && !flipbookContainer.dataset.initialized) {
+        flipbookContainer.dataset.initialized = 'true';
+        import("./flipbook.js").then((module) => {
+            module.initFlipbook(flipbookContainer, pdfUrl);
+        }).catch(err => {
+            console.error("Failed to load flipbook module", err);
+        });
+    }
 });
 
 document.addEventListener("turbo:submit-start", () => {

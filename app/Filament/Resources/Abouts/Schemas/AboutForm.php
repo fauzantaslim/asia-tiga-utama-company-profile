@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Abouts\Schemas;
 
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Schema;
 
 class AboutForm
@@ -15,10 +16,10 @@ class AboutForm
                 Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Textarea::make('vision')
+                RichEditor::make('vision')
                     ->required()
                     ->columnSpanFull(),
-                Textarea::make('mission')
+                RichEditor::make('mission')
                     ->required()
                     ->columnSpanFull(),
                 SpatieMediaLibraryFileUpload::make('image')

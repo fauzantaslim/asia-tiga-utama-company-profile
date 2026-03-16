@@ -30,6 +30,10 @@ class CompanyInfo extends Model implements HasMedia
     {
         $this->addMediaCollection('logo_website')
             ->singleFile();
+
+        $this->addMediaCollection('company_profile')
+            ->singleFile()
+            ->acceptsMimeTypes(['application/pdf']);
     }
 
     public function registerMediaConversions(Media $media = null): void

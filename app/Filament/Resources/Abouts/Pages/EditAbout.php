@@ -10,6 +10,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class EditAbout extends Page implements HasForms
@@ -51,10 +52,10 @@ class EditAbout extends Page implements HasForms
             Textarea::make('description')
                 ->required()
                 ->columnSpanFull(),
-            Textarea::make('vision')
+            RichEditor::make('vision')
                 ->required()
                 ->columnSpanFull(),
-            Textarea::make('mission')
+            RichEditor::make('mission')
                 ->required()
                 ->columnSpanFull(),
             SpatieMediaLibraryFileUpload::make('image')

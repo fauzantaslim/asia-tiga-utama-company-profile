@@ -7,6 +7,7 @@
         "dev": "vite"
     },
     "devDependencies": {
+        "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.1.17",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
@@ -15,10 +16,12 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@hotwired/turbo": "^8.0.13",
         "alpinejs": "^3.15.2",
         "aos": "^2.3.4",
-        "swiper": "^12.0.3",
-        "@hotwired/turbo": "^8.0.13",
-        "nprogress": "^0.2.0"
+        "nprogress": "^0.2.0",
+        "page-flip": "^2.0.7",
+        "pdfjs-dist": "^5.5.207",
+        "swiper": "^12.0.3"
     }
 }

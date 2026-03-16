@@ -45,7 +45,13 @@ class CompanyInfoForm
                     ->imageCropAspectRatio('1:1')
                     ->imageResizeTargetWidth(500)
                     ->imageResizeTargetHeight(500)
-                    ->maxSize(2048) // 2MB limit,
+                    ->maxSize(2048), // 2MB limit
+
+                SpatieMediaLibraryFileUpload::make('company_profile')
+                    ->collection('company_profile')
+                    ->label('Company Profile (PDF)')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(10240), // 10MB limit
             ]);
     }
 }
