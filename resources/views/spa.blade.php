@@ -25,7 +25,7 @@
                         <!-- Check if this hero item has background images -->
                         @if ($heroItem->getMedia('background_image')->count() > 0)
                             <!-- Loop through each background image of this hero item -->
-                            @foreach ($heroItem->getFirstMedia('background_image') as $image)
+                            @foreach ($heroItem->getMedia('background_image') as $image)
                                 <div class="swiper-slide">
                                     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
                                         style="background-image: url('{{ $image->getUrl() }}');">
@@ -187,11 +187,12 @@
                         <div
                             class="absolute -top-6 -left-6 w-full h-full bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl -z-10">
                         </div>
+                        @php $aboutMedia = ($about && $about->getFirstMedia('image')) ? $about->getFirstMedia('image') : null; @endphp
                         <picture>
                             <source
-                                srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                srcset="{{ $aboutMedia ? $aboutMedia->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 type="image/webp">
-                            <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                            <img src="{{ $aboutMedia ? $aboutMedia->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 alt="{{ isset($about->title) ? $about->title : 'About Our Company' }}"
                                 class="rounded-2xl shadow-2xl w-full object-cover" style="aspect-ratio: 1.618/1;">
                         </picture>
@@ -209,9 +210,9 @@
                             <i class="fas fa-eye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Visi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify" title="{{ $about->vision }}">
-                            {{ isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' }}
-                        </p>
+                        <div class="text-white/90 text-lg leading-relaxed text-justify prose prose-invert max-w-none">
+                            {!! isset($about->vision) ? $about->vision : 'Menjadi perusahaan terkemuka di industri kami, dikenal karena inovasi, kualitas, dan kepuasan pelanggan.' !!}
+                        </div>
                     </div>
                 </div>
 
@@ -223,9 +224,9 @@
                             <i class="fas fa-bullseye text-white text-3xl"></i>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 text-white">Misi Kami</h3>
-                        <p class="text-white/90 text-lg leading-relaxed text-justify" title="{{ $about->mission }}">
-                            {{ isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' }}
-                        </p>
+                        <div class="text-white text-lg leading-relaxed text-justify prose prose-invert max-w-none">
+                            {!! isset($about->mission) ? $about->mission : 'Memberikan layanan luar biasa yang melampaui ekspektasi klien kami sambil mempertahankan standar tertinggi integritas dan profesionalisme.' !!}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -354,16 +355,22 @@
                 <div x-ref="portfolioContainer" class="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
                     style="scroll-behavior: smooth;">
                     @forelse($portfolios as $index => $portfolio)
+                        @php
+                            $portfolioImage = $portfolio->getFirstMedia('image');
+                            $portfolioData = $portfolio->toArray();
+                            $portfolioData['image_url'] = $portfolioImage ? $portfolioImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg');
+                            $portfolioData['image_webp_url'] = $portfolioImage ? $portfolioImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg');
+                        @endphp
                         <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
                             class="flex-shrink-0 w-80 group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
                             style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                            @click="selectedPortfolio = {{ json_encode($portfolio) }}">
+                            @click='selectedPortfolio = @json($portfolioData)'>
                             <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
                                 <picture>
                                     <source
-                                        srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                        srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         type="image/webp">
-                                    <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
                                         style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                                 </picture>
@@ -404,13 +411,8 @@
                     </button>
                     <div class="w-full h-96">
                         <picture>
-                            <source
-                                :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image')
-                                    .getUrl('webp') : 'https://via.placeholder.com/800x600.webp'"
-                                type="image/webp">
-                            <img :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image').getUrl(
-                                'preview') : 'https://via.placeholder.com/800x600'"
-                                class="w-full h-full object-cover">
+                            <source :src="selectedPortfolio?.image_webp_url" type="image/webp">
+                            <img :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
                         </picture>
                     </div>
                 </div>
@@ -464,18 +466,21 @@
                         <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" data-aos-duration="800"
                             class="flex-shrink-0 w-80 group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                             style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
-                            @mouseenter="imageHover = true" @mouseleave="imageHover = false"
-                            @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
-                            <picture>
-                                <source
-                                    srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                    type="image/webp">
-                                <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                    alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
-                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                    :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' :
-                                        'transform: scale(1) rotate(0deg)'">
-                            </picture>
+                            @mouseenter="imageHover = true" @mouseleave="imageHover = false">
+                            <a href="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl() : asset('images/placeholders/no-image-placeholder.svg') }}"
+                               data-fancybox="gallery"
+                               data-caption="{{ $image->caption ?? '' }}"
+                               class="block w-full h-full">
+                                <picture>
+                                    <source
+                                        srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                        type="image/webp">
+                                    <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                        alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                                        style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                        :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' :
+                                            'transform: scale(1) rotate(0deg)'">
+                                </picture>
 
                             <!-- Overlay with Icon -->
                             <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
@@ -488,13 +493,14 @@
                             </div>
 
                             @if ($image->caption)
-                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"
                                     style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                     :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
                                     <p class="text-white text-sm font-medium" title="{{ $image->caption }}">
                                         {{ $image->caption }}</p>
                                 </div>
                             @endif
+                            </a>
                         </div>
                     @empty
                         <div class="text-center py-12" data-aos="fade-up">
@@ -514,24 +520,6 @@
                 Lihat Semua
                 <i class="fas fa-arrow-right"></i>
             </a>
-        </div>
-
-        <!-- Lightbox Modal -->
-        <div x-show="lightbox" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="lightbox = false"
-            class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            style="display: none;">
-            <button @click="lightbox = false"
-                class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="max-w-5xl w-full" @click.stop>
-                <picture>
-                    <source :src="currentImage.replace('/preview', '/webp')" type="image/webp">
-                    <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
-                </picture>
-            </div>
         </div>
     </section>
 
@@ -573,9 +561,9 @@
                             <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
                                 <picture>
                                     <source
-                                        srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                        srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         type="image/webp">
-                                    <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                    <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         alt="{{ $post->title }}" class="w-full h-full object-cover"
                                         style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                                 </picture>

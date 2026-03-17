@@ -10,8 +10,8 @@
         <!-- Background Image & Overlay -->
         <div class="absolute inset-0 bg-[#0B2F23]">
             <picture>
-                <source srcset="{{ asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                <img src="{{ asset('images/placeholders/no-image-placeholder.svg') }}"
+                <source srcset="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                <img src="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                      alt="Background Layanan Kami" 
                      class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity">
             </picture>

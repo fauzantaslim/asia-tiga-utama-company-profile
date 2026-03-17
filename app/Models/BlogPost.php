@@ -16,7 +16,8 @@ class BlogPost extends Model implements HasMedia
         'title',
         'slug',
         'content',
-        'is_published'
+        'is_published',
+        'views_count'
     ];
 
     public function registerMediaCollections(): void

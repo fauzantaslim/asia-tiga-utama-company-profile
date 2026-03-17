@@ -10,8 +10,8 @@
         <!-- Background Image & Overlay -->
         <div class="absolute inset-0 bg-[#0B2F23]">
             <picture>
-                <source srcset="{{ asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                <img src="{{ asset('images/placeholders/no-image-placeholder.svg') }}"
+                <source srcset="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                <img src="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                      alt="Background Galeri" 
                      class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity">
             </picture>
@@ -68,20 +68,26 @@
             <div id="gallery-posts-container">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 @forelse($galleryImages as $index => $image)
+                @php
+                    $galleryImage = $image->getFirstMedia('image');
+                @endphp
                     <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" data-aos-duration="800"
                         class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);" x-data="{ imageHover: false }"
-                        @mouseenter="imageHover = true" @mouseleave="imageHover = false"
-                        @click="lightbox = true; currentImage = '{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}'">
-                        <picture>
-                            <source
-                                srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
-                                type="image/webp">
-                            <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
-                                alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
-                                style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
-                        </picture>
+                        @mouseenter="imageHover = true" @mouseleave="imageHover = false">
+                        <a href="{{ $galleryImage ? $galleryImage->getUrl() : asset('images/placeholders/no-image-placeholder.svg') }}" 
+                           data-fancybox="gallery" 
+                           data-caption="{{ $image->caption ?? '' }}"
+                           class="block w-full h-full">
+                            <picture>
+                                <source
+                                    srcset="{{ $galleryImage ? $galleryImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    type="image/webp">
+                                <img src="{{ $galleryImage ? $galleryImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
+                                    style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                                    :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">
+                            </picture>
 
                         <!-- Overlay with Icon -->
                         <div class="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex items-center justify-center"
@@ -93,12 +99,13 @@
                         </div>
 
                         @if ($image->caption)
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent"
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"
                                 style="transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                 :style="imageHover ? 'transform: translateY(0)' : 'transform: translateY(100%)'">
                                 <p class="text-white text-sm font-medium">{{ $image->caption }}</p>
                             </div>
                         @endif
+                        </a>
                     </div>
                 @empty
                     <div class="col-span-4 text-center py-12" data-aos="fade-up">
@@ -248,21 +255,6 @@
             </div>
         </div>
 
-        <!-- Lightbox Modal -->
-        <div x-show="lightbox" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="lightbox = false"
-            class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            style="display: none;">
-            <button @click="lightbox = false"
-                class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="max-w-5xl w-full" @click.stop>
-                <picture>
-                    <source :src="currentImage.replace('/preview', '/webp')" type="image/webp">
-                    <img :src="currentImage" class="w-full rounded-2xl shadow-2xl">
-                </picture>
             </div>
         </div>
     </section>

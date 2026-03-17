@@ -70,7 +70,7 @@
                                 <i class="far fa-eye text-sm"></i>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-sm">{{ $post->views_count ?? '152' }} kali</span>
+                                <span class="text-white font-bold text-sm">{{ $post->views_count }} kali</span>
                                 <span class="text-white/70 text-xs">Berita ini dilihat</span>
                             </div>
                         </div>

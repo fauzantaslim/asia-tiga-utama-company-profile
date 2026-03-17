@@ -25,6 +25,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     @googlefonts
     @stack('styles')
 
@@ -456,8 +457,15 @@
     </footer>
 
     @stack('scripts')
-
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
+        Fancybox.bind('[data-fancybox="gallery"]', {
+            // Options
+            Thumbs: {
+                type: "classic",
+            },
+        });
+        
         // Add active state to nav links based on scroll
         const sections = document.querySelectorAll('section[id]');
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->longText('content');
             $table->boolean('is_published')->default(false);
+            $table->unsignedBigInteger('views_count')->default(0);
             $table->timestamps();
         });
     }

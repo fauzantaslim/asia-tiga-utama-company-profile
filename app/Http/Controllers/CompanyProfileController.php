@@ -94,6 +94,7 @@ class CompanyProfileController extends Controller
     public function services()
     {
         $services = Service::orderBy('order')->paginate(6);
+        $about = About::first();
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -120,12 +121,13 @@ class CompanyProfileController extends Controller
         JsonLd::setType('WebPage');
         JsonLd::setUrl(url()->current());
 
-        return view('services', compact('services', 'companyInfo'));
+        return view('services', compact('services', 'about', 'companyInfo'));
     }
 
     public function portfolio()
     {
         $portfolios = Portfolio::where('is_published', true)->paginate(request('per_page', 6));
+        $about = About::first();
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -152,12 +154,13 @@ class CompanyProfileController extends Controller
         JsonLd::setType('WebPage');
         JsonLd::setUrl(url()->current());
 
-        return view('portfolio', compact('portfolios', 'companyInfo'));
+        return view('portfolio', compact('portfolios', 'about', 'companyInfo'));
     }
 
     public function gallery()
     {
         $galleryImages = GalleryImage::paginate(request('per_page', 8));
+        $about = About::first();
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -184,11 +187,12 @@ class CompanyProfileController extends Controller
         JsonLd::setType('WebPage');
         JsonLd::setUrl(url()->current());
 
-        return view('gallery', compact('galleryImages', 'companyInfo'));
+        return view('gallery', compact('galleryImages', 'about', 'companyInfo'));
     }
 
     public function contact()
     {
+        $about = About::first();
         $companyInfo = CompanyInfo::first();
 
         // SEO Meta Tags
@@ -215,14 +219,14 @@ class CompanyProfileController extends Controller
         JsonLd::setType('WebPage');
         JsonLd::setUrl(url()->current());
 
-        return view('contact', compact('companyInfo'));
+        return view('contact', compact('about', 'companyInfo'));
     }
 
     public function blog()
     {
         $latestPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get();
         // Using inRandomOrder as fallback for popular posts since there's no view count column
-        $popularPosts = BlogPost::where('is_published', true)->inRandomOrder()->take(5)->get();
+        $popularPosts = BlogPost::where('is_published', true)->orderBy('views_count', 'desc')->take(5)->get();
         $blogPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->paginate(request('per_page', 6));
         $companyInfo = CompanyInfo::first();
 
@@ -256,6 +260,7 @@ class CompanyProfileController extends Controller
     public function blogDetail($slug)
     {
         $post = BlogPost::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        $post->increment('views_count');
         $relatedPosts = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->limit(5)->get();
         $companyInfo = CompanyInfo::first();
 

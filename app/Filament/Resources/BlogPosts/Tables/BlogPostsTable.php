@@ -23,6 +23,9 @@ class BlogPostsTable
                 SpatieMediaLibraryImageColumn::make('image'),
                 IconColumn::make('is_published')
                     ->boolean(),
+                TextColumn::make('views_count')
+                    ->sortable()
+                    ->numeric(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

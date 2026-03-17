@@ -10,8 +10,8 @@
         <!-- Background Image & Overlay -->
         <div class="absolute inset-0 bg-[#0B2F23]">
             <picture>
-                <source srcset="{{ asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                <img src="{{ asset('images/placeholders/no-image-placeholder.svg') }}"
+                <source srcset="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                <img src="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                      alt="Background Portofolio" 
                      class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity">
             </picture>
@@ -66,16 +66,22 @@
             <div id="portfolio-posts-container">
                 <div class="grid md:grid-cols-3 gap-8">
                 @forelse($portfolios as $index => $portfolio)
+                @php
+                    $portfolioImage = $portfolio->getFirstMedia('image');
+                    $portfolioData = $portfolio->toArray();
+                    $portfolioData['image_url'] = $portfolioImage ? $portfolioImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg');
+                    $portfolioData['image_webp_url'] = $portfolioImage ? $portfolioImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg');
+                @endphp
                     <div data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
                         class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl border border-gray-100"
                         style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                        @click="selectedPortfolio = {{ json_encode($portfolio) }}">
+                        @click='selectedPortfolio = @json($portfolioData)'>
                         <div class="relative overflow-hidden" style="aspect-ratio: 1.618/1;">
                             <picture>
                                 <source
-                                    srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
+                                    srcset="{{ $portfolioImage ? $portfolioImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     type="image/webp">
-                                <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                                <img src="{{ $portfolioImage ? $portfolioImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
                                     style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                             </picture>
@@ -252,13 +258,8 @@
                     </button>
                     <div class="w-full h-96">
                         <picture>
-                            <source
-                                :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image')
-                                    .getUrl('webp') : 'https://via.placeholder.com/800x600.webp'"
-                                type="image/webp">
-                            <img :src="selectedPortfolio?.getFirstMedia('image') ? selectedPortfolio.getFirstMedia('image').getUrl(
-                                'preview') : 'https://via.placeholder.com/800x600'"
-                                class="w-full h-full object-cover">
+                            <source :src="selectedPortfolio?.image_webp_url" type="image/webp">
+                            <img :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
                         </picture>
                     </div>
                 </div>
