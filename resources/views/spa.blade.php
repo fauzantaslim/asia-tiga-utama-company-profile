@@ -236,90 +236,155 @@
 
     </section>
 
-    <!-- Services Section with Horizontal Scroll -->
-    <section id="services" class="py-24 bg-[#FFE08F]" x-data="{ scrollPosition: 0 }">
-        <div class="container mx-auto px-4 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <div>
-                    <span class="text-[#060771] font-semibold uppercase tracking-wider text-sm">Apa Yang Kami
-                        Tawarkan</span>
-                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-[#060771]">
-                        Layanan Kami
+    <!-- Services Section (Grid Layout) -->
+    <section id="services" class="py-24 bg-slate-50 relative overflow-hidden">
+        <!-- Add decorative background elements -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-[#FFE08F] opacity-20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#060771] opacity-5 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20" data-aos="fade-up">
+                    <span class="inline-block py-1 px-4 rounded-full bg-[#FFE08F]/30 text-[#060771] font-semibold uppercase tracking-wider text-sm mb-4">Apa Yang Kami Tawarkan</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-[#060771] relative inline-block">
+                        Layanan Unggulan Kami
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-[#BF1A1A] rounded-full"></div>
                     </h2>
-                    <p class="text-gray-600 text-lg max-w-2xl text-justify mx-auto">Solusi komprehensif yang disesuaikan
-                        dengan
-                        kebutuhan
-                        bisnis Anda
+                    <p class="text-gray-600 text-lg max-w-2xl mx-auto mt-6 leading-relaxed">
+                        Solusi komprehensif yang dirancang secara khusus untuk memenuhi kebutuhan bisnis Anda dengan standar kualitas tertinggi.
                     </p>
                 </div>
-            </div>
 
-            <div class="relative">
-                <!-- Scroll buttons -->
-                <button @click="$refs.servicesContainer.scrollBy({ left: -300, behavior: 'smooth' })"
-                    class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-
-                <button @click="$refs.servicesContainer.scrollBy({ left: 300, behavior: 'smooth' })"
-                    class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#060771] w-10 h-10 rounded-full shadow-lg flex items-center justify-center">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-
-                <!-- Services container with horizontal scroll -->
-                <div x-ref="servicesContainer" class="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
-                    style="scroll-behavior: smooth;">
+                <!-- Services Grid (2 Rows layout effectively depending on length, 3 columns) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     @forelse($services as $index => $service)
                         <div data-aos="fade-up" data-aos-delay="{{ $index * 100 }}" data-aos-duration="1000"
-                            x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false"
-                            class="flex-shrink-0 w-80 group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 relative overflow-hidden"
-                            style="transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                            class="group bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl border border-gray-100 relative overflow-hidden transition-all duration-500 hover:-translate-y-2">
 
-                            <!-- Gradient overlay on hover -->
-                            <div class="absolute inset-0 bg-gradient-to-br from-[#FFE08F] to-[#060771] rounded-2xl"
-                                style="opacity: 0; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);"
-                                :style="hovered ? 'opacity: 1' : 'opacity: 0'">
-                            </div>
+                            <!-- Top corner gradient accent -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#FFE08F]/40 to-[#060771]/10 rounded-bl-full -z-10 transition-transform duration-500 group-hover:scale-150"></div>
+                            
+                            <!-- Bottom bold accent line -->
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#060771] to-[#BF1A1A] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
 
-                            <div class="relative z-10">
-                                <div class="text-5xl mb-6 text-[#BF1A1A]"
-                                    style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);"
-                                    :style="hovered ? 'color: white; transform: scale(1.1) rotate(5deg)' : 'color: #BF1A1A'">
-                                    @if (isset($service->icon))
-                                        {!! $service->icon !!}
-                                    @else
-                                        <i class="fas fa-cogs"></i>
-                                    @endif
+                            <div class="relative z-10 h-full flex flex-col">
+                                <div class="w-20 h-20 rounded-2xl bg-slate-50 flex items-center justify-center mb-8 shadow-inner group-hover:bg-[#060771] transition-colors duration-500">
+                                    <div class="text-4xl text-[#BF1A1A] group-hover:text-white transition-colors duration-500 group-hover:scale-110 transform">
+                                        @if (isset($service->icon))
+                                            {!! $service->icon !!}
+                                        @else
+                                            <i class="fas fa-cogs"></i>
+                                        @endif
+                                    </div>
                                 </div>
-                                <h3 class="text-2xl font-bold mb-4 text-[#060771]"
-                                    style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                    :style="hovered ? 'color: white' : 'color: #060771'">{{ $service->title }}</h3>
-                                <p class="leading-relaxed text-justify line-clamp-3"
-                                    style="transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);"
-                                    :style="hovered ? 'color: rgba(255, 255, 255, 0.9)' : 'color: #4b5563'"
+                                
+                                <h3 class="text-2xl font-bold mb-4 text-[#060771] group-hover:text-[#BF1A1A] transition-colors duration-300">{{ $service->title }}</h3>
+                                
+                                <p class="text-gray-600 leading-relaxed text-left flex-grow mb-6 line-clamp-3"
                                     title="{{ $service->description }}">
-                                    {{ $service->description }}</p>
+                                    {{ $service->description }}
+                                </p>
+
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-12" data-aos="fade-up">
-                            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+                        <div class="col-span-full text-center py-16 bg-white rounded-3xl shadow-sm border border-gray-100" data-aos="fade-up">
+                            <i class="fas fa-inbox text-6xl text-gray-200 mb-4"></i>
                             <p class="text-gray-500 text-lg">Tidak ada layanan yang tersedia saat ini.</p>
                         </div>
                     @endforelse
                 </div>
+
+                <!-- See all services link -->
+                <div class="text-center mt-12" data-aos="fade-up">
+                    <a href="{{ route('services') }}"
+                        class="inline-block bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#BF1A1A] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        Lihat Semua Layanan
+                        <i class="fas fa-arrow-right ml-2 pt-1"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        </div>
+    </section>
 
-        <!-- See all services link -->
-        <div class="text-center mt-8" data-aos="fade-up">
-            <a href="{{ route('services') }}"
-                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                Lihat Semua
-                <i class="fas fa-arrow-right"></i>
-            </a>
+    <!-- Why Choose Us Section -->
+    <section id="why-choose-us" class="py-24 bg-[#060771] relative overflow-hidden text-white">
+        <!-- Background decorative pattern -->
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-[#BF1A1A] opacity-20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#FFE08F] opacity-10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div data-aos="fade-right" data-aos-duration="1000">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+                            Mengapa Anda Harus Memilih <span class="text-[#FFE08F] relative">Kami?</span>
+                        </h2>
+                        <p class="text-white/80 text-lg leading-relaxed mb-10">
+                            Kami tidak hanya melakukan perbaikan, tetapi memastikan setiap pekerjaan memberikan hasil yang optimal dan dapat diandalkan untuk mendukung operasional bisnis Anda.
+                        </p>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start gap-5">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#BF1A1A] to-red-800 flex items-center justify-center flex-shrink-0 shadow-lg border border-white/10">
+                                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2 text-white">Layanan Bergaransi</h4>
+                                    <p class="text-white/70 leading-relaxed">Kami memberikan jaminan dan garansi pada setiap layanan untuk memastikan Anda mendapatkan hasil yang optimal tanpa rasa khawatir.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-5">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FFE08F] text-[#060771] flex items-center justify-center flex-shrink-0 shadow-lg border border-white/10">
+                                    <i class="fas fa-users-cog text-[#060771] text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2 text-white">Tim Profesional & Berpengalaman</h4>
+                                    <p class="text-white/70 leading-relaxed">Didukung teknisi berpengalaman dengan jam terbang tinggi, terbiasa menangani berbagai kasus dinamo industri secara tepat dan efisien.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-5">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#25D366] to-green-600 flex items-center justify-center flex-shrink-0 shadow-lg border border-white/10">
+                                    <i class="fas fa-headset text-white text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2 text-white">Dukungan Responsif Berkelanjutan</h4>
+                                    <p class="text-white/70 leading-relaxed">Kami selalu siap membantu dan mendampingi Anda di setiap tahap proyek hingga tuntas tanpa kendala.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div data-aos="fade-left" data-aos-duration="1000" class="relative lg:ml-10">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
+                            <!-- Overlay gradient to match theme -->
+                            <div class="absolute inset-0 bg-gradient-to-tr from-[#060771]/50 to-transparent mix-blend-multiply z-10 transition-opacity duration-500 hover:opacity-0"></div>
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tim Profesional Kami" class="w-full h-auto object-cover aspect-[4/5] md:aspect-[4/3] transform hover:scale-105 transition-transform duration-700">
+                            
+                            <!-- Floating badge -->
+                            <div class="absolute bottom-6 left-6 z-20 bg-white/95 backdrop-blur px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce hover:scale-105 transition-transform cursor-pointer" style="animation-duration: 3s;">
+                                <div class="w-12 h-12 rounded-full bg-[#FFE08F] flex items-center justify-center shadow-inner">
+                                    <i class="fas fa-handshake text-[#BF1A1A] text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[#060771] font-extrabold text-xl">Mitra Terpercaya</div>
+                                    <div class="text-gray-600 font-medium text-sm">Pilihan Klien</div>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Dots -->
+                            <div class="absolute top-6 right-6 z-20 flex gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#BF1A1A]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FFE08F]"></span>
+                                <span class="w-3 h-3 rounded-full bg-white"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -423,17 +488,18 @@
             </div>
         </div>
         <!-- See all portfolio link -->
-        <div class="text-center mt-8" data-aos="fade-up">
-            <a href="{{ route('portfolio') }}"
-                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                Lihat Semua
-                <i class="fas fa-arrow-right"></i>
-            </a>
+
+         <div class="text-center mt-12" data-aos="fade-up">
+                    <a href="{{ route('portfolio') }}"
+                        class="inline-block bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#BF1A1A] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        Lihat Semua Portofolio
+                        <i class="fas fa-arrow-right ml-2 pt-1"></i>
+                    </a>
         </div>
     </section>
 
     <!-- Gallery Section with Horizontal Scroll -->
-    <section id="gallery" class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
+    <section id="gallery" class="py-24 bg-white" x-data="{ lightbox: false, currentImage: '' }">
         <div class="container mx-auto px-4 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
@@ -514,12 +580,13 @@
         </div>
 
         <!-- See all gallery link -->
-        <div class="text-center mt-8" data-aos="fade-up">
-            <a href="{{ route('gallery') }}"
-                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                Lihat Semua
-                <i class="fas fa-arrow-right"></i>
-            </a>
+
+        <div class="text-center mt-12" data-aos="fade-up">
+                    <a href="{{ route('gallery') }}"
+                        class="inline-block bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#BF1A1A] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        Lihat Semua Galeri
+                        <i class="fas fa-arrow-right ml-2 pt-1"></i>
+                    </a>
         </div>
     </section>
 
@@ -610,17 +677,19 @@
         </div>
 
         <!-- See all blog posts link -->
-        <div class="text-center mt-8" data-aos="fade-up">
-            <a href="{{ route('blog.index') }}"
-                class="inline-block bg-white text-[#060771] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                Lihat Semua
-                <i class="fas fa-arrow-right"></i>
-            </a>
+        
+         <div class="text-center mt-12" data-aos="fade-up">
+                    <a href="{{ route('blog.index') }}"
+                        class="inline-block bg-[#060771] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#BF1A1A] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        Lihat Semua Blog
+                        <i class="fas fa-arrow-right ml-2 pt-1"></i>
+                    </a>
         </div>
+        
     </section>
 
     <!-- Contact and Maps Section -->
-    <section id="contact" class="py-24 bg-[#FFE08F]">
+    <section id="contact" class="py-24 bg-white">
         <div class="container mx-auto px-4 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">

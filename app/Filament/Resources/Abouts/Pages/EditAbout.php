@@ -85,6 +85,9 @@ class EditAbout extends Page implements HasForms
         return [
             Action::make('save')
                 ->label('Save changes')
+                ->extraAttributes([
+                    'style' => 'margin-top:20px'
+                ])
                 ->submit('save'),
         ];
     }

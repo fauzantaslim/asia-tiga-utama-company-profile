@@ -222,7 +222,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    @if ($blogPosts->hasPages())
+                    @if ($blogPosts->total() > 0)
                         <div class="mt-8">
                             <div class="border-t border-b border-gray-100 py-3 flex flex-wrap items-center justify-between text-[14px] text-gray-600 relative">
                                 <!-- Green Top Border Line -->

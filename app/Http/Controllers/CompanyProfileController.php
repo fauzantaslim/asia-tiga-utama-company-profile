@@ -78,7 +78,8 @@ class CompanyProfileController extends Controller
                     'name' => $authorName
                 ]);
             }
-        } elseif (!$authorName) {
+        }
+        elseif (!$authorName) {
             JsonLd::addValue('author', [
                 '@type' => 'Organization',
                 'name' => 'Profil Perusahaan'
@@ -96,13 +97,13 @@ class CompanyProfileController extends Controller
     {
         $data = Cache::remember('homepage', self::CACHE_TTL, function () {
             return [
-                'hero' => Hero::with('media')->orderBy('created_at', 'desc')->get(),
-                'about' => About::with('media')->first(),
-                'services' => Service::orderBy('order')->limit(8)->get(),
-                'portfolios' => Portfolio::with('media')->where('is_published', true)->limit(8)->get(),
-                'galleryImages' => GalleryImage::with('media')->limit(8)->get(),
-                'blogPosts' => BlogPost::with('media')->where('is_published', true)->latest()->limit(8)->get(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'hero' => Hero::with('media')->orderBy('created_at', 'desc')->get(),
+            'about' => About::with('media')->first(),
+            'services' => Service::orderBy('order')->limit(8)->get(),
+            'portfolios' => Portfolio::with('media')->where('is_published', true)->limit(8)->get(),
+            'galleryImages' => GalleryImage::with('media')->limit(8)->get(),
+            'blogPosts' => BlogPost::with('media')->where('is_published', true)->latest()->limit(8)->get(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -121,8 +122,8 @@ class CompanyProfileController extends Controller
     {
         $data = Cache::remember('about_page', self::CACHE_TTL, function () {
             return [
-                'about' => About::with('media')->first(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'about' => About::with('media')->first(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -142,9 +143,9 @@ class CompanyProfileController extends Controller
         $page = request('page', 1);
         $data = Cache::remember('services_page_' . $page, self::CACHE_TTL, function () {
             return [
-                'services' => Service::orderBy('order')->paginate(6),
-                'about' => About::with('media')->first(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'services' => Service::orderBy('order')->paginate(6),
+            'about' => About::with('media')->first(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -165,9 +166,9 @@ class CompanyProfileController extends Controller
         $perPage = request('per_page', 6);
         $data = Cache::remember('portfolio_page_' . $perPage . '_' . $page, self::CACHE_TTL, function () use ($perPage) {
             return [
-                'portfolios' => Portfolio::with('media')->where('is_published', true)->paginate($perPage),
-                'about' => About::with('media')->first(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'portfolios' => Portfolio::with('media')->where('is_published', true)->paginate($perPage),
+            'about' => About::with('media')->first(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -188,9 +189,9 @@ class CompanyProfileController extends Controller
         $perPage = request('per_page', 8);
         $data = Cache::remember('gallery_page_' . $perPage . '_' . $page, self::CACHE_TTL, function () use ($perPage) {
             return [
-                'galleryImages' => GalleryImage::with('media')->paginate($perPage),
-                'about' => About::with('media')->first(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'galleryImages' => GalleryImage::with('media')->paginate($perPage),
+            'about' => About::with('media')->first(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -209,8 +210,8 @@ class CompanyProfileController extends Controller
     {
         $data = Cache::remember('contact_page', self::CACHE_TTL, function () {
             return [
-                'about' => About::with('media')->first(),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'about' => About::with('media')->first(),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -236,10 +237,10 @@ class CompanyProfileController extends Controller
                 'url' => request()->fullUrl()
             ]);
             return [
-                'latestPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get(),
-                'popularPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('views_count', 'desc')->take(5)->get(),
-                'blogPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->paginate($perPage),
-                'companyInfo' => CompanyInfo::with('media')->first(),
+            'latestPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get(),
+            'popularPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('views_count', 'desc')->take(5)->get(),
+            'blogPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->paginate($perPage),
+            'companyInfo' => CompanyInfo::with('media')->first(),
             ];
         });
 
@@ -261,12 +262,13 @@ class CompanyProfileController extends Controller
                 Log::info('CACHE MISS: blog_detail_page_' . $slug);
                 $post = BlogPost::with('media')->where('slug', $slug)->where('is_published', true)->firstOrFail();
                 return [
-                    'post' => $post,
-                    'relatedPosts' => BlogPost::with('media')->where('is_published', true)->where('id', '!=', $post->id)->inRandomOrder()->limit(5)->get(),
-                    'companyInfo' => CompanyInfo::with('media')->first(),
+                'post' => $post,
+                'relatedPosts' => BlogPost::with('media')->where('is_published', true)->where('id', '!=', $post->id)->inRandomOrder()->limit(5)->get(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
                 ];
             });
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::error('Error load blog detail', [
                 'slug' => $slug,
                 'message' => $e->getMessage(),
@@ -301,7 +303,8 @@ class CompanyProfileController extends Controller
                 $post->increment('views_count');
             });
             return response()->json(['success' => true, 'views_count' => $post->views_count]);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::warning('Blog tidak ditemukan (increment view)', [
                 'id' => $id,
                 'user_ip' => request()->ip()

@@ -17,7 +17,7 @@
             </picture>
 
             <!-- Gradient to ensure readability -->
-            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-[#060771]/50 z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-transparent z-10"></div>
         </div>
 
         <div class="container mx-auto px-4 lg:px-8 relative z-20">
@@ -52,7 +52,7 @@
     </section>
 
     <!-- Gallery Content Section -->
-    <section class="py-24 bg-[#FFE08F]" x-data="{ lightbox: false, currentImage: '' }">
+    <section class="py-24 bg-white" x-data="{ lightbox: false, currentImage: '' }">
         <div class="container mx-auto px-4 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
@@ -115,7 +115,7 @@
                 @endforelse
                 </div>
                 <!-- Pagination -->
-                @if ($galleryImages->hasPages())
+                @if ($galleryImages->total() > 0)
                     <div class="mt-8">
                         <div class="border-t border-b border-gray-100 py-3 flex flex-wrap items-center justify-between text-[14px] text-gray-600 relative">
                             <!-- Green Top Border Line -->
@@ -259,5 +259,93 @@
         </div>
     </section>
 
-
 @endsection
+
+@push('styles')
+<style>
+    .style-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .style-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+    .style-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 6px;
+    }
+    .style-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8; 
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('turbo:load', function() {
+        // AJAX Pagination Logic
+        const container = document.getElementById('gallery-posts-container');
+        if (container) {
+            function loadPosts(url) {
+                container.style.opacity = '0.5';
+                container.style.pointerEvents = 'none';
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContainer = doc.getElementById('gallery-posts-container');
+                    
+                    if (newContainer) {
+                        container.innerHTML = newContainer.innerHTML;
+                        window.history.pushState({path: url}, '', url);
+                        
+                        // Smooth scroll
+                        const yOffset = -100; 
+                        const y = container.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({top: y, behavior: 'smooth'});
+
+                        // Re-initialize AOS
+                        if (typeof window.AOS !== 'undefined') {
+                            setTimeout(() => window.AOS.refreshHard(), 100);
+                        }
+                    }
+                    
+                    container.style.opacity = '1';
+                    container.style.pointerEvents = 'auto';
+                })
+                .catch(error => {
+                    console.error('Error loading posts:', error);
+                    container.style.opacity = '1';
+                    container.style.pointerEvents = 'auto';
+                });
+            }
+
+            container.addEventListener('click', function(e) {
+                const link = e.target.closest('.ajax-page-link');
+                if (link) {
+                    e.preventDefault();
+                    if(link.getAttribute('href')) {
+                        loadPosts(link.href);
+                    }
+                }
+            });
+
+            container.addEventListener('change', function(e) {
+                if (e.target.classList.contains('ajax-limit-select')) {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('per_page', e.target.value);
+                    url.searchParams.set('page', 1);
+                    loadPosts(url.toString());
+                } else if (e.target.classList.contains('ajax-page-select')) {
+                    loadPosts(e.target.value);
+                }
+            });
+        }
+    });
+</script>
+@endpush

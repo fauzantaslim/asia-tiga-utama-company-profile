@@ -17,7 +17,7 @@
             </picture>
 
             <!-- Gradient to ensure readability -->
-            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-[#060771]/50 z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#060771]/90 via-[#060771]/70 to-transparent z-10"></div>
         </div>
 
         <div class="container mx-auto px-4 lg:px-8 relative z-20">

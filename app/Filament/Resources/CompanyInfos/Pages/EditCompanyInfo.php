@@ -48,43 +48,43 @@ class EditCompanyInfo extends Page implements HasForms
     {
         return [
             TextInput::make('email')
-                ->label('Email address')
-                ->email()
-                ->maxLength(255),
+            ->label('Email address')
+            ->email()
+            ->maxLength(255),
             TextInput::make('phone')
-                ->tel()
-                ->maxLength(255),
+            ->tel()
+            ->maxLength(255),
             TextInput::make('address')
-                ->maxLength(255),
+            ->maxLength(255),
             Textarea::make('google_map_embed_link')
-                ->columnSpanFull(),
+            ->columnSpanFull(),
             TextInput::make('instagram')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('facebook')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('youtube')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('website_name')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('meta_title')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('meta_description')
-                ->maxLength(255),
+            ->maxLength(255),
             TextInput::make('meta_keywords')
-                ->maxLength(255),
+            ->maxLength(255),
             SpatieMediaLibraryFileUpload::make('logo_website')
-                ->collection('logo_website')
-                ->image(),
+            ->collection('logo_website')
+            ->image(),
 
             SpatieMediaLibraryFileUpload::make('company_profile')
-                ->collection('company_profile')
-                ->label('Company Profile (PDF)')
-                ->acceptedFileTypes(['application/pdf'])
-                ->maxSize(15360),
+            ->collection('company_profile')
+            ->label('Company Profile (PDF)')
+            ->acceptedFileTypes(['application/pdf'])
+            ->maxSize(15360),
         ];
     }
 
-    protected function getFormModel(): \Illuminate\Database\Eloquent\Model | string | null
+    protected function getFormModel(): \Illuminate\Database\Eloquent\Model|string|null
     {
         return $this->getRecord();
     }
@@ -98,8 +98,11 @@ class EditCompanyInfo extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Save changes')
-                ->submit('save'),
+            ->label('Save changes')
+            ->extraAttributes([
+                'style' => 'margin-top:20px'
+            ])
+            ->submit('save'),
         ];
     }
 
