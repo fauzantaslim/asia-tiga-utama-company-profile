@@ -24,13 +24,14 @@ class About extends Model implements HasMedia
             ->singleFile();
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // Create a webp version with compression
         $this->addMediaConversion('webp')
             ->format('webp')
             ->quality(80)
-            ->performOnCollections('image');
+            ->performOnCollections('image')
+            ->nonQueued();
 
         // Create a compressed version for thumbnails
         $this->addMediaConversion('thumb')
@@ -38,7 +39,8 @@ class About extends Model implements HasMedia
             ->height(200)
             ->quality(70)
             ->format('webp')
-            ->performOnCollections('image');
+            ->performOnCollections('image')
+            ->nonQueued();
 
         // Create a larger preview version
         $this->addMediaConversion('preview')
@@ -46,6 +48,7 @@ class About extends Model implements HasMedia
             ->height(600)
             ->quality(80)
             ->format('webp')
-            ->performOnCollections('image');
+            ->performOnCollections('image')
+            ->nonQueued();
     }
 }

@@ -23,13 +23,14 @@ class Hero extends Model implements HasMedia
         $this->addMediaCollection('background_image');
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // Create a webp version with compression
         $this->addMediaConversion('webp')
             ->format('webp')
             ->quality(80)
-            ->performOnCollections('background_image');
+            ->performOnCollections('background_image')
+            ->nonQueued();
 
         // Create a compressed version for thumbnails
         $this->addMediaConversion('thumb')
@@ -37,7 +38,8 @@ class Hero extends Model implements HasMedia
             ->height(200)
             ->quality(70)
             ->format('webp')
-            ->performOnCollections('background_image');
+            ->performOnCollections('background_image')
+            ->nonQueued();
 
         // Create a larger preview version
         $this->addMediaConversion('preview')
@@ -45,6 +47,7 @@ class Hero extends Model implements HasMedia
             ->height(600)
             ->quality(80)
             ->format('webp')
-            ->performOnCollections('background_image');
+            ->performOnCollections('background_image')
+            ->nonQueued();
     }
 }

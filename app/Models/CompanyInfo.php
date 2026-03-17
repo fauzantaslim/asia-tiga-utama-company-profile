@@ -36,13 +36,14 @@ class CompanyInfo extends Model implements HasMedia
             ->acceptsMimeTypes(['application/pdf']);
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // Create a webp version with compression
         $this->addMediaConversion('webp')
             ->format('webp')
             ->quality(80)
-            ->performOnCollections('logo_website');
+            ->performOnCollections('logo_website')
+            ->nonQueued();
 
         // Create a compressed version for thumbnails
         $this->addMediaConversion('thumb')
@@ -50,7 +51,8 @@ class CompanyInfo extends Model implements HasMedia
             ->height(200)
             ->quality(70)
             ->format('webp')
-            ->performOnCollections('logo_website');
+            ->performOnCollections('logo_website')
+            ->nonQueued();
 
         // Create a larger preview version
         $this->addMediaConversion('preview')
@@ -58,6 +60,7 @@ class CompanyInfo extends Model implements HasMedia
             ->height(600)
             ->quality(80)
             ->format('webp')
-            ->performOnCollections('logo_website');
+            ->performOnCollections('logo_website')
+            ->nonQueued();
     }
 }
