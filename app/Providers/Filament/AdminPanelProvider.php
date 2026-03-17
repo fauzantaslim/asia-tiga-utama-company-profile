@@ -29,7 +29,9 @@ class AdminPanelProvider extends PanelProvider
 
         // Only try to get company info if the table exists
         if (Schema::hasTable('company_infos')) {
-            $companyInfo = CompanyInfo::first();
+            $companyInfo = \Illuminate\Support\Facades\Cache::remember('company_info', 600, function () {
+                return CompanyInfo::with('media')->first();
+            });
 
             // If company info exists and has a logo, use it as favicon
             if ($companyInfo && $companyInfo->getFirstMedia('logo_website')) {

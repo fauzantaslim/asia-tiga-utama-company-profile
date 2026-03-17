@@ -140,7 +140,7 @@
                             <article data-aos="fade-up" data-aos-duration="1000" class="relative rounded-2xl overflow-hidden shadow-lg group w-full h-[400px] md:h-[450px]">
                                 <picture>
                                     <source srcset="{{ $firstImage ? $firstImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                                    <img src="{{ $firstImage ? $firstImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}" 
+                                    <img loading="lazy" src="{{ $firstImage ? $firstImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}" 
                                          alt="{{ $firstPost->title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                                 </picture>
                                 
@@ -188,7 +188,7 @@
                                                         <source
                                                             srcset="{{ $image ? $image->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                                             type="image/webp">
-                                                        <img src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                                        <img loading="lazy" src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                                             alt="{{ $post->title }}" class="w-full h-full object-cover"
                                                             style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                                                     </picture>
@@ -382,7 +382,7 @@
                                 <div class="w-24 h-24 flex-shrink-0 overflow-hidden bg-gray-100 rounded-2xl">
                                     <picture>
                                         <source srcset="{{ $sidebarImage ? $sidebarImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                                        <img src="{{ $sidebarImage ? $sidebarImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                        <img loading="lazy" src="{{ $sidebarImage ? $sidebarImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                             alt="{{ $sidebarPost->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-2xl">
                                     </picture>
                                 </div>

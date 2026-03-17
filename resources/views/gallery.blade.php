@@ -83,7 +83,7 @@
                                 <source
                                     srcset="{{ $galleryImage ? $galleryImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     type="image/webp">
-                                <img src="{{ $galleryImage ? $galleryImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                <img loading="lazy" src="{{ $galleryImage ? $galleryImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
                                     style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                     :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' : 'transform: scale(1) rotate(0deg)'">

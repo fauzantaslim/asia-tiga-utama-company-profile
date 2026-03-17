@@ -4,20 +4,19 @@ use App\Http\Controllers\CompanyProfileController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Models\Activity;
 
-Route::get('/', [CompanyProfileController::class, 'index'])->name('home');
-Route::get('/about', [CompanyProfileController::class, 'about'])->name('about');
-Route::get('/services', [CompanyProfileController::class, 'services'])->name('services');
-Route::get('/portfolio', [CompanyProfileController::class, 'portfolio'])->name('portfolio');
-Route::get('/gallery', [CompanyProfileController::class, 'gallery'])->name('gallery');
-Route::get('/blog', [CompanyProfileController::class, 'blog'])->name('blog.index');
-Route::get('/blog/{slug}', [CompanyProfileController::class, 'blogDetail'])->name('blog.detail');
-Route::get('/contact', [CompanyProfileController::class, 'contact'])->name('contact');
-
-// Activity log test route
-Route::get('/activity-logs', function () {
-    $activities = Activity::latest()->limit(10)->get();
-    return response()->json($activities);
+Route::middleware('cacheResponse:600')->group(function () {
+    Route::get('/', [CompanyProfileController::class, 'index'])->name('home');
+    Route::get('/about', [CompanyProfileController::class, 'about'])->name('about');
+    Route::get('/services', [CompanyProfileController::class, 'services'])->name('services');
+    Route::get('/portfolio', [CompanyProfileController::class, 'portfolio'])->name('portfolio');
+    Route::get('/gallery', [CompanyProfileController::class, 'gallery'])->name('gallery');
+    Route::get('/blog', [CompanyProfileController::class, 'blog'])->name('blog.index');
+    Route::get('/contact', [CompanyProfileController::class, 'contact'])->name('contact');
+    Route::get('/blog/{slug}', [CompanyProfileController::class, 'blogDetail'])->name('blog.detail');
 });
+// TANPA CACHE RESPONSE
+Route::post('/blog/{id}/increment-view', [CompanyProfileController::class, 'incrementBlogView'])->name('blog.increment.view');
+
 
 // Sitemap.xml (dynamic) using Spatie Sitemap
 Route::get('/sitemap.xml', function () {

@@ -15,299 +15,298 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Artesaos\SEOTools\Facades\JsonLd;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class CompanyProfileController extends Controller
 {
-    public function index()
-    {
-        $hero = Hero::orderBy('created_at', 'desc')->get();
-        $about = About::first();
-        $services = Service::orderBy('order')->limit(8)->get();
-        $portfolios = Portfolio::where('is_published', true)->limit(8)->get();
-        $galleryImages = GalleryImage::limit(8)->get();
-        $blogPosts = BlogPost::where('is_published', true)->limit(8)->get(); // Limit to 8 posts for homepage
-        $companyInfo = CompanyInfo::first();
+    private const CACHE_TTL = 600;
+    private const CACHE_TTL_SHORT = 300;
+    private const CACHE_COMPANY = 'company_info';
+    private const CACHE_ABOUT = 'about_first';
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Beranda - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Profil resmi perusahaan kami');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'profil perusahaan, jasa, layanan');
+    private function companyInfo()
+    {
+        return Cache::remember(self::CACHE_COMPANY, self::CACHE_TTL, function () {
+            return CompanyInfo::with('media')->first();
+        });
+    }
+
+    private function aboutInfo()
+    {
+        return Cache::remember(self::CACHE_ABOUT, self::CACHE_TTL, function () {
+            return About::with('media')->first();
+        });
+    }
+
+    private function setSEO($title, $description, $keywords = null, $image = null, $type = 'website', $publishedTime = null, $modifiedTime = null, $authorName = null)
+    {
+        SEOMeta::setTitle($title);
+        SEOMeta::setDescription($description);
+        if ($keywords) {
+            SEOMeta::setKeywords($keywords);
+        }
         SEOMeta::setCanonical(url()->current());
 
-        // OpenGraph
-        OpenGraph::setTitle('Beranda - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Profil resmi perusahaan kami');
+        OpenGraph::setTitle($title);
+        OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
+        OpenGraph::addProperty('type', $type);
         OpenGraph::addProperty('locale', 'id_ID');
 
-        // Twitter Card
-        TwitterCard::setTitle('Beranda - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Profil resmi perusahaan kami');
+        TwitterCard::setTitle($title);
+        TwitterCard::setDescription($description);
         TwitterCard::setType('summary_large_image');
 
-        // JSON-LD
-        JsonLd::setTitle('Beranda - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Profil resmi perusahaan kami');
-        JsonLd::setType('WebPage');
+        JsonLd::setTitle($title);
+        JsonLd::setDescription($description);
+        JsonLd::setType($type === 'article' ? 'Article' : 'WebPage');
         JsonLd::setUrl(url()->current());
-        JsonLd::addValue('author', [
-            '@type' => 'Organization',
-            'name' => $companyInfo->website_name ?? 'Profil Perusahaan'
-        ]);
 
-        return view('spa', compact('hero', 'about', 'services', 'portfolios', 'galleryImages', 'blogPosts', 'companyInfo'));
+        if ($type === 'article') {
+            if ($publishedTime) {
+                OpenGraph::addProperty('article:published_time', $publishedTime);
+                JsonLd::addValue('datePublished', $publishedTime);
+            }
+            if ($modifiedTime) {
+                OpenGraph::addProperty('article:modified_time', $modifiedTime);
+                JsonLd::addValue('dateModified', $modifiedTime);
+            }
+            if ($authorName) {
+                JsonLd::addValue('author', [
+                    '@type' => 'Person',
+                    'name' => $authorName
+                ]);
+            }
+        } elseif (!$authorName) {
+            JsonLd::addValue('author', [
+                '@type' => 'Organization',
+                'name' => 'Profil Perusahaan'
+            ]);
+        }
+
+        if ($image) {
+            OpenGraph::addImage($image);
+            TwitterCard::setImage($image);
+            JsonLd::addValue('image', $image);
+        }
+    }
+
+    public function index()
+    {
+        $data = Cache::remember('homepage', self::CACHE_TTL, function () {
+            return [
+                'hero' => Hero::with('media')->orderBy('created_at', 'desc')->get(),
+                'about' => About::with('media')->first(),
+                'services' => Service::orderBy('order')->limit(8)->get(),
+                'portfolios' => Portfolio::with('media')->where('is_published', true)->limit(8)->get(),
+                'galleryImages' => GalleryImage::with('media')->limit(8)->get(),
+                'blogPosts' => BlogPost::with('media')->where('is_published', true)->latest()->limit(8)->get(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
+
+        extract($data);
+
+        $this->setSEO(
+            'Beranda - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Profil resmi perusahaan kami',
+            $companyInfo->meta_keywords ?? 'profil perusahaan, jasa, layanan'
+        );
+
+        return view('spa', $data);
     }
 
     public function about()
     {
-        $about = About::first();
-        $companyInfo = CompanyInfo::first();
+        $data = Cache::remember('about_page', self::CACHE_TTL, function () {
+            return [
+                'about' => About::with('media')->first(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Tentang Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($about->meta_description ?? 'Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami');
-        SEOMeta::setKeywords($about->meta_keywords ?? 'tentang, perusahaan, visi, misi');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Tentang Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($about->meta_description ?? 'Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Tentang Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $about->meta_description ?? 'Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami',
+            $about->meta_keywords ?? 'tentang, perusahaan, visi, misi'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Tentang Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($about->meta_description ?? 'Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Tentang Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($about->meta_description ?? 'Pelajari lebih lanjut tentang perusahaan kami, visi, dan misi kami');
-        JsonLd::setType('WebPage');
-        JsonLd::setUrl(url()->current());
-
-        return view('about', compact('about', 'companyInfo'));
+        return view('about', $data);
     }
 
     public function services()
     {
-        $services = Service::orderBy('order')->paginate(6);
-        $about = About::first();
-        $companyInfo = CompanyInfo::first();
+        $page = request('page', 1);
+        $data = Cache::remember('services_page_' . $page, self::CACHE_TTL, function () {
+            return [
+                'services' => Service::orderBy('order')->paginate(6),
+                'about' => About::with('media')->first(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Layanan Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Jelajahi berbagai layanan profesional komprehensif kami');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'layanan, solusi, layanan profesional');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Layanan Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Jelajahi berbagai layanan profesional komprehensif kami');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Layanan Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Jelajahi berbagai layanan profesional komprehensif kami',
+            $companyInfo->meta_keywords ?? 'layanan, solusi, layanan profesional'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Layanan Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Jelajahi berbagai layanan profesional komprehensif kami');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Layanan Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Jelajahi berbagai layanan profesional komprehensif kami');
-        JsonLd::setType('WebPage');
-        JsonLd::setUrl(url()->current());
-
-        return view('services', compact('services', 'about', 'companyInfo'));
+        return view('services', $data);
     }
 
     public function portfolio()
     {
-        $portfolios = Portfolio::where('is_published', true)->paginate(request('per_page', 6));
-        $about = About::first();
-        $companyInfo = CompanyInfo::first();
+        $page = request('page', 1);
+        $perPage = request('per_page', 6);
+        $data = Cache::remember('portfolio_page_' . $perPage . '_' . $page, self::CACHE_TTL, function () use ($perPage) {
+            return [
+                'portfolios' => Portfolio::with('media')->where('is_published', true)->paginate($perPage),
+                'about' => About::with('media')->first(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Portofolio Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Jelajahi portofolio proyek-proyek sukses dan pencapaian kami');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'portofolio, proyek, pencapaian, pekerjaan');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Portofolio Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Jelajahi portofolio proyek-proyek sukses dan pencapaian kami');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Portofolio Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Jelajahi portofolio proyek-proyek sukses dan pencapaian kami',
+            $companyInfo->meta_keywords ?? 'portofolio, proyek, pencapaian, pekerjaan'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Portofolio Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Jelajahi portofolio proyek-proyek sukses dan pencapaian kami');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Portofolio Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Jelajahi portofolio proyek-proyek sukses dan pencapaian kami');
-        JsonLd::setType('WebPage');
-        JsonLd::setUrl(url()->current());
-
-        return view('portfolio', compact('portfolios', 'about', 'companyInfo'));
+        return view('portfolio', $data);
     }
 
     public function gallery()
     {
-        $galleryImages = GalleryImage::paginate(request('per_page', 8));
-        $about = About::first();
-        $companyInfo = CompanyInfo::first();
+        $page = request('page', 1);
+        $perPage = request('per_page', 8);
+        $data = Cache::remember('gallery_page_' . $perPage . '_' . $page, self::CACHE_TTL, function () use ($perPage) {
+            return [
+                'galleryImages' => GalleryImage::with('media')->paginate($perPage),
+                'about' => About::with('media')->first(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Galeri - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Jelajahi galeri foto kami yang menampilkan pekerjaan dan momen kami');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'galeri, foto, gambar, momen');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Galeri - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Jelajahi galeri foto kami yang menampilkan pekerjaan dan momen kami');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Galeri - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Jelajahi galeri foto kami yang menampilkan pekerjaan dan momen kami',
+            $companyInfo->meta_keywords ?? 'galeri, foto, gambar, momen'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Galeri - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Jelajahi galeri foto kami yang menampilkan pekerjaan dan momen kami');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Galeri - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Jelajahi galeri foto kami yang menampilkan pekerjaan dan momen kami');
-        JsonLd::setType('WebPage');
-        JsonLd::setUrl(url()->current());
-
-        return view('gallery', compact('galleryImages', 'about', 'companyInfo'));
+        return view('gallery', $data);
     }
 
     public function contact()
     {
-        $about = About::first();
-        $companyInfo = CompanyInfo::first();
+        $data = Cache::remember('contact_page', self::CACHE_TTL, function () {
+            return [
+                'about' => About::with('media')->first(),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Hubungi Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Hubungi kami untuk pertanyaan, dukungan, atau peluang kolaborasi');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'kontak, hubungi, dukungan, kolaborasi');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Hubungi Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Hubungi kami untuk pertanyaan, dukungan, atau peluang kolaborasi');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Hubungi Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Hubungi kami untuk pertanyaan, dukungan, atau peluang kolaborasi',
+            $companyInfo->meta_keywords ?? 'kontak, hubungi, dukungan, kolaborasi'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Hubungi Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Hubungi kami untuk pertanyaan, dukungan, atau peluang kolaborasi');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Hubungi Kami - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Hubungi kami untuk pertanyaan, dukungan, atau peluang kolaborasi');
-        JsonLd::setType('WebPage');
-        JsonLd::setUrl(url()->current());
-
-        return view('contact', compact('about', 'companyInfo'));
+        return view('contact', $data);
     }
 
     public function blog()
     {
-        $latestPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get();
-        // Using inRandomOrder as fallback for popular posts since there's no view count column
-        $popularPosts = BlogPost::where('is_published', true)->orderBy('views_count', 'desc')->take(5)->get();
-        $blogPosts = BlogPost::where('is_published', true)->orderBy('created_at', 'desc')->paginate(request('per_page', 6));
-        $companyInfo = CompanyInfo::first();
+        $page = request('page', 1);
+        $perPage = request('per_page', 6);
+        $data = Cache::remember('blog_page_' . $perPage . '_' . $page, self::CACHE_TTL, function () use ($perPage, $page) {
+            Log::info('CACHE MISS: blog_page', [
+                'page' => $page,
+                'per_page' => $perPage,
+                'url' => request()->fullUrl()
+            ]);
+            return [
+                'latestPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->take(5)->get(),
+                'popularPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('views_count', 'desc')->take(5)->get(),
+                'blogPosts' => BlogPost::with('media')->where('is_published', true)->orderBy('created_at', 'desc')->paginate($perPage),
+                'companyInfo' => CompanyInfo::with('media')->first(),
+            ];
+        });
 
-        // SEO Meta Tags
-        SEOMeta::setTitle('Blog - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        SEOMeta::setDescription($companyInfo->meta_description ?? 'Tetap terupdate dengan berita dan wawasan terbaru kami');
-        SEOMeta::setKeywords($companyInfo->meta_keywords ?? 'blog, berita, update perusahaan, wawasan');
-        SEOMeta::setCanonical(url()->current());
+        extract($data);
 
-        // OpenGraph
-        OpenGraph::setTitle('Blog - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        OpenGraph::setDescription($companyInfo->meta_description ?? 'Tetap terupdate dengan berita dan wawasan terbaru kami');
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'website');
-        OpenGraph::addProperty('locale', 'id_ID');
+        $this->setSEO(
+            'Blog - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'),
+            $companyInfo->meta_description ?? 'Tetap terupdate dengan berita dan wawasan terbaru kami',
+            $companyInfo->meta_keywords ?? 'blog, berita, update perusahaan, wawasan'
+        );
 
-        // Twitter Card
-        TwitterCard::setTitle('Blog - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        TwitterCard::setDescription($companyInfo->meta_description ?? 'Tetap terupdate dengan berita dan wawasan terbaru kami');
-        TwitterCard::setType('summary_large_image');
-
-        // JSON-LD
-        JsonLd::setTitle('Blog - ' . ($companyInfo->website_name ?? 'Profil Perusahaan'));
-        JsonLd::setDescription($companyInfo->meta_description ?? 'Tetap terupdate dengan berita dan wawasan terbaru kami');
-        JsonLd::setType('Blog');
-        JsonLd::setUrl(url()->current());
-
-        return view('blog', compact('latestPosts', 'popularPosts', 'blogPosts', 'companyInfo'));
+        return view('blog', $data);
     }
 
     public function blogDetail($slug)
     {
-        $post = BlogPost::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        $post->increment('views_count');
-        $relatedPosts = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->limit(5)->get();
-        $companyInfo = CompanyInfo::first();
+        try {
+            $data = Cache::remember('blog_detail_page_' . $slug, self::CACHE_TTL_SHORT, function () use ($slug) {
+                Log::info('CACHE MISS: blog_detail_page_' . $slug);
+                $post = BlogPost::with('media')->where('slug', $slug)->where('is_published', true)->firstOrFail();
+                return [
+                    'post' => $post,
+                    'relatedPosts' => BlogPost::with('media')->where('is_published', true)->where('id', '!=', $post->id)->inRandomOrder()->limit(5)->get(),
+                    'companyInfo' => CompanyInfo::with('media')->first(),
+                ];
+            });
+        } catch (\Exception $e) {
+            Log::error('Error load blog detail', [
+                'slug' => $slug,
+                'message' => $e->getMessage(),
+                'user_ip' => request()->ip()
+            ]);
 
-        // SEO Meta Tags
-        SEOMeta::setTitle($post->meta_title ?? $post->title);
-        SEOMeta::setDescription($post->meta_description ?? Str::limit(strip_tags($post->content), 155));
-        SEOMeta::setKeywords($post->meta_keywords ?? 'blog, artikel, berita');
-        SEOMeta::setCanonical(url()->current());
-
-        // OpenGraph
-        OpenGraph::setTitle($post->meta_title ?? $post->title);
-        OpenGraph::setDescription($post->meta_description ?? Str::limit(strip_tags($post->content), 155));
-        OpenGraph::setUrl(url()->current());
-        OpenGraph::addProperty('type', 'article');
-        OpenGraph::addProperty('locale', 'id_ID');
-        OpenGraph::addProperty('article:published_time', $post->created_at->toIso8601String());
-        OpenGraph::addProperty('article:modified_time', ($post->updated_at ?? $post->created_at)->toIso8601String());
-
-        if ($post->getFirstMedia('image')) {
-            OpenGraph::addImage($post->getFirstMedia('image')->getFullUrl());
+            abort(404);
         }
 
-        // Twitter Card
-        TwitterCard::setTitle($post->meta_title ?? $post->title);
-        TwitterCard::setDescription($post->meta_description ?? Str::limit(strip_tags($post->content), 155));
-        TwitterCard::setType('summary_large_image');
+        extract($data);
 
-        if ($post->getFirstMedia('image')) {
-            TwitterCard::setImage($post->getFirstMedia('image')->getFullUrl());
+        // Views count increment is now handled via AJAX
+
+        $this->setSEO(
+            $post->meta_title ?? $post->title,
+            $post->meta_description ?? Str::limit(strip_tags($post->content), 155),
+            $post->meta_keywords ?? 'blog, artikel, berita',
+            $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getFullUrl() : null,
+            'article',
+            $post->created_at->toIso8601String(),
+            ($post->updated_at ?? $post->created_at)->toIso8601String(),
+            $post->author ?? 'Admin'
+        );
+
+        return view('blog-detail', $data);
+    }
+    public function incrementBlogView($id)
+    {
+        try {
+            $post = BlogPost::findOrFail($id);
+            \App\Models\BlogPost::withoutEvents(function () use ($post) {
+                $post->increment('views_count');
+            });
+            return response()->json(['success' => true, 'views_count' => $post->views_count]);
+        } catch (\Exception $e) {
+            Log::warning('Blog tidak ditemukan (increment view)', [
+                'id' => $id,
+                'user_ip' => request()->ip()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
         }
-
-        // JSON-LD
-        JsonLd::setTitle($post->meta_title ?? $post->title);
-        JsonLd::setDescription($post->meta_description ?? Str::limit(strip_tags($post->content), 155));
-        JsonLd::setType('Article');
-        JsonLd::setUrl(url()->current());
-        JsonLd::addValue('datePublished', $post->created_at->toIso8601String());
-        JsonLd::addValue('dateModified', ($post->updated_at ?? $post->created_at)->toIso8601String());
-        JsonLd::addValue('author', [
-            '@type' => 'Person',
-            'name' => $post->author ?? 'Admin'
-        ]);
-
-        if ($post->getFirstMedia('image')) {
-            JsonLd::addValue('image', $post->getFirstMedia('image')->getFullUrl());
-        }
-
-        return view('blog-detail', compact('post', 'relatedPosts', 'companyInfo'));
     }
 }

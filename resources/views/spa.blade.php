@@ -192,7 +192,7 @@
                             <source
                                 srcset="{{ $aboutMedia ? $aboutMedia->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 type="image/webp">
-                            <img src="{{ $aboutMedia ? $aboutMedia->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                            <img loading="lazy" src="{{ $aboutMedia ? $aboutMedia->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 alt="{{ isset($about->title) ? $about->title : 'About Our Company' }}"
                                 class="rounded-2xl shadow-2xl w-full object-cover" style="aspect-ratio: 1.618/1;">
                         </picture>
@@ -370,7 +370,7 @@
                                     <source
                                         srcset="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         type="image/webp">
-                                    <img src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    <img loading="lazy" src="{{ $portfolio->getFirstMedia('image') ? $portfolio->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
                                         style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                                 </picture>
@@ -412,7 +412,7 @@
                     <div class="w-full h-96">
                         <picture>
                             <source :src="selectedPortfolio?.image_webp_url" type="image/webp">
-                            <img :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
+                            <img loading="lazy" :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
                         </picture>
                     </div>
                 </div>
@@ -475,7 +475,7 @@
                                     <source
                                         srcset="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         type="image/webp">
-                                    <img src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    <img loading="lazy" src="{{ $image->getFirstMedia('image') ? $image->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         alt="{{ $image->caption ?? 'Gallery Image' }}" class="w-full h-64 object-cover"
                                         style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);"
                                         :style="imageHover ? 'transform: scale(1.1) rotate(2deg)' :
@@ -563,7 +563,7 @@
                                     <source
                                         srcset="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         type="image/webp">
-                                    <img src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    <img loading="lazy" src="{{ $post->getFirstMedia('image') ? $post->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                         alt="{{ $post->title }}" class="w-full h-full object-cover"
                                         style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                                 </picture>

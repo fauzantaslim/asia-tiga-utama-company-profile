@@ -81,7 +81,7 @@
                                 <source
                                     srcset="{{ $portfolioImage ? $portfolioImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     type="image/webp">
-                                <img src="{{ $portfolioImage ? $portfolioImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                <img loading="lazy" src="{{ $portfolioImage ? $portfolioImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                     alt="{{ $portfolio->title }}" class="w-full h-full object-cover cursor-pointer"
                                     style="transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);">
                             </picture>
@@ -259,7 +259,7 @@
                     <div class="w-full h-96">
                         <picture>
                             <source :src="selectedPortfolio?.image_webp_url" type="image/webp">
-                            <img :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
+                            <img loading="lazy" :src="selectedPortfolio?.image_url" class="w-full h-full object-cover">
                         </picture>
                     </div>
                 </div>

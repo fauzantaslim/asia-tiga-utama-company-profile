@@ -96,7 +96,7 @@
                             <source
                                 srcset="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : 'https://via.placeholder.com/500x300.webp' }}"
                                 type="image/webp">
-                            <img src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
+                            <img loading="lazy" src="{{ $about && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : 'https://via.placeholder.com/500x300' }}"
                                 alt="{{ isset($about->title) ? $about->title : 'About Our Company' }}"
                                 class="rounded-2xl shadow-2xl w-full object-cover" style="aspect-ratio: 1.618/1;">
                         </picture>

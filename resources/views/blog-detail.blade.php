@@ -70,7 +70,7 @@
                                 <i class="far fa-eye text-sm"></i>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-sm">{{ $post->views_count }} kali</span>
+                                <span class="text-white font-bold text-sm" id="blog-view-count">{{ $post->views_count }} kali</span>
                                 <span class="text-white/70 text-xs">Berita ini dilihat</span>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                             <source
                                 srcset="{{ $image ? $image->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 type="image/webp">
-                            <img src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                            <img loading="lazy" src="{{ $image ? $image->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                 alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-xl" style="aspect-ratio: 2/1;">
                         </picture>
                     </div>
@@ -143,7 +143,7 @@
                                 <div class="w-24 h-24 flex-shrink-0 overflow-hidden shadow-sm bg-gray-100 rounded-2xl p-1 border border-gray-100">
                                     <picture>
                                         <source srcset="{{ $relatedImage ? $relatedImage->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
-                                        <img src="{{ $relatedImage ? $relatedImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                        <img loading="lazy" src="{{ $relatedImage ? $relatedImage->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
                                             alt="{{ $relatedPost->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-xl">
                                     </picture>
                                 </div>
@@ -174,3 +174,29 @@
     </section>
 
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const url = "{{ route('blog.increment.view', $post->id) }}";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success && data.views_count) {
+                const viewCountEl = document.getElementById('blog-view-count');
+                if (viewCountEl) {
+                    viewCountEl.innerHTML = data.views_count + ' kali';
+                }
+            }
+        })
+        .catch(error => console.error('Error incrementing view count:', error));
+    });
+</script>
+@endpush
