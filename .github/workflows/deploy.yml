@@ -24,7 +24,7 @@ jobs:
       - name: Deploy ke server
         run: |
           ssh -p ${{ secrets.PORT || 22 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd evenly.fauzantaslim.biz.id
+            cd /home/fauzanta/evenly.fauzantaslim.biz.id
             git pull origin main
 
             # kalau Laravel
