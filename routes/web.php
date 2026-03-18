@@ -15,7 +15,9 @@ Route::middleware('cacheResponse:600')->group(function () {
     Route::get('/blog/{slug}', [CompanyProfileController::class, 'blogDetail'])->name('blog.detail');
 });
 // TANPA CACHE RESPONSE
-Route::post('/blog/{id}/increment-view', [CompanyProfileController::class, 'incrementBlogView'])->name('blog.increment.view');
+Route::post('/blog/{id}/increment-view', [CompanyProfileController::class, 'incrementBlogView'])
+    ->middleware('throttle:30,1') // 30 request per menit
+    ->name('blog.increment.view');
 
 
 // Sitemap.xml (dynamic) using Spatie Sitemap
