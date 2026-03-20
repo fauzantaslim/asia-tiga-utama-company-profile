@@ -205,7 +205,7 @@
     </style>
 </head>
 
-<body class="font-sans text-gray-800 bg-[#FFE08F]">
+<body class="font-sans text-gray-800 bg-white">
 
     {{-- GLASSMORPHISM NAVBAR --}}
     <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }" x-init="$watch('mobileMenuOpen', value => console.log('Menu:', value))">
