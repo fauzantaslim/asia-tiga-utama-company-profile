@@ -11,7 +11,6 @@
     ? $companyInfo->meta_keywords
     : 'profil perusahaan, jasa,
     layanan')
-@section('author', isset($companyInfo->website_name) ? $companyInfo->website_name : 'CV Asia Tiga Utama')
 
 @section('content')
     <!-- Hero Section with Parallax & Gradient -->
