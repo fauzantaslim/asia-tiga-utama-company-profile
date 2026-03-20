@@ -8,7 +8,7 @@
     <!-- Contact Header Section -->
     <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden group">
         <!-- Background Image & Overlay -->
-        <div class="absolute inset-0 bg-white">
+        <div class="absolute inset-0 bg-[#0B2F23]">
             <picture>
                 <source srcset="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
                 <img src="{{ isset($about) && $about->getFirstMedia('image') ? $about->getFirstMedia('image')->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
@@ -52,7 +52,7 @@
     </section>
 
     <!-- Contact Content Section -->
-    <section class="py-24 bg-[#FFE08F]">
+    <section class="py-24 bg-white">
         <div class="container mx-auto px-4 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
