@@ -32,19 +32,7 @@
     @googlefonts
     @stack('styles')
 
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "CV {{ $companyInfo->website_name ?? 'Perusahaan' }}",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Bogor",
-    "addressCountry": "ID"
-  },
-  "telephone": "{{ $companyInfo->phone ?? '' }}"
-}
-</script>
+
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
