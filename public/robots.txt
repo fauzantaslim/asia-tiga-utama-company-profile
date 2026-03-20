@@ -4,4 +4,4 @@ Disallow: /admin/login
 Disallow: /filament/
 Disallow: /vendor/
 
-Sitemap: https://fauzantaslim.my.id/sitemap.xml
+Sitemap: https://evenly.fauzantaslim.biz.id/sitemap.xml
