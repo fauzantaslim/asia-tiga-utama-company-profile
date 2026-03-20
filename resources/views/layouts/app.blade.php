@@ -10,7 +10,7 @@
     <meta name="description" content="@yield('description', 'Profil resmi perusahaan kami')">
     <meta name="keywords" content="@yield('keywords', 'profil perusahaan, jasa, layanan')">
     <link rel="canonical" href="{{ url()->current() }}" />
-    <meta name="author" content="{{ $companyInfo->website_name ?? 'Perusahaan' }}">
+    <meta name="author" content="@yield('author', 'CV Asia Tiga Utama')">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#060771">
     <meta name="next-head-count" content="16">
