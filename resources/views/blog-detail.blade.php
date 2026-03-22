@@ -152,8 +152,6 @@
                                         {{ $relatedPost->title }}
                                     </h4>
                                     <div class="flex items-center text-gray-500 text-[13px] gap-1">
-                                        <span>{{ $relatedPost->category->name ?? 'Pemerintahan' }}</span>
-                                        <span class="px-1">|</span>
                                         <span>{{ \Carbon\Carbon::parse($relatedPost->created_at)->diffForHumans() }}</span>
                                     </div>
                                 </div>

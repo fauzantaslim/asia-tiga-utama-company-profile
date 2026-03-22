@@ -19,7 +19,7 @@ class AboutsTableSeeder extends Seeder
             // VISION: Menunjukkan ambisi menjadi pemimpin pasar (Authority) dengan format HTML
             'vision' => '
                 <div class="prose max-w-none text-justify">
-                    <p>Menjadi perusahaan jasa <strong>service dan maintenance elektromekanikal</strong> terdepan yang menjadi rujukan utama industri nasional. Kami berkomitmen untuk selalu menghadirkan keunggulan melalui kualitas pengerjaan terbaik, ketepatan waktu yang presisi, serta inovasi solusi teknis yang berkelanjutan bagi seluruh mitra lini industri.</p>
+                    <p>Menjadi perusahaan jasa <strong>service dinamo</strong> terdepan yang menjadi rujukan utama industri nasional. Kami berkomitmen untuk selalu menghadirkan keunggulan melalui kualitas pengerjaan terbaik, ketepatan waktu yang presisi, serta inovasi solusi teknis yang berkelanjutan bagi seluruh mitra lini industri.</p>
                 </div>
             ',
 

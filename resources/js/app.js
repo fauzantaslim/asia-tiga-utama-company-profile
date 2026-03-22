@@ -35,17 +35,43 @@ document.addEventListener("turbo:visit", () => {
     NProgress.start();
 });
 
-// Close mobile menu before navigation
-document.addEventListener("turbo:before-visit", () => {
-    // Force close any open Alpine menus
+// Helper function to reset mobile menu
+const resetMobileMenu = () => {
     const header = document.querySelector("header[x-data]");
-    if (header && header.__x) {
-        header.__x.$data.mobileMenuOpen = false;
+    if (header && window.Alpine) {
+        try {
+            const data = window.Alpine.$data(header);
+            if (data) {
+                data.mobileMenuOpen = false;
+                console.log("Mobile menu reset to: false");
+            }
+        } catch (e) {
+            console.warn("Failed to reset mobile menu via Alpine:", e);
+        }
     }
-});
+    // Fallback: force-hide the DOM element
+    const mobileMenu = document.querySelector('[x-show="mobileMenuOpen"]');
+    if (mobileMenu) {
+        mobileMenu.style.display = 'none';
+    }
+};
+
+// Close mobile menu before navigation
+document.addEventListener("turbo:before-visit", resetMobileMenu);
 
 document.addEventListener("turbo:load", () => {
     NProgress.done();
+    
+    // Explicitly reset menu on every page load
+    resetMobileMenu();
+
+    // Re-initialize Fancybox on every page load (Turbo doesn't re-run scripts)
+    if (typeof Fancybox !== 'undefined') {
+        Fancybox.unbind('[data-fancybox="gallery"]');
+        Fancybox.bind('[data-fancybox="gallery"]', {
+            Thumbs: { type: 'classic' },
+        });
+    }
 
     // Refresh AOS animations on page load
     if (typeof AOS !== "undefined") {
@@ -109,6 +135,9 @@ document.addEventListener("turbo:before-cache", () => {
             swiper.swiper.destroy(true, true);
         }
     });
+
+    // Force close mobile menu in the cached snapshot
+    resetMobileMenu();
 });
 
 // Initialize AOS (Animate On Scroll)

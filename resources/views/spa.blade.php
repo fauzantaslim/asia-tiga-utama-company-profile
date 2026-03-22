@@ -13,94 +13,64 @@
     layanan')
 
 @section('content')
-    <!-- Hero Section with Parallax & Gradient -->
-    <section id="hero" class="relative h-screen overflow-hidden bg-[#BF1A1A]" x-data="{ visible: true }">
-        <!-- Swiper Background -->
-        <div class="hero-background-swiper absolute inset-0 z-0">
+    <!-- Hero Section -->
+    <section id="hero" class="relative h-screen overflow-hidden bg-[#060771]">
+        <div class="hero-background-swiper h-full w-full">
             <div class="swiper-wrapper">
-                <!-- Check if we have hero records -->
+
                 @if (isset($hero) && $hero->isNotEmpty())
-                    <!-- Loop through each hero record -->
                     @foreach ($hero as $heroItem)
-                        <!-- Check if this hero item has background images -->
-                        @if ($heroItem->getMedia('background_image')->count() > 0)
-                            <!-- Loop through each background image of this hero item -->
-                            @foreach ($heroItem->getMedia('background_image') as $image)
-                                <div class="swiper-slide">
-                                    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                                        style="background-image: url('{{ $image->getUrl() }}');">
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
+                        @php $heroImage = $heroItem->getFirstMedia('background_image'); @endphp
+                        <div class="swiper-slide relative">
+                            {{-- Background --}}
+                            @if ($heroImage)
+                                <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                                    style="background-image: url('{{ $heroImage->getUrl() }}');"></div>
+                            @else
+                                <div class="absolute inset-0 bg-gradient-to-br from-[#060771] via-[#BF1A1A]/60 to-[#FFE08F]/30"></div>
+                            @endif
+                            {{-- Content --}}
+                            <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+                                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+                                    {{ $heroItem->title ?? 'Welcome to Our Company' }}
+                                </h1>
+                                <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
+                                    {{ $heroItem->subtitle ?? 'We provide excellent services for your business needs' }}
+                                </p>
+                                <a href="#contact"
+                                    class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:scale-105">
+                                    {{ $heroItem->button_text ?? 'Get Started' }}
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
                     @endforeach
+                @else
+                    {{-- Fallback slides --}}
+                    <div class="swiper-slide relative">
+                        <div class="absolute inset-0 bg-cover bg-center"
+                            style="background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1950&q=80');"></div>
+                        <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+                            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">Welcome to Our Company</h1>
+                            <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">We provide excellent services for your business needs</p>
+                            <a href="#contact" class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:scale-105">
+                                Get Started <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
                 @endif
 
-                <!-- Default backgrounds if no hero images exist -->
-                @php
-                    $hasHeroImages = false;
-                    if (isset($hero) && $hero->isNotEmpty()) {
-                        foreach ($hero as $heroItem) {
-                            if ($heroItem->getMedia('background_image')->count() > 0) {
-                                $hasHeroImages = true;
-                                break;
-                            }
-                        }
-                    }
-                @endphp
-                @if (!$hasHeroImages)
-                    <div class="swiper-slide">
-                        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                            style="background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80');">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                            style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80');">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-[#060771]/80 via-[#BF1A1A]/60 to-[#FFE08F]/50">
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
-            <!-- Add Swiper Pagination -->
             <div class="swiper-pagination"></div>
         </div>
 
-        <div class="container mx-auto px-4 text-center relative z-10 h-full flex flex-col justify-center">
-            <div class="max-w-7xl mx-auto">
-                <div data-aos="fade-down" data-aos-duration="1000">
-                    <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
-                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->title) ? $hero->first()->title : 'Welcome to Our Company' }}
-                    </h1>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                    <p class="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
-                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->subtitle) ? $hero->first()->subtitle : 'We provide excellent services for your business needs' }}
-                    </p>
-                </div>
-
-                <div data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
-                    <a href="#contact"
-                        class="inline-block bg-white text-[#060771] px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/30 hover:scale-105">
-                        {{ isset($hero) && $hero->isNotEmpty() && isset($hero->first()->button_text) ? $hero->first()->button_text : 'Get Started' }}
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce" data-aos="fade-up"
-            data-aos-delay="800">
+        {{-- Scroll Indicator --}}
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce z-10">
             <i class="fas fa-chevron-down text-white text-3xl opacity-70"></i>
         </div>
     </section>
+
+
 
     <!-- About Us and Vision Mission Section with Golden Ratio Layout -->
     <section id="about" class="py-24 bg-white">
@@ -362,7 +332,13 @@
                         <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
                             <!-- Overlay gradient to match theme -->
                             <div class="absolute inset-0 bg-gradient-to-tr from-[#060771]/50 to-transparent mix-blend-multiply z-10 transition-opacity duration-500 hover:opacity-0"></div>
-                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tim Profesional Kami" class="w-full h-auto object-cover aspect-[4/5] md:aspect-[4/3] transform hover:scale-105 transition-transform duration-700">
+                            @php $aboutMedia = ($about && $about->getFirstMedia('image')) ? $about->getFirstMedia('image') : null; @endphp
+                            <picture>
+                                <source srcset="{{ $aboutMedia ? $aboutMedia->getUrl('webp') : asset('images/placeholders/no-image-placeholder.svg') }}" type="image/webp">
+                                <img loading="lazy"
+                                    src="{{ $aboutMedia ? $aboutMedia->getUrl('preview') : asset('images/placeholders/no-image-placeholder.svg') }}"
+                                    alt="{{ isset($about->title) ? $about->title : 'Tim Profesional Kami' }}"
+                                    class="w-full h-auto object-cover aspect-[4/5] md:aspect-[4/3] transform hover:scale-105 transition-transform duration-700"></picture>
                             
                             <!-- Floating badge -->
                             <div class="absolute bottom-6 left-6 z-20 bg-white/95 backdrop-blur px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce hover:scale-105 transition-transform cursor-pointer" style="animation-duration: 3s;">

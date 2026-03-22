@@ -12,13 +12,29 @@ class HeroesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $hero = Hero::create([
-            'title' => 'Welcome to Asia Tiga Utama',
-            'subtitle' => 'We provide excellent services for your business needs with years of experience in the industry.',
-            'button_text' => 'Get Started',
-        ]);
+        $heroes = [
+            [
+                'title' => 'Welcome to Asia Tiga Utama',
+                'subtitle' => 'Asia Tiga Utama adalah perusahaan yang bergerak di bidang jasa perbaikan dinamo dan electro motor dengan pengalaman bertahun-tahun di industri ini.',
+                'button_text' => 'Hubungi Kami',
+            ],
+            [
+                'title' => 'Spesialis Perbaikan Dinamo Industri',
+                'subtitle' => 'Layanan rewinding dan perbaikan electro motor AC/DC dengan standar kualitas tinggi dan hasil optimal.',
+                'button_text' => 'Hubungi Kami',
+            ],
+            [
+                'title' => 'Jasa Gulung Dinamo Bogor Profesional & Bergaransi',
+                'subtitle' => 'Spesialis rewinding dinamo, electro motor industri di Bogor dengan standar kualitas tinggi dan teknisi berpengalaman.',
+                'button_text' => 'Hubungi Kami',
+            ]
+        ];
 
-        // You can add media later via Filament admin panel
-        // $hero->addMedia(storage_path('app/public/hero-bg.jpg'))->toMediaCollection('background_image');
+        foreach ($heroes as $heroData) {
+            Hero::create($heroData);
+        }
+
+    // You can add media later via Filament admin panel
+    // $hero->addMedia(storage_path('app/public/hero-bg.jpg'))->toMediaCollection('background_image');
     }
 }

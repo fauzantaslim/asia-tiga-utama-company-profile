@@ -202,20 +202,24 @@
             scrollbar-width: none;
             /* Firefox */
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 </head>
 
 <body class="font-sans text-gray-800 bg-white">
 
     {{-- GLASSMORPHISM NAVBAR --}}
-    <header class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }" x-init="$watch('mobileMenuOpen', value => console.log('Menu:', value))">
+    <header id="main-header" data-turbo-permanent class="fixed top-0 left-0 right-0 glass-nav z-50 nav-enter" x-data="{ mobileMenuOpen: false }" x-init="$watch('mobileMenuOpen', value => console.log('Menu:', value))">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center justify-between h-24">
 
                 {{-- LEFT: Logo & Brand Name --}}
-                <a href="/" class="logo-wrapper flex items-center gap-3 group"
-                    @click.prevent="mobileMenuOpen = false; window.location.href = '/'">
+                <a href="{{ route('home') }}" class="logo-wrapper flex items-center gap-3 group"
+                    @click="mobileMenuOpen = false">
                     @if (isset($companyInfo) && $companyInfo->getFirstMedia('logo_website'))
                         <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
                             <picture>
@@ -287,7 +291,7 @@
             </div>
 
             {{-- Mobile Menu Dropdown --}}
-            <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
+            <div x-show="mobileMenuOpen" x-cloak style="display:none" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 transform -translate-y-2"
                 x-transition:enter-end="opacity-100 transform translate-y-0"
                 x-transition:leave="transition ease-in duration-150"
@@ -296,7 +300,7 @@
                 class="lg:hidden pb-4">
                 <div class="mobile-menu-glass mt-2 p-4 space-y-1">
                     <a href="{{ route('home') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
-                        @click.prevent="mobileMenuOpen = false; setTimeout(() => window.location.href = '{{ route('home') }}', 100)">
+                        @click="mobileMenuOpen = false">
                         Beranda</a>
                     <a href="{{ route('about') }}" class="block py-3 px-4 rounded-lg hover:bg-blue-50 transition"
                         @click="mobileMenuOpen = false">Tentang</a>
@@ -464,12 +468,6 @@
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-        Fancybox.bind('[data-fancybox="gallery"]', {
-            // Options
-            Thumbs: {
-                type: "classic",
-            },
-        });
         
         // Add active state to nav links based on scroll
         const sections = document.querySelectorAll('section[id]');
