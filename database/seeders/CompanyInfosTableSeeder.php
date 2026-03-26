@@ -21,12 +21,12 @@ class CompanyInfosTableSeeder extends Seeder
             'facebook' => 'https://facebook.com/asiatigautama',
             'youtube' => 'https://youtube.com/asiatigautama',
             'website_name' => 'Asia Tiga Utama',
-            'meta_title' => 'Service Dinamo Industri Bogor, Rewinding & Overhaul | CV. Asia Tiga Utama',
-            'meta_description' => 'Bengkel dinamo industri terpercaya di Bogor. Spesialis rewinding & overhaul Electro Motor AC/DC, Generator, Trafo, Chiller, & Kompresor. Cepat & Bergaransi.',
-            'meta_keywords' => 'service dinamo bogor, rewinding motor bogor, jasa overhaul mesin, perbaikan generator bogor, service trafo, service submersible pump, service chiller, perbaikan kompresor, bengkel dinamo terdekat, Asia Tiga Utama',
+            'meta_title' => 'Jasa Gulung Dinamo Bogor | CV. Asia Tiga Utama',
+            'meta_description' => 'Jasa Gulung Dinamo Bogor | CV. Asia Tiga Utama',
+            'meta_keywords' => 'jasa gulung dinamo bogor, jasa overhaul mesin, perbaikan generator bogor, service trafo, service submersible pump, service chiller, perbaikan kompresor, bengkel dinamo terdekat, Asia Tiga Utama',
         ]);
 
-        // You can add media later via Filament admin panel
-        // $companyInfo->addMedia(storage_path('app/public/logo.png'))->toMediaCollection('logo_website');
+    // You can add media later via Filament admin panel
+    // $companyInfo->addMedia(storage_path('app/public/logo.png'))->toMediaCollection('logo_website');
     }
 }
