@@ -1,59 +1,251 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Asia Tiga Utama — Company Profile
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Website company profile untuk **Asia Tiga Utama** yang dibangun dengan Laravel 12, Filament 4, dan Tailwind CSS 4. Dilengkapi dengan CMS admin panel, SEO tools, response caching, serta navigasi SPA menggunakan Hotwire Turbo.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Layer | Teknologi |
+|---|---|
+| **Backend** | PHP 8.2+, Laravel 12 |
+| **Admin Panel** | Filament 4 |
+| **Frontend** | Blade, Alpine.js, Tailwind CSS 4, Vite 7 |
+| **SPA Navigation** | Hotwire Turbo |
+| **UI Components** | Swiper.js, AOS (Animate On Scroll), NProgress, Fancybox |
+| **PDF Flipbook** | PDF.js, PageFlip |
+| **Media Library** | Spatie Media Library + Filament Plugin |
+| **SEO** | Artesaos SEOTools, Spatie Sitemap |
+| **Caching** | Spatie Response Cache |
+| **Image Processing** | Intervention Image |
+| **Activity Log** | Spatie Activity Log |
+| **Google Fonts** | Spatie Laravel Google Fonts |
+| **Database** | MySQL |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Homepage SPA** — Landing page lengkap dengan hero slider, about, services, portfolio, gallery, blog, dan contact dalam satu halaman
+- **Admin Panel (Filament 4)** — Kelola semua konten website melalui dashboard admin yang modern
+- **Blog** — Sistem blog dengan views counter, artikel terkait, dan pagination
+- **Portfolio** — Showcase proyek dengan media management
+- **Gallery** — Galeri foto dengan lightbox (Fancybox)
+- **PDF Flipbook** — Tampilan dokumen PDF interaktif dengan efek page-flip
+- **Dynamic Sitemap** — Sitemap XML otomatis untuk SEO
+- **SEO Optimized** — Meta tags, Open Graph, Twitter Card, dan JSON-LD terstruktur
+- **Response Caching** — Performa cepat dengan caching pada setiap halaman
+- **Activity Logging** — Pencatatan aktivitas pada setiap perubahan data
+- **Image Processing** — Optimasi gambar otomatis via Intervention Image
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Struktur Proyek
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+├── app/
+│   ├── Console/              # Artisan commands
+│   ├── Filament/Resources/   # Admin panel resources (CRUD)
+│   │   ├── Abouts/
+│   │   ├── BlogPosts/
+│   │   ├── CompanyInfos/
+│   │   ├── GalleryImages/
+│   │   ├── Heroes/
+│   │   ├── Portofolios/
+│   │   ├── Services/
+│   │   ├── Users/
+│   │   └── ActivityLogResource.php
+│   ├── Http/Controllers/
+│   │   └── CompanyProfileController.php   # Controller utama
+│   ├── Models/               # Eloquent models
+│   │   ├── About.php
+│   │   ├── BlogPost.php
+│   │   ├── CompanyInfo.php
+│   │   ├── GalleryImage.php
+│   │   ├── Hero.php
+│   │   ├── Portfolio.php
+│   │   ├── Service.php
+│   │   └── User.php
+│   ├── Observers/            # Model observers (cache invalidation & logging)
+│   ├── Providers/
+│   ├── Services/
+│   │   └── ImageProcessingService.php
+│   └── Traits/
+│       └── LogsActivity.php
+├── database/
+│   ├── migrations/           # Skema database
+│   └── seeders/              # Data awal (heroes, about, services, dll.)
+├── resources/
+│   ├── css/                  # Stylesheet (Tailwind CSS)
+│   ├── js/
+│   │   ├── app.js            # Entry point (Alpine, Swiper, Turbo, AOS)
+│   │   └── flipbook.js       # PDF flipbook module
+│   └── views/
+│       ├── layouts/          # Layout templates
+│       ├── spa.blade.php     # Homepage SPA
+│       ├── about.blade.php
+│       ├── blog.blade.php
+│       ├── blog-detail.blade.php
+│       ├── contact.blade.php
+│       ├── gallery.blade.php
+│       ├── portfolio.blade.php
+│       ├── services.blade.php
+│       └── errors/           # Custom error pages
+├── routes/
+│   └── web.php               # Route definitions
+├── composer.json
+├── package.json
+└── vite.config.js
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Halaman & Route
 
-## Contributing
+| Route | Nama | Deskripsi |
+|---|---|---|
+| `/` | `home` | Homepage dengan semua section |
+| `/about` | `about` | Halaman tentang perusahaan |
+| `/services` | `services` | Daftar layanan (paginated) |
+| `/portfolio` | `portfolio` | Showcase portofolio (paginated) |
+| `/gallery` | `gallery` | Galeri foto (paginated) |
+| `/blog` | `blog.index` | Daftar artikel blog (paginated) |
+| `/blog/{slug}` | `blog.detail` | Detail artikel blog |
+| `/contact` | `contact` | Halaman kontak |
+| `/sitemap.xml` | — | Dynamic XML sitemap |
+| `/admin` | — | Filament admin panel |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Persyaratan Sistem
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP >= 8.2
+- Composer
+- Node.js >= 18
+- MySQL
+- Ekstensi PHP: `gd` atau `imagick` (untuk Intervention Image)
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Instalasi
 
-## License
+### 1. Clone Repository
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+git clone <repository-url>
+cd asia-tiga-utama-company-profile
+```
+
+### 2. Setup Otomatis (Rekomendasi)
+
+Project ini menyediakan script setup yang menjalankan semua langkah instalasi sekaligus:
+
+```bash
+composer setup
+```
+
+Script ini akan menjalankan:
+- `composer install` — Install dependensi PHP
+- Copy `.env.example` → `.env`
+- `php artisan key:generate` — Generate application key
+- `php artisan migrate --force` — Jalankan migrasi database
+- `npm install` — Install dependensi Node.js
+- `npm run build` — Build asset frontend
+
+### 3. Konfigurasi Environment
+
+Edit file `.env` dan sesuaikan konfigurasi database:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=asia_tiga_utama_company_profile
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Seed Database (Opsional)
+
+Untuk mengisi data awal (demo):
+
+```bash
+php artisan db:seed
+```
+
+Ini akan membuat:
+- User admin default (`test@example.com` / `password`)
+- Data hero, about, services, portfolio, gallery, blog, dan company info
+
+### 5. Link Storage
+
+```bash
+php artisan storage:link
+```
+
+---
+
+## Menjalankan Aplikasi
+
+### Mode Development
+
+Gunakan script `composer dev` yang menjalankan semua service secara bersamaan:
+
+```bash
+composer dev
+```
+
+Script ini akan menjalankan secara paralel:
+- **Server** — `php artisan serve`
+- **Queue** — `php artisan queue:listen --tries=1`
+- **Vite** — `npm run dev` (hot reload)
+
+### Build Production
+
+```bash
+npm run build
+```
+
+---
+
+## Admin Panel
+
+Akses admin panel melalui `/admin`. Login menggunakan akun yang sudah di-seed atau buat akun baru:
+
+```bash
+php artisan make:filament-user
+```
+
+### Resource yang Tersedia
+
+| Resource | Deskripsi |
+|---|---|
+| Heroes | Kelola hero slider pada homepage |
+| Abouts | Informasi tentang perusahaan |
+| Services | Daftar layanan perusahaan |
+| Portofolios | Proyek dan portofolio |
+| Gallery Images | Galeri foto |
+| Blog Posts | Artikel dan berita |
+| Company Infos | Informasi umum perusahaan (nama, kontak, meta SEO) |
+| Users | Manajemen pengguna |
+| Activity Log | Log aktivitas perubahan data |
+
+---
+
+## Testing
+
+```bash
+composer test
+```
+
+Atau jalankan langsung:
+
+```bash
+php artisan test
+```
+
+---
+
+## Lisensi
+
+MIT
